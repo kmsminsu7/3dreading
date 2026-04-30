@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>초등 구조독해 Book 2 — Unit 6</title>
+<style>
+:root {
+  --purple:#5C3D8A; --navy:#1A2744; --gold:#C8A84B; --gold-light:#F5E9C8;
+  --s-color:#F7D97A; --v-color:#A8D8EA; --o-color:#F4B8B8;
+  --adv-color:#FFF9C4; --adv-border:#F9A825;
+  --noun-color:#EDE7F6; --noun-border:#7B1FA2;
+  --rel-color:#E8F5E9; --rel-border:#2E7D32;
+  --bg:#F8F6F0; --text:#1A2744; --text-light:#5C5C7A;
+  --when-c:#1565C0; --where-c:#2E7D32; --why-c:#6A1B9A;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.7;}
+
+#lock-screen{position:fixed;inset:0;background:linear-gradient(135deg,var(--navy) 0%,var(--purple) 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:18px;}
+#lock-screen .lock-logo{font-size:2.2rem;font-weight:900;color:var(--gold);letter-spacing:2px;text-align:center;}
+#lock-screen .lock-sub{color:#ccc;font-size:0.95rem;text-align:center;}
+#lock-screen input{padding:12px 24px;border-radius:30px;border:2px solid var(--gold);font-size:1.1rem;background:rgba(255,255,255,0.1);color:white;text-align:center;outline:none;width:240px;}
+#lock-screen input::placeholder{color:rgba(255,255,255,0.5);}
+#lock-screen button{padding:12px 36px;background:var(--gold);color:var(--navy);font-weight:700;font-size:1rem;border:none;border-radius:30px;cursor:pointer;}
+#lock-screen .lock-hint{color:rgba(255,255,255,0.5);font-size:0.82rem;text-align:center;}
+#lock-error{color:#ff8a8a;font-size:0.9rem;display:none;}
+
+#main-header{background:linear-gradient(90deg,var(--navy) 0%,var(--purple) 100%);color:white;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.3);}
+.header-left{display:flex;flex-direction:column;}
+.header-series{font-size:0.72rem;color:var(--gold);letter-spacing:2px;text-transform:uppercase;}
+.header-title{font-size:1.05rem;font-weight:700;}
+.header-right{display:flex;gap:10px;align-items:center;}
+.tts-btn,.print-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:6px 12px;border-radius:20px;cursor:pointer;font-size:0.82rem;}
+
+#unit-nav{background:var(--navy);padding:8px 16px;display:flex;gap:6px;overflow-x:auto;justify-content:center;border-bottom:2px solid var(--gold);}
+.nav-btn{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:5px 14px;font-size:0.82rem;cursor:pointer;white-space:nowrap;transition:all 0.2s;}
+.nav-btn.active{background:var(--gold);color:var(--navy);font-weight:700;border-color:var(--gold);}
+#page-nav{background:var(--purple);padding:6px 16px;display:flex;gap:4px;overflow-x:auto;justify-content:center;}
+.page-btn{background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);border:1px solid rgba(255,255,255,0.25);border-radius:15px;padding:4px 12px;font-size:0.78rem;cursor:pointer;transition:all 0.2s;}
+.page-btn.active{background:white;color:var(--purple);font-weight:700;}
+
+#content{max-width:780px;margin:0 auto;padding:0 0 60px;}
+.page-block{display:none;padding:24px 20px;animation:fadeIn 0.3s ease;}
+.page-block.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.page-header{background:linear-gradient(135deg,var(--purple) 0%,var(--navy) 100%);color:white;border-radius:14px;padding:18px 22px;margin-bottom:22px;display:flex;justify-content:space-between;align-items:center;}
+.page-header-left .unit-badge{font-size:0.72rem;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
+.page-header-left .page-title{font-size:1.3rem;font-weight:700;}
+.page-header-left .page-sub{font-size:0.85rem;color:rgba(255,255,255,0.75);margin-top:3px;}
+.page-num{font-size:2.2rem;font-weight:900;color:rgba(255,255,255,0.15);font-family:serif;}
+
+.learning-nav-box{background:var(--navy);border-radius:14px;padding:16px 20px;margin-bottom:20px;color:white;}
+.learning-nav-title{font-size:0.78rem;color:var(--gold);letter-spacing:1px;margin-bottom:10px;font-weight:700;}
+.learning-nav-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.lnav-item{border-radius:10px;padding:10px 12px;text-align:center;font-size:0.82rem;}
+.lnav-item .lnav-tag{display:inline-block;border-radius:20px;padding:2px 10px;font-size:0.72rem;font-weight:700;margin-bottom:5px;}
+.lnav-item .lnav-units{font-size:0.72rem;color:rgba(255,255,255,0.65);}
+.lnav-adv{background:rgba(249,168,37,0.15);border:1px solid rgba(249,168,37,0.4);}
+.lnav-adv .lnav-tag{background:var(--adv-border);color:#1A2744;}
+.lnav-noun{background:rgba(123,31,162,0.2);border:1px solid rgba(123,31,162,0.4);}
+.lnav-noun .lnav-tag{background:#7B1FA2;color:white;}
+.lnav-rel{background:rgba(46,125,50,0.15);border:1px solid rgba(46,125,50,0.4);}
+.lnav-rel .lnav-tag{background:#2E7D32;color:white;}
+.lnav-current{border:2px solid var(--gold)!important;position:relative;}
+.lnav-current::after{content:'← 지금!';position:absolute;top:-10px;right:6px;background:var(--gold);color:var(--navy);font-size:0.65rem;padding:1px 6px;border-radius:10px;font-weight:700;}
+
+.episode-box{background:white;border-radius:14px;padding:18px 20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.07);border-left:4px solid var(--rel-border);}
+.episode-title{font-size:1rem;font-weight:700;color:var(--rel-border);margin-bottom:12px;}
+.episode-text{font-size:0.92rem;line-height:1.85;color:#333;}
+.episode-text strong{color:var(--rel-border);}
+
+.chat-box{margin:14px 0;display:flex;flex-direction:column;gap:10px;}
+.chat-item{display:flex;gap:10px;align-items:flex-start;}
+.chat-item.right{flex-direction:row-reverse;}
+.chat-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;flex-shrink:0;flex-direction:column;gap:1px;}
+.avatar-haon{background:var(--s-color);color:var(--navy);}
+.avatar-seojun{background:var(--v-color);color:var(--navy);}
+.avatar-luna{background:var(--o-color);color:var(--navy);}
+.chat-bubble{background:white;border-radius:12px;padding:10px 14px;font-size:0.88rem;line-height:1.65;box-shadow:0 1px 4px rgba(0,0,0,0.08);max-width:78%;border:1px solid #eee;}
+.chat-item.right .chat-bubble{background:#f0eaff;border-color:#d5c8f0;}
+.chat-name{font-size:0.7rem;color:var(--text-light);margin-bottom:3px;font-weight:600;}
+
+.tts-sentence{background:var(--navy);color:white;border-radius:10px;padding:12px 16px;margin:10px 0;font-size:0.95rem;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background 0.2s;}
+.tts-sentence:hover{background:var(--purple);}
+.tts-icon{font-size:1.1rem;flex-shrink:0;}
+.tts-text{flex:1;}
+.tts-text .tts-trans{font-size:0.78rem;color:rgba(255,255,255,0.65);margin-top:3px;}
+.tts-text em{color:var(--gold);font-style:normal;font-weight:700;}
+
+.rule-box{background:white;border-radius:14px;padding:18px 20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.07);}
+.rule-title{font-size:0.82rem;color:var(--purple);font-weight:700;letter-spacing:1px;margin-bottom:12px;text-transform:uppercase;border-bottom:2px solid var(--purple);padding-bottom:6px;}
+
+/* 관계부사 카드 */
+.radv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0;}
+.radv-card{border-radius:12px;padding:14px 10px;text-align:center;}
+.radv-card.when{background:#E3F2FD;border:1.5px solid #90CAF9;}
+.radv-card.where{background:#E8F5E9;border:1.5px solid #A5D6A7;}
+.radv-card.why{background:#F3E5F5;border:1.5px solid #CE93D8;}
+.radv-word{font-size:1.15rem;font-weight:900;margin-bottom:5px;}
+.radv-card.when .radv-word{color:var(--when-c);}
+.radv-card.where .radv-word{color:var(--where-c);}
+.radv-card.why .radv-word{color:var(--why-c);}
+.radv-sel{font-size:0.72rem;font-weight:700;margin-bottom:3px;color:#444;}
+.radv-conv{font-size:0.68rem;color:#888;}
+
+/* 관계대명사 vs 관계부사 비교 */
+.compare-adv{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0;}
+.ca-card{border-radius:12px;padding:13px 14px;}
+.ca-card.relp{background:#FFF9C4;border:1.5px solid var(--adv-border);}
+.ca-card.radv{background:#E8F5E9;border:1.5px solid #A5D6A7;}
+.ca-title{font-size:0.8rem;font-weight:700;margin-bottom:6px;}
+.ca-card.relp .ca-title{color:#E65100;}
+.ca-card.radv .ca-title{color:var(--where-c);}
+.ca-ex{font-size:0.8rem;color:#333;line-height:1.6;}
+
+/* 헥사곤 */
+.diagram-wrap{background:white;border-radius:14px;padding:20px;margin:14px 0;box-shadow:0 2px 8px rgba(0,0,0,0.06);overflow-x:auto;}
+.diagram-label{font-size:0.78rem;color:var(--text-light);margin-bottom:10px;font-weight:600;}
+.hex-row{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;min-width:max-content;margin-bottom:8px;}
+.hex-wrap{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.hex-svg{width:112px;height:72px;}
+.hex-text-main{font-weight:700;fill:#1A2744;dominant-baseline:middle;text-anchor:middle;}
+.hex-text-sub{fill:#5C5C7A;dominant-baseline:middle;text-anchor:middle;}
+.rel-tag{background:var(--rel-color);border:1.5px solid var(--rel-border);border-radius:12px;padding:2px 9px;font-size:0.67rem;color:#1B5E20;font-weight:600;white-space:nowrap;}
+.when-tag{background:#E3F2FD;border:1.5px solid #90CAF9;border-radius:12px;padding:2px 9px;font-size:0.67rem;color:var(--when-c);font-weight:600;white-space:nowrap;}
+.why-tag{background:#F3E5F5;border:1.5px solid #CE93D8;border-radius:12px;padding:2px 9px;font-size:0.67rem;color:var(--why-c);font-weight:600;white-space:nowrap;}
+.diagram-note{font-size:0.72rem;color:var(--text-light);margin-top:8px;padding:5px 10px;background:#f8f8f8;border-radius:8px;border-left:3px solid var(--rel-border);}
+
+/* 변환 박스 */
+.conv-box{background:#F8F6F0;border-radius:12px;padding:14px 16px;margin:12px 0;border:1px solid #e8e0f0;}
+.conv-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:10px;font-size:0.85rem;}
+.conv-row:last-child{margin-bottom:0;}
+.conv-badge{border-radius:20px;padding:2px 10px;font-size:0.72rem;font-weight:700;white-space:nowrap;flex-shrink:0;margin-top:2px;}
+.cb-relp{background:#FFF9C4;color:#E65100;border:1px solid var(--adv-border);}
+.cb-radv{background:#E8F5E9;color:var(--where-c);border:1px solid #A5D6A7;}
+
+/* 퀴즈 */
+.quiz-box{background:white;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.07);margin-bottom:16px;}
+.quiz-title{font-size:0.95rem;font-weight:700;color:var(--navy);margin-bottom:16px;}
+.quiz-item{margin-bottom:18px;}
+.quiz-q{font-size:0.9rem;margin-bottom:8px;display:flex;align-items:flex-start;gap:8px;}
+.q-num{background:var(--purple);color:white;border-radius:50%;width:24px;height:24px;font-size:0.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.quiz-options{display:flex;gap:6px;flex-wrap:wrap;margin-left:32px;}
+.quiz-opt{background:#f5f5f5;border:2px solid #e0e0e0;border-radius:16px;padding:4px 12px;font-size:0.76rem;cursor:pointer;transition:all 0.2s;}
+.quiz-opt:hover{border-color:var(--purple);color:var(--purple);background:#f0eaff;}
+.quiz-opt.selected{border-color:var(--purple);background:#f0eaff;color:var(--purple);font-weight:700;}
+.quiz-opt.correct{border-color:#2E7D32;background:#E8F5E9;color:#2E7D32;font-weight:700;}
+.quiz-opt.wrong{border-color:#C62828;background:#FFEBEE;color:#C62828;}
+.quiz-feedback{margin-left:32px;margin-top:6px;font-size:0.82rem;padding:5px 10px;border-radius:8px;display:none;}
+.quiz-feedback.show{display:block;}
+.quiz-feedback.correct-fb{background:#E8F5E9;color:#2E7D32;}
+.quiz-feedback.wrong-fb{background:#FFEBEE;color:#C62828;}
+.score-bar{background:#f5f5f5;border-radius:10px;padding:12px 16px;text-align:center;font-weight:700;font-size:1rem;margin-top:14px;display:none;}
+.score-bar.show{display:block;}
+.check-btn{background:var(--purple);color:white;border:none;padding:11px 28px;border-radius:25px;font-size:0.9rem;font-weight:700;cursor:pointer;margin-top:10px;display:block;}
+.reset-btn{background:#eee;color:#555;border:none;padding:8px 20px;border-radius:20px;font-size:0.82rem;cursor:pointer;margin-top:8px;display:none;}
+.reset-btn.show{display:inline-block;}
+
+/* 단어장 */
+.vstab{padding:8px 18px;border-radius:20px;border:1.5px solid var(--purple);background:white;color:var(--purple);font-size:0.8rem;font-weight:700;cursor:pointer;transition:all 0.2s;}
+.vstab-on{background:var(--purple);color:white;}
+.fc-grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.fc2{background:white;border:1.5px solid #e0d8f0;border-radius:12px;padding:14px 12px;cursor:pointer;transition:all 0.22s;display:flex;flex-direction:column;align-items:center;text-align:center;}
+.fc2:hover{border-color:var(--purple);}
+.fc2-en{font-size:0.9rem;font-weight:700;color:var(--navy);}
+.fc2-ko{font-size:0.85rem;color:var(--purple);font-weight:700;margin-top:6px;display:none;}
+.fc2-ex{font-size:0.7rem;color:#666;margin-top:5px;display:none;line-height:1.55;}
+.fc2-ko-ex{color:var(--gold);font-weight:600;}
+.fc2-hint{font-size:0.65rem;color:#bbb;margin-top:5px;}
+.fc2.flipped2{background:#f5f0ff;border-color:var(--purple);}
+.fc2.flipped2 .fc2-ko,.fc2.flipped2 .fc2-ex{display:block;}
+.fc2.flipped2 .fc2-hint{display:none;}
+.vbtn{padding:7px 20px;border-radius:20px;border:1.5px solid var(--purple);color:var(--purple);background:white;font-size:0.78rem;font-weight:700;cursor:pointer;margin-top:6px;}
+.vm-en{background:#FFF9E6;border:1.5px solid var(--gold);border-radius:10px;padding:9px 12px;text-align:center;font-weight:700;font-size:0.82rem;color:var(--navy);cursor:pointer;transition:all 0.18s;min-height:40px;display:flex;align-items:center;justify-content:center;}
+.vm-en.vm-sel{background:var(--gold);color:var(--navy);transform:scale(1.04);}
+.vm-en.vm-ok{background:#E8F5E9;border-color:#2E7D32;color:#2E7D32;pointer-events:none;}
+.vm-en.vm-ok::after{content:' ✓';}
+.vm-en.vm-err{animation:vshake 0.3s;border-color:#C62828;background:#FFEBEE;}
+.vm-ko{background:#f0eaff;border:1.5px solid #B39DDB;border-radius:10px;padding:9px 12px;text-align:center;font-weight:600;font-size:0.82rem;color:#4A148C;cursor:pointer;transition:all 0.18s;min-height:40px;display:flex;align-items:center;justify-content:center;}
+.vm-ko.vm-sel{background:var(--purple);color:white;transform:scale(1.04);}
+.vm-ko.vm-gone{opacity:0;pointer-events:none;}
+@keyframes vshake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+.tip-box{background:#FFF8E1;border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:10px 14px;font-size:0.85rem;margin:10px 0;}
+.tip-box strong{color:#7B4F00;}
+.goal-box{background:white;border-radius:12px;padding:14px 16px;box-shadow:0 1px 6px rgba(0,0,0,0.07);margin:12px 0;}
+.goal-title{font-size:0.8rem;color:var(--purple);font-weight:700;margin-bottom:8px;}
+.goal-list{list-style:none;}
+.goal-list li{font-size:0.88rem;padding:4px 0;display:flex;align-items:flex-start;gap:8px;}
+.goal-list li::before{content:'✦';color:var(--gold);flex-shrink:0;}
+.section-title{font-size:1rem;font-weight:700;color:var(--purple);margin:18px 0 10px;display:flex;align-items:center;gap:8px;}
+.section-title::before{content:'';width:4px;height:18px;background:var(--gold);border-radius:2px;}
+.preview-box{background:linear-gradient(135deg,var(--navy) 0%,var(--purple) 100%);color:white;border-radius:14px;padding:20px;margin-bottom:16px;text-align:center;}
+.preview-box .prev-label{font-size:0.75rem;color:var(--gold);letter-spacing:1px;margin-bottom:8px;}
+.preview-box .prev-title{font-size:1.15rem;font-weight:700;margin-bottom:8px;}
+.preview-box .prev-sub{font-size:0.85rem;color:rgba(255,255,255,0.75);}
+.preview-box .prev-sentence{background:rgba(255,255,255,0.1);border-radius:10px;padding:10px 14px;margin-top:12px;font-size:0.88rem;border-left:3px solid var(--gold);text-align:left;}
+.complete-badge{background:linear-gradient(135deg,var(--gold) 0%,#E6A817 100%);color:var(--navy);border-radius:14px;padding:16px;text-align:center;margin-top:16px;}
+.complete-badge .cb-title{font-size:1.1rem;font-weight:700;margin-bottom:4px;}
+.complete-badge .cb-sub{font-size:0.82rem;}
+.page-nav-btns{display:flex;justify-content:space-between;margin-top:24px;gap:10px;}
+.pnav-btn{background:var(--purple);color:white;border:none;padding:10px 20px;border-radius:25px;font-size:0.85rem;font-weight:700;cursor:pointer;transition:background 0.2s;}
+.pnav-btn:hover{background:var(--navy);}
+.pnav-btn.disabled{background:#ccc;cursor:not-allowed;}
+
+.rs-num{display:inline-block;background:var(--purple);color:white;border-radius:50%;width:22px;height:22px;font-size:0.72rem;font-weight:700;text-align:center;line-height:22px;margin-right:6px;flex-shrink:0;}
+.rs-en{font-size:0.95rem;color:var(--navy);margin-bottom:4px;font-weight:500;}
+.rel-mark{color:var(--where-c);font-weight:700;}
+
+@media print{#lock-screen,#unit-nav,#page-nav,.page-nav-btns{display:none!important;}.page-block{display:block!important;page-break-after:always;}}
+@media(max-width:480px){.radv-grid{grid-template-columns:1fr}.compare-adv{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div id="lock-screen">
+  <div class="lock-logo">초등 구조독해<br><span style="font-size:1.2rem;color:white;font-weight:400;">Book 2</span></div>
+  <div class="lock-sub">Unit 6 · 단서의 장소·시간 🧭<br>학습 자료에 접근하려면 비밀번호를 입력하세요.</div>
+  <input type="password" id="pwd-input" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter')checkPwd()">
+  <div id="lock-error">❌ 비밀번호가 틀렸습니다.</div>
+  <button onclick="checkPwd()">입장하기 →</button>
+  <div class="lock-hint">힌트: 월도6 · waldo6 · unit06</div>
+</div>
+
+<div id="main-header">
+  <div class="header-left">
+    <div class="header-series">초등 구조독해 · Structural Reading</div>
+    <div class="header-title">Book 2 · Unit 6 — 단서의 장소·시간 🧭</div>
+  </div>
+  <div class="header-right">
+    <button class="tts-btn" onclick="toggleTTS()">🔊 <span id="tts-label">TTS 켜기</span></button>
+    <button class="print-btn" onclick="window.print()">🖨️ 인쇄</button>
+  </div>
+</div>
+
+<div id="unit-nav">
+  <button class="nav-btn" onclick="location.href='book2_unit1.html'">U1</button>
+  <button class="nav-btn" onclick="location.href='book2_unit2.html'">U2</button>
+  <button class="nav-btn" onclick="location.href='book2_unit3.html'">U3</button>
+  <button class="nav-btn" onclick="location.href='book2_unit4.html'">U4</button>
+  <button class="nav-btn" onclick="location.href='book2_unit5.html'">U5</button>
+  <button class="nav-btn active">U6</button>
+  <button class="nav-btn" style="color:rgba(255,255,255,0.35);cursor:default;">U7</button>
+  <button class="nav-btn" style="color:rgba(255,255,255,0.35);cursor:default;">U8</button>
+</div>
+
+<div id="page-nav">
+  <button class="page-btn active" onclick="showPage(1)">p.1 도입</button>
+  <button class="page-btn" onclick="showPage(2)">p.2 핵심규칙</button>
+  <button class="page-btn" onclick="showPage(3)">p.3 예문 A</button>
+  <button class="page-btn" onclick="showPage(4)">p.4 예문 B</button>
+  <button class="page-btn" onclick="showPage(5)">p.5 지문독해</button>
+  <button class="page-btn" onclick="showPage(6)">p.6 연습문제</button>
+  <button class="page-btn" onclick="showPage(7)">p.7 단어정리</button>
+  <button class="page-btn" onclick="showPage(8)">p.8 추가문제</button>
+</div>
+
+<div id="content">
+
+<!-- p.1 도입 -->
+<div class="page-block active" id="page-1">
+  <div class="page-header">
+    <div class="page-header-left">
+      <div class="unit-badge">Unit 6 of 8 · Book 2 · [형용사절 ②]</div>
+      <div class="page-title">단서의 장소·시간 🧭</div>
+      <div class="page-sub">관계부사 when / where / why</div>
+    </div>
+    <div class="page-num">1</div>
+  </div>
+
+  <div class="learning-nav-box">
+    <div class="learning-nav-title">📍 BOOK 2 학습 지도 — 종속절 3종</div>
+    <div class="learning-nav-grid">
+      <div class="lnav-item lnav-adv">
+        <div class="lnav-tag">🟡 부사절</div>
+        <div style="font-size:0.82rem;color:rgba(255,255,255,0.9);margin-bottom:3px;">상황을 더해줘요</div>
+        <div class="lnav-units">Unit 2 ✅ · Unit 3 ✅</div>
+      </div>
+      <div class="lnav-item lnav-noun">
+        <div class="lnav-tag">🟣 명사절</div>
+        <div style="font-size:0.82rem;color:rgba(255,255,255,0.9);margin-bottom:3px;">주어·목적어 역할</div>
+        <div class="lnav-units">Unit 4 ✅</div>
+      </div>
+      <div class="lnav-item lnav-rel lnav-current">
+        <div class="lnav-tag">🟢 형용사절</div>
+        <div style="font-size:0.82rem;color:rgba(255,255,255,0.9);margin-bottom:3px;">명사를 뒤에서 꾸며요</div>
+        <div class="lnav-units">Unit 5 ✅ · Unit 6 ←</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;font-size:0.78rem;color:rgba(255,255,255,0.55);text-align:center;">
+      ✅ Unit 5(관계대명사) 완료! 이번엔 관계부사!</div>
+  </div>
+
+  <div class="episode-box">
+    <div class="episode-title">📖 에피소드 6 — 섬 내부 탐험 🧭</div>
+    <div class="episode-text">
+      보물지도를 손에 쥔 탐정단은 섬 내부로 향했다. 지도에는 구체적인 <strong>장소</strong>와 <strong>시간</strong> 단서들이 기록되어 있었다. 할아버지는 단순한 지명 대신, 관계부사절로 장소와 시간을 설명해 두었다.
+    </div>
+  </div>
+
+  <div class="tts-sentence" onclick="speak(this,'This is the place where the treasure is finally hidden. I remember the day when our grandfather first came here.')">
+    <div class="tts-icon">🔊</div>
+    <div class="tts-text">
+      "This is the place <em>[where the treasure is finally hidden]</em>.<br>
+      I remember the day <em>[when our grandfather first came here]</em>."
+      <div class="tts-trans">이곳이 보물이 마침내 숨겨진 장소다. 나는 우리 할아버지가 처음 여기 온 날을 기억한다.</div>
+    </div>
+  </div>
+
+  <div class="chat-box">
+    <div class="chat-item">
+      <div class="chat-avatar avatar-haon">하온<br>🟡</div>
+      <div class="chat-bubble">
+        <div class="chat-name">하온 · 궁금쟁이</div>
+        <strong>where</strong>랑 <strong>when</strong>이 절 앞에 나왔어! Unit 2에서 배운 부사절 접속사랑 같은 단어잖아? 😮
+      </div>
+    </div>
+    <div class="chat-item right">
+      <div class="chat-avatar avatar-seojun">서준<br>🔵</div>
+      <div class="chat-bubble">
+        <div class="chat-name">서준 · 논리박사</div>
+        맞아! 같은 단어지만 역할이 달라. 여기선 <strong>관계부사</strong>야 — 명사(place, day)를 <strong>뒤에서 꾸며주는</strong> 역할이야!
+      </div>
+    </div>
+    <div class="chat-item">
+      <div class="chat-avatar avatar-luna">루나<br>🩷</div>
+      <div class="chat-bubble">
+        <div class="chat-name">루나 · 엉뚱천재</div>
+        Unit 5에서 배운 관계대명사(who, which)랑 다른 거야? 둘 다 명사 뒤에서 꾸며주잖아! 🤔
+      </div>
+    </div>
+    <div class="chat-item right">
+      <div class="chat-avatar avatar-seojun">서준<br>🔵</div>
+      <div class="chat-bubble">
+        <div class="chat-name">서준 · 논리박사</div>
+        차이가 있어! 관계대명사는 주어·목적어 역할, 관계부사는 부사 역할! 오늘 정확히 구분해보자! 🔍
+      </div>
+    </div>
+  </div>
+
+  <div class="goal-box">
+    <div class="goal-title">🎯 Unit 6에서 배울 것</div>
+    <ul class="goal-list">
+      <li>관계부사 when — 시간 명사 뒤 (the day, the time...)</li>
+      <li>관계부사 where — 장소 명사 뒤 (the place, the city...)</li>
+      <li>관계부사 why — reason 뒤 (the reason...)</li>
+      <li>관계대명사 vs 관계부사 결정적 차이</li>
+    </ul>
+  </div>
+
+  <div class="page-nav-btns">
+    <button class="pnav-btn disabled">← 이전</button>
+    <button class="pnav-btn" onclick="showPage(2)">핵심규칙 →</button>
+  </div>
+</div>
+
+<!-- p.2 핵심규칙 -->
+<div class="page-block" id="page-2">
+  <div class="page-header">
+    <div class="page-header-left">
+      <div class="unit-badge">Unit 6 · p.2 · [형용사절 ②]</div>
+      <div class="page-title">핵심 규칙 📌</div>
+      <div class="page-sub">관계부사 3총사 + 관계대명사와 차이!</div>
+    </div>
+    <div class="page-num">2</div>
+  </div>
+
+  <div class="rule-box">
+    <div class="rule-title">📌 관계부사 3총사</div>
+    <div class="radv-grid">
+      <div class="radv-card when">
+        <div class="radv-word">when</div>
+        <div class="radv-sel">시간 명사 뒤</div>
+        <div class="radv-conv">= in/on which</div>
+        <div style="font-size:0.72rem;color:#444;margin-top:6px;"><em>the day when he came<br>그가 온 날</em></div>
+      </div>
+      <div class="radv-card where">
+        <div class="radv-word">where</div>
+        <div class="radv-sel">장소 명사 뒤</div>
+        <div class="radv-conv">= in/at which</div>
+        <div style="font-size:0.72rem;color:#444;margin-top:6px;"><em>the place where he hid it<br>그가 숨긴 장소</em></div>
+      </div>
+      <div class="radv-card why">
+        <div class="radv-word">why</div>
+        <div class="radv-sel">reason 뒤만!</div>
+        <div class="radv-conv">= for which</div>
+        <div style="font-size:0.72rem;color:#444;margin-top:6px;"><em>the reason why he left<br>그가 떠난 이유</em></div>
+      </div>
+    </div>
+    <div class="tip-box">
+      <strong>💡 선행사 확인법:</strong> 관계부사 앞에 어떤 명사가 오는지 보면 돼요!<br>
+      <span style="font-size:0.8rem;"><em>시간 명사(day/time/year) → when / 장소 명사(place/city/room) → where / reason → why</em></span>
+    </div>
+  </div>
+
+  <div class="rule-box">
+    <div class="rule-title">📌 관계대명사 vs 관계부사 — 결정적 차이</div>
+    <div class="compare-adv">
+      <div class="ca-card relp">
+        <div class="ca-title">관계대명사 (Unit 5)</div>
+        <div class="ca-ex">
+          the place <strong>which</strong> I visited<br>
+          <span style="color:#888;font-size:0.75rem;">→ which = 목적어 역할<br>(I visited <u>which</u>)<br>뒤에 주어+동사 불완전!</span>
+        </div>
+      </div>
+      <div class="ca-card radv">
+        <div class="ca-title">관계부사 (Unit 6)</div>
+        <div class="ca-ex">
+          the place <strong>where</strong> I stayed<br>
+          <span style="color:#888;font-size:0.75rem;">→ where = 부사 역할<br>(I stayed <u>there</u>)<br>뒤에 주어+동사 완전!</span>
+        </div>
+      </div>
+    </div>
+    <div class="tip-box">
+      <strong>💡 구분 공식:</strong><br>
+      관계사 뒤 문장이 <strong>불완전</strong>(주어/목적어 없음) → 관계대명사<br>
+      관계사 뒤 문장이 <strong>완전</strong>(주어+동사 다 있음) → 관계부사
+    </div>
+
+    <!-- 변환 공식 -->
+    <div style="margin-top:12px;">
+      <div style="font-size:0.82rem;font-weight:700;color:var(--purple);margin-bottom:8px;">🔄 관계대명사 → 관계부사 변환</div>
+      <div class="conv-box">
+        <div class="conv-row">
+          <span class="conv-badge cb-relp">관계대명사</span>
+          <span>the place <strong>in which</strong> the treasure is hidden</span>
+        </div>
+        <div class="conv-row">
+          <span class="conv-badge cb-radv">관계부사</span>
+          <span>the place <strong>where</strong> the treasure is hidden</span>
+        </div>
+        <div style="font-size:0.75rem;color:#888;margin-top:4px;">in which = where (완전히 같은 의미!)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-nav-btns">
+    <button class="pnav-btn" onclick="showPage(1)">← 도입</button>
+    <button class="pnav-btn" onclick="showPage(3)">예문 A →</button>
+  </div>
+</div>
+
+<!-- p.3 예문 A -->
+<div class="page-block" id="page-3">
+  <div class="page-header">
+    <div class="page-header-left">
+      <div class="unit-badge">Unit 6 · p.3 · [형용사절 ②]</div>
+      <div class="page-title">예문 분석 A 🔍</div>
+      <div class="page-sub">when(시간) + where(장소) 헥사곤 다이어그램</div>
+    </div>
+    <div class="page-num">3</div>
+  </div>
+
+  <!-- where -->
+  <div class="rule-box" style="margin-bottom:14px;">
+    <div class="rule-title" style="color:var(--where-c);border-color:var(--where-c);">where — 장소 명사 뒤</div>
+    <div class="tts-sentence" onclick="speak(this,'This is the place where our grandfather hid the treasure.')">
+      <div class="tts-icon">🔊</div>
+      <div class="tts-text">
+        This is the place <em>[where our grandfather hid the treasure]</em>.
+        <div class="tts-trans">이곳이 우리 할아버지가 보물을 숨긴 장소다.</div>
+      </div>
+    </div>
+    <div style="background:#F1F8E9;border-radius:10px;padding:10px 14px;margin:8px 0;font-size:0.82rem;">
+      <strong style="color:var(--where-c);">🔍 "어떤 장소?" 질문형:</strong> 어떤 place? → <em>[where our grandfather hid the treasure]</em> (할아버지가 보물을 숨긴)
+    </div>
+    <div class="diagram-wrap">
+      <div class="hex-row">
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#F7D97A" stroke="#E6B800" stroke-width="2"/>
+            <text class="hex-text-main" font-size="22" x="79" y="55">This</text>
+          </svg>
+        </div>
+        <div style="font-size:1.2rem;color:#ccc;margin:0 4px;">→</div>
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#A8D8EA" stroke="#5BB8D4" stroke-width="2"/>
+            <text class="hex-text-main" font-size="22" x="79" y="55">is</text>
+          </svg>
+        </div>
+        <div style="font-size:1.2rem;color:#ccc;margin:0 4px;">→</div>
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#F4B8B8" stroke="#E07070" stroke-width="2"/>
+            <text class="hex-text-sub" font-size="14" x="79" y="32">the</text>
+            <text class="hex-text-main" font-size="22" x="79" y="64">place</text>
+          </svg>
+          <span class="rel-tag">🟢 where our grandfather hid the treasure</span>
+        </div>
+      </div>
+      <div class="diagram-note">🟢 where절 — 장소명사(place) 아래 태그! 뒤 문장 완전(주어+동사 다 있음)</div>
+    </div>
+  </div>
+
+  <!-- when -->
+  <div class="rule-box" style="margin-bottom:14px;">
+    <div class="rule-title" style="color:var(--when-c);border-color:var(--when-c);">when — 시간 명사 뒤</div>
+    <div class="tts-sentence" onclick="speak(this,'I remember the day when our grandfather first came to this island.')">
+      <div class="tts-icon">🔊</div>
+      <div class="tts-text">
+        I remember the day <em>[when our grandfather first came to this island]</em>.
+        <div class="tts-trans">나는 우리 할아버지가 처음 이 섬에 온 날을 기억한다.</div>
+      </div>
+    </div>
+    <div class="diagram-wrap">
+      <div class="hex-row">
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#F7D97A" stroke="#E6B800" stroke-width="2"/>
+            <text class="hex-text-main" font-size="22" x="79" y="55">I</text>
+          </svg>
+        </div>
+        <div style="font-size:1.2rem;color:#ccc;margin:0 4px;">→</div>
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#A8D8EA" stroke="#5BB8D4" stroke-width="2"/>
+            <text class="hex-text-main" font-size="18" x="79" y="55">remember</text>
+          </svg>
+        </div>
+        <div style="font-size:1.2rem;color:#ccc;margin:0 4px;">→</div>
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#F4B8B8" stroke="#E07070" stroke-width="2"/>
+            <text class="hex-text-sub" font-size="14" x="79" y="32">the</text>
+            <text class="hex-text-main" font-size="22" x="79" y="64">day</text>
+          </svg>
+          <span class="when-tag">🟢 when grandfather first came</span>
+        </div>
+      </div>
+      <div class="diagram-note">🟢 when절 — 시간명사(day) 아래 태그! 뒤 문장 완전!</div>
+    </div>
+  </div>
+
+  <!-- where vs when 비교 -->
+  <div class="rule-box">
+    <div class="rule-title">📌 where vs when — 선행사로 구분!</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div style="background:#E8F5E9;border-radius:10px;padding:12px;text-align:center;">
+        <div style="font-size:0.82rem;font-weight:700;color:var(--where-c);margin-bottom:6px;">where</div>
+        <div style="font-size:0.78rem;color:#333;line-height:1.7;">선행사 = <strong>장소</strong><br>place / city / room / island / country…</div>
+      </div>
+      <div style="background:#E3F2FD;border-radius:10px;padding:12px;text-align:center;">
+        <div style="font-size:0.82rem;font-weight:700;color:var(--when-c);margin-bottom:6px;">when</div>
+        <div style="font-size:0.78rem;color:#333;line-height:1.7;">선행사 = <strong>시간</strong><br>day / time / year / moment / night…</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-nav-btns">
+    <button class="pnav-btn" onclick="showPage(2)">← 핵심규칙</button>
+    <button class="pnav-btn" onclick="showPage(4)">예문 B →</button>
+  </div>
+</div>
+
+<!-- p.4 예문 B -->
+<div class="page-block" id="page-4">
+  <div class="page-header">
+    <div class="page-header-left">
+      <div class="unit-badge">Unit 6 · p.4 · [형용사절 ②]</div>
+      <div class="page-title">예문 분석 B 🔍</div>
+      <div class="page-sub">why(이유) + 관계대명사↔관계부사 변환 훈련</div>
+    </div>
+    <div class="page-num">4</div>
+  </div>
+
+  <!-- why -->
+  <div class="rule-box" style="margin-bottom:14px;">
+    <div class="rule-title" style="color:var(--why-c);border-color:var(--why-c);">why — reason 뒤에만!</div>
+    <div class="tts-sentence" onclick="speak(this,'I know the reason why our grandfather hid the treasure here.')">
+      <div class="tts-icon">🔊</div>
+      <div class="tts-text">
+        I know the reason <em>[why our grandfather hid the treasure here]</em>.
+        <div class="tts-trans">나는 우리 할아버지가 이곳에 보물을 숨긴 이유를 안다.</div>
+      </div>
+    </div>
+    <div class="diagram-wrap">
+      <div class="hex-row">
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#F7D97A" stroke="#E6B800" stroke-width="2"/>
+            <text class="hex-text-main" font-size="22" x="79" y="55">I</text>
+          </svg>
+        </div>
+        <div style="font-size:1.2rem;color:#ccc;margin:0 4px;">→</div>
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#A8D8EA" stroke="#5BB8D4" stroke-width="2"/>
+            <text class="hex-text-main" font-size="22" x="79" y="55">know</text>
+          </svg>
+        </div>
+        <div style="font-size:1.2rem;color:#ccc;margin:0 4px;">→</div>
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#F4B8B8" stroke="#E07070" stroke-width="2"/>
+            <text class="hex-text-sub" font-size="14" x="79" y="32">the</text>
+            <text class="hex-text-main" font-size="18" x="79" y="64">reason</text>
+          </svg>
+          <span class="why-tag">🟢 why he hid the treasure here</span>
+        </div>
+      </div>
+      <div class="diagram-note">🟢 why절 — <strong>반드시 reason 뒤에만!</strong> 다른 명사 뒤엔 쓸 수 없어요.</div>
+    </div>
+  </div>
+
+  <!-- 관계대명사 ↔ 관계부사 변환 훈련 -->
+  <div class="rule-box">
+    <div class="rule-title">🔄 관계대명사 ↔ 관계부사 변환 훈련</div>
+    <div style="font-size:0.82rem;color:#555;margin-bottom:12px;">같은 뜻, 다른 표현! 바꿔보면 차이가 보여요.</div>
+
+    <div class="conv-box" style="margin-bottom:10px;">
+      <div style="font-size:0.78rem;font-weight:700;color:#888;margin-bottom:6px;">① 장소 (place)</div>
+      <div class="conv-row">
+        <span class="conv-badge cb-relp">관계대명사</span>
+        <span style="font-size:0.85rem;">the cave <strong>in which</strong> the treasure was found</span>
+      </div>
+      <div class="conv-row">
+        <span class="conv-badge cb-radv">관계부사</span>
+        <span style="font-size:0.85rem;">the cave <strong>where</strong> the treasure was found</span>
+      </div>
+    </div>
+
+    <div class="conv-box" style="margin-bottom:10px;">
+      <div style="font-size:0.78rem;font-weight:700;color:#888;margin-bottom:6px;">② 시간 (day)</div>
+      <div class="conv-row">
+        <span class="conv-badge cb-relp">관계대명사</span>
+        <span style="font-size:0.85rem;">the day <strong>on which</strong> he arrived</span>
+      </div>
+      <div class="conv-row">
+        <span class="conv-badge cb-radv">관계부사</span>
+        <span style="font-size:0.85rem;">the day <strong>when</strong> he arrived</span>
+      </div>
+    </div>
+
+    <div class="conv-box">
+      <div style="font-size:0.78rem;font-weight:700;color:#888;margin-bottom:6px;">③ 이유 (reason)</div>
+      <div class="conv-row">
+        <span class="conv-badge cb-relp">관계대명사</span>
+        <span style="font-size:0.85rem;">the reason <strong>for which</strong> he hid it</span>
+      </div>
+      <div class="conv-row">
+        <span class="conv-badge cb-radv">관계부사</span>
+        <span style="font-size:0.85rem;">the reason <strong>why</strong> he hid it</span>
+      </div>
+    </div>
+
+    <div class="tip-box" style="margin-top:12px;">
+      <strong>💡 핵심:</strong> 관계부사 = 전치사 + 관계대명사! <span style="color:var(--where-c);">where</span> = in/at which / <span style="color:var(--when-c);">when</span> = on/in which / <span style="color:var(--why-c);">why</span> = for which
+    </div>
+  </div>
+
+  <div class="page-nav-btns">
+    <button class="pnav-btn" onclick="showPage(3)">← 예문 A</button>
+    <button class="pnav-btn" onclick="showPage(5)">지문독해 →</button>
+  </div>
+</div>
+
+<!-- p.5 지문독해 -->
+<div class="page-block" id="page-5">
+  <div class="page-header">
+    <div class="page-header-left">
+      <div class="unit-badge">Unit 6 · p.5 · [형용사절 ②]</div>
+      <div class="page-title">지문 독해 📖</div>
+      <div class="page-sub">할아버지의 탐험 일지 — 관계부사를 찾아라!</div>
+    </div>
+    <div class="page-num">5</div>
+  </div>
+
+  <div class="tip-box" style="margin-bottom:14px;">
+    📌 초록 꺾쇠 <span style="color:var(--where-c);font-weight:700;">{  }</span> = 관계부사절 / <span style="color:var(--where-c);">where</span> · <span style="color:var(--when-c);">when</span> · <span style="color:var(--why-c);">why</span>
+  </div>
+
+  <div style="background:white;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.07);margin-bottom:16px;">
+    <div style="font-size:0.9rem;font-weight:700;color:var(--navy);margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--gold-light);">📓 탐험가 강도현의 탐험 일지 — Explorer's Journal</div>
+
+    <div style="margin-bottom:18px;">
+      <div style="font-size:0.72rem;color:var(--purple);font-weight:700;letter-spacing:1px;margin-bottom:10px;padding-bottom:5px;border-bottom:1px dashed #d0c0e8;">📄 영어 지문</div>
+
+      <div style="margin-bottom:11px;">
+        <div class="rs-en"><span class="rs-num">①</span>
+          This is the island <span class="rel-mark">{where I spent ten years of my life}</span>.
+        </div>
+        <div style="font-size:0.72rem;color:#888;margin-left:28px;margin-top:2px;">🟢 where절 — 장소명사(island) 뒤, "내가 삶의 10년을 보낸"</div>
+      </div>
+
+      <div style="margin-bottom:11px;">
+        <div class="rs-en"><span class="rs-num">②</span>
+          I remember the morning <span class="rel-mark">{when I first discovered the cave}</span>.
+        </div>
+        <div style="font-size:0.72rem;color:#888;margin-left:28px;margin-top:2px;">🟢 when절 — 시간명사(morning) 뒤, "내가 처음 동굴을 발견한"</div>
+      </div>
+
+      <div style="margin-bottom:11px;">
+        <div class="rs-en"><span class="rs-num">③</span>
+          There is a reason <span class="rel-mark">{why I chose this island}</span> to hide the treasure.
+        </div>
+        <div style="font-size:0.72rem;color:#888;margin-left:28px;margin-top:2px;">🟢 why절 — reason 뒤, "내가 이 섬을 선택한 이유"</div>
+      </div>
+
+      <div style="margin-bottom:11px;">
+        <div class="rs-en"><span class="rs-num">④</span>
+          The cave <span class="rel-mark">{where the final key is hidden}</span> is behind the waterfall.
+        </div>
+        <div style="font-size:0.72rem;color:#888;margin-left:28px;margin-top:2px;">🟢 where절 — 장소명사(cave) 뒤, "최종 열쇠가 숨겨진"</div>
+      </div>
+
+      <div style="margin-bottom:11px;">
+        <div class="rs-en"><span class="rs-num">⑤</span>
+          The year <span class="rel-mark">{when our family first settled here}</span> was 1952.
+        </div>
+        <div style="font-size:0.72rem;color:#888;margin-left:28px;margin-top:2px;">🟢 when절 — 시간명사(year) 뒤, "우리 가문이 처음 정착한"</div>
+      </div>
+
+      <div>
+        <div class="rs-en"><span class="rs-num">⑥</span>
+          Only the one who understands the reason <span class="rel-mark">{why this treasure must be protected}</span> may take it.
+        </div>
+        <div style="font-size:0.72rem;color:#888;margin-left:28px;margin-top:2px;">🟢 why절 — reason 뒤, "이 보물이 보호되어야 하는 이유"</div>
+      </div>
+    </div>
+
+    <div style="background:#F8F6FB;border-radius:10px;padding:14px 16px;border-top:2px solid var(--gold-light);">
+      <div style="font-size:0.72rem;color:var(--gold);font-weight:700;letter-spacing:1px;margin-bottom:10px;">📖 한글 해석</div>
+      <div style="display:flex;flex-direction:column;gap:7px;">
+        <div style="font-size:0.83rem;color:#555;display:flex;gap:8px;"><span style="color:var(--purple);font-weight:700;flex-shrink:0;">①</span><span>이곳이 내가 삶의 10년을 보낸 섬이다.</span></div>
+        <div style="font-size:0.83rem;color:#555;display:flex;gap:8px;"><span style="color:var(--purple);font-weight:700;flex-shrink:0;">②</span><span>나는 내가 처음 동굴을 발견한 그 아침을 기억한다.</span></div>
+        <div style="font-size:0.83rem;color:#555;display:flex;gap:8px;"><span style="color:var(--purple);font-weight:700;flex-shrink:0;">③</span><span>내가 보물을 숨기기 위해 이 섬을 선택한 이유가 있다.</span></div>
+        <div style="font-size:0.83rem;color:#555;display:flex;gap:8px;"><span style="color:var(--purple);font-weight:700;flex-shrink:0;">④</span><span>최종 열쇠가 숨겨진 동굴은 폭포 뒤에 있다.</span></div>
+        <div style="font-size:0.83rem;color:#555;display:flex;gap:8px;"><span style="color:var(--purple);font-weight:700;flex-shrink:0;">⑤</span><span>우리 가문이 처음 이곳에 정착한 해는 1952년이었다.</span></div>
+        <div style="font-size:0.83rem;color:#555;display:flex;gap:8px;"><span style="color:var(--purple);font-weight:700;flex-shrink:0;">⑥</span><span>이 보물이 보호되어야 하는 이유를 이해하는 사람만이 가져갈 수 있다.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-nav-btns">
+    <button class="pnav-btn" onclick="showPage(4)">← 예문 B</button>
+    <button class="pnav-btn" onclick="showPage(6)">연습문제 →</button>
+  </div>
+</div>
+
+<!-- p.6 연습문제 -->
+<div class="page-block" id="page-6">
+  <div class="page-header">
+    <div class="page-header-left">
+      <div class="unit-badge">Unit 6 · p.6 · [형용사절 ②]</div>
+      <div class="page-title">연습 문제 ✏️</div>
+      <div class="page-sub">when / where / why 구분 + 관계대명사 vs 관계부사!</div>
+    </div>
+    <div class="page-num">6</div>
+  </div>
+
+  <div class="quiz-box">
+    <div class="quiz-title">🏆 Part 1 — 알맞은 관계부사는?</div>
+
+    <div class="quiz-item">
+      <div class="quiz-q"><span class="q-num">1</span><span>This is the place _____ the treasure is hidden. <span style="font-size:0.78rem;color:#888;">(장소)</span></span></div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectOpt(this,1,'when')">when</div>
+        <div class="quiz-opt" onclick="selectOpt(this,1,'where')">where</div>
+        <div class="quiz-opt" onclick="selectOpt(this,1,'why')">why</div>
+      </div>
+      <div class="quiz-feedback" id="fb-1"></div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-q"><span class="q-num">2</span><span>I remember the day _____ we found the map. <span style="font-size:0.78rem;color:#888;">(시간)</span></span></div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectOpt(this,2,'when')">when</div>
+        <div class="quiz-opt" onclick="selectOpt(this,2,'where')">where</div>
+        <div class="quiz-opt" onclick="selectOpt(this,2,'why')">why</div>
+      </div>
+      <div class="quiz-feedback" id="fb-2"></div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-q"><span class="q-num">3</span><span>Tell me the reason _____ you came to this island. <span style="font-size:0.78rem;color:#888;">(이유)</span></span></div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectOpt(this,3,'when')">when</div>
+        <div class="quiz-opt" onclick="selectOpt(this,3,'where')">where</div>
+        <div class="quiz-opt" onclick="selectOpt(this,3,'why')">why</div>
+      </div>
+      <div class="quiz-feedback" id="fb-3"></div>
+    </div>
+
+    <div class="quiz-title" style="margin-top:16px;">🏆 Part 2 — 관계대명사? 관계부사?</div>
+
+    <div class="quiz-item">
+      <div class="quiz-q"><span class="q-num">4</span><span>the city <strong>[where Ha-on was born]</strong> — 뒤 문장은?</span></div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectOpt(this,4,'완전')">완전 → 관계부사</div>
+        <div class="quiz-opt" onclick="selectOpt(this,4,'불완전')">불완전 → 관계대명사</div>
+      </div>
+      <div class="quiz-feedback" id="fb-4"></div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-q"><span class="q-num">5</span><span>the cave <strong>[which Ha-on found]</strong> — 뒤 문장은?</span></div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectOpt(this,5,'완전')">완전 → 관계부사</div>
+        <div class="quiz-opt" onclick="selectOpt(this,5,'불완전')">불완전 → 관계대명사</div>
+      </div>
+      <div class="quiz-feedback" id="fb-5"></div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-q"><span class="q-num">6</span><span>the year <strong>[when the island was discovered]</strong> — where? when?</span></div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectOpt(this,6,'where')">where (장소)</div>
+        <div class="quiz-opt" onclick="selectOpt(this,6,'when')">when (시간)</div>
+      </div>
+      <div class="quiz-feedback" id="fb-6"></div>
+    </div>
+
+    <button class="check-btn" onclick="checkQuiz()">✅ 채점하기</button>
+    <button class="reset-btn" id="reset-btn" onclick="resetQuiz()">↺ 다시 풀기</button>
+    <div class="score-bar" id="score-bar"></div>
+  </div>
+
+  <div class="page-nav-btns">
+    <button class="pnav-btn" onclick="showPage(5)">← 지문독해</button>
+    <button class="pnav-btn" onclick="showPage(7)">단어정리 →</button>
+  </div>
+</div>
+
+<!-- p.7 단어정리 -->
+<div class="page-block" id="page-7">
+  <div class="page-header">
+    <div class="page-header-left">
+      <div class="unit-badge">Unit 6 · p.7 · [형용사절 ②]</div>
+      <div class="page-title">단어 정리 📝</div>
+      <div class="page-sub">Unit 6 핵심 단어 + Unit 7 예고</div>
+    </div>
+    <div class="page-num">7</div>
+  </div>
+
+  <div class="section-title">⭐ Unit 6 핵심 정리</div>
+  <div class="rule-box" style="margin-bottom:16px;">
+    <div class="radv-grid">
+      <div class="radv-card when"><div class="radv-word">when</div><div class="radv-sel">시간명사 뒤</div><div class="radv-conv">= on/in which</div></div>
+      <div class="radv-card where"><div class="radv-word">where</div><div class="radv-sel">장소명사 뒤</div><div class="radv-conv">= in/at which</div></div>
+      <div class="radv-card why"><div class="radv-word">why</div><div class="radv-sel">reason 뒤만</div><div class="radv-conv">= for which</div></div>
+    </div>
+    <div class="tip-box" style="margin-top:10px;">
+      <strong>📌 구분 공식:</strong> 뒤 문장이 <strong>완전</strong> → 관계부사 / <strong>불완전</strong> → 관계대명사
+    </div>
+  </div>
+
+  <div class="section-title">📝 핵심 단어장</div>
+  <div style="display:flex;gap:8px;margin-bottom:14px;">
+    <button class="vstab vstab-on" id="vtab1" onclick="vSwitch(1)">① 플래시카드</button>
+    <button class="vstab" id="vtab2" onclick="vSwitch(2)">② 매칭 게임</button>
+  </div>
+
+  <div id="vstage1">
+    <div style="font-size:0.75rem;color:#888;margin-bottom:10px;">👆 카드를 탭하면 뜻 + 예문이 펼쳐져요! 🔊 탭하면 발음!</div>
+    <div class="fc-grid2">
+      <div class="fc2" onclick="this.classList.toggle('flipped2')">
+        <div class="fc2-en" onclick="event.stopPropagation();speakWord(this)">🔊 settle</div>
+        <div class="fc2-ko">정착하다</div>
+        <div class="fc2-ex">The year when our family settled here was 1952.<br><span class="fc2-ko-ex">우리 가족이 정착한 해는 1952년이었다.</span></div>
+        <div class="fc2-hint">탭하여 확인 ▼</div>
+      </div>
+      <div class="fc2" onclick="this.classList.toggle('flipped2')">
+        <div class="fc2-en" onclick="event.stopPropagation();speakWord(this)">🔊 cliff</div>
+        <div class="fc2-ko">절벽</div>
+        <div class="fc2-ex">The cliff where the map is carved is very steep.<br><span class="fc2-ko-ex">지도가 새겨진 절벽은 매우 가파르다.</span></div>
+        <div class="fc2-hint">탭하여 확인 ▼</div>
+      </div>
+      <div class="fc2" onclick="this.classList.toggle('flipped2')">
+        <div class="fc2-en" onclick="event.stopPropagation();speakWord(this)">🔊 tradition</div>
+        <div class="fc2-ko">전통</div>
+        <div class="fc2-ex">The reason why we protect this is our tradition.<br><span class="fc2-ko-ex">우리가 이것을 지키는 이유는 우리의 전통이다.</span></div>
+        <div class="fc2-hint">탭하여 확인 ▼</div>
+      </div>
+      <div class="fc2" onclick="this.classList.toggle('flipped2')">
+        <div class="fc2-en" onclick="event.stopPropagation();speakWord(this)">🔊 moment</div>
+        <div class="fc2-ko">순간</div>
+        <div class="fc2-ex">The moment when the door opened was magical.<br><span class="fc2-ko-ex">문이 열린 순간은 마법 같았다.</span></div>
+        <div class="fc2-hint">탭하여 확인 ▼</div>
+      </div>
+      <div class="fc2" onclick="this.classList.toggle('flipped2')">
+        <div class="fc2-en" onclick="event.stopPropagation();speakWord(this)">🔊 protect</div>
+        <div class="fc2-ko">보호하다</div>
+        <div class="fc2-ex">The reason why we protect it is important.<br><span class="fc2-ko-ex">우리가 그것을 보호하는 이유가 중요하다.</span></div>
+        <div class="fc2-hint">탭하여 확인 ▼</div>
+      </div>
+      <div class="fc2" onclick="this.classList.toggle('flipped2')">
+        <div class="fc2-en" onclick="event.stopPropagation();speakWord(this)">🔊 temple</div>
+        <div class="fc2-ko">신전</div>
+        <div class="fc2-ex">The temple where the ceremony is held is ancient.<br><span class="fc2-ko-ex">의식이 열리는 신전은 고대의 것이다.</span></div>
+        <div class="fc2-hint">탭하여 확인 ▼</div>
+      </div>
+      <div class="fc2" onclick="this.classList.toggle('flipped2')">
+        <div class="fc2-en" onclick="event.stopPropagation();speakWord(this)">🔊 discover</div>
+        <div class="fc2-ko">발견하다</div>
+        <div class="fc2-ex">The morning when I discovered the cave was rainy.<br><span class="fc2-ko-ex">내가 동굴을 발견한 아침은 비가 왔다.</span></div>
+        <div class="fc2-hint">탭하여 확인 ▼</div>
+      </div>
+      <div class="fc2" onclick="this.classList.toggle('flipped2')">
+        <div class="fc2-en" onclick="event.stopPropagation();speakWord(this)">🔊 sunset</div>
+        <div class="fc2-ko">일몰</div>
+        <div class="fc2-ex">The cliff where we watched the sunset is beautiful.<br><span class="fc2-ko-ex">우리가 일몰을 감상한 절벽은 아름답다.</span></div>
+        <div class="fc2-hint">탭하여 확인 ▼</div>
+      </div>
+      <div class="fc2" onclick="this.classList.toggle('flipped2')">
+        <div class="fc2-en" onclick="event.stopPropagation();speakWord(this)">🔊 journal</div>
+        <div class="fc2-ko">일지, 일기</div>
+        <div class="fc2-ex">The day when he wrote this journal was long ago.<br><span class="fc2-ko-ex">그가 이 일지를 쓴 날은 오래전이었다.</span></div>
+        <div class="fc2-hint">탭하여 확인 ▼</div>
+      </div>
+      <div class="fc2" onclick="this.classList.toggle('flipped2')">
+        <div class="fc2-en" onclick="event.stopPropagation();speakWord(this)">🔊 carve</div>
+        <div class="fc2-ko">새기다</div>
+        <div class="fc2-ex">The stone where the name was carved is here.<br><span class="fc2-ko-ex">이름이 새겨진 돌이 여기 있다.</span></div>
+        <div class="fc2-hint">탭하여 확인 ▼</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:10px;">
+      <button class="vbtn" onclick="document.querySelectorAll('.fc2').forEach(c=>c.classList.remove('flipped2'))">↺ 모두 접기</button>
+    </div>
+  </div>
+
+  <div id="vstage2" style="display:none;">
+    <div style="font-size:0.75rem;color:#888;margin-bottom:10px;">👆 영어를 먼저 탭 → 한글 뜻을 탭하여 매칭!</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div>
+        <div style="font-size:0.7rem;font-weight:700;color:#888;text-align:center;margin-bottom:7px;letter-spacing:1px;">ENGLISH</div>
+        <div id="vm-en-col" style="display:flex;flex-direction:column;gap:7px;"></div>
+      </div>
+      <div>
+        <div style="font-size:0.7rem;font-weight:700;color:#888;text-align:center;margin-bottom:7px;letter-spacing:1px;">한글 뜻</div>
+        <div id="vm-ko-col" style="display:flex;flex-direction:column;gap:7px;"></div>
+      </div>
+    </div>
+    <div id="vm-msg" style="text-align:center;margin-top:10px;font-size:0.85rem;font-weight:700;min-height:22px;"></div>
+    <div id="vm-progress" style="text-align:center;font-size:0.75rem;color:#888;margin-top:4px;"></div>
+    <div style="text-align:center;margin-top:8px;">
+      <button class="vbtn" onclick="initMatch()">↺ 다시 하기</button>
+    </div>
+  </div>
+
+  <div class="preview-box" style="margin-top:16px;">
+    <div class="prev-label">🔮 다음 에피소드 예고</div>
+    <div class="prev-title">Unit 7 — 마지막 관문 ⚔️<br><small>부사절 + 명사절 + 형용사절 종합 실전!</small></div>
+    <div class="prev-sub">보물 직전! 복합 문장으로 된 마지막 퀴즈가 기다린다!</div>
+    <div class="prev-sentence">
+      "Although they were tired, the treasure that they had sought for so long was finally within reach — because they believed that it was real."
+    </div>
+  </div>
+
+  <div class="complete-badge">
+    <div class="cb-title">🎉 Unit 6 완료!</div>
+    <div class="cb-sub">관계부사 when·where·why 마스터! 형용사절 완전 정복! 🟢</div>
+  </div>
+
+  <div class="page-nav-btns">
+    <button class="pnav-btn" onclick="showPage(6)">← 연습문제</button>
+    <button class="pnav-btn" onclick="showPage(8)">추가문제 →</button>
+  </div>
+</div>
+
+<!-- p.8 추가문제 -->
+<div class="page-block" id="page-8">
+  <div class="page-header">
+    <div class="page-header-left">
+      <div class="unit-badge">Unit 6 · p.8 · [형용사절 ②]</div>
+      <div class="page-title">추가 문제 ➕</div>
+      <div class="page-sub">Unit 5+6 형용사절 종합 복습!</div>
+    </div>
+    <div class="page-num">8</div>
+  </div>
+
+  <div class="quiz-box">
+    <div class="quiz-title">🔗 관계대명사 vs 관계부사 — 알맞은 것을 고르세요!</div>
+    <div class="tip-box" style="margin-bottom:14px;">
+      who·which·that·whose = 관계대명사 / when·where·why = 관계부사
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-q"><span class="q-num">1</span><span>The island _____ our grandfather explored is famous. <span style="font-size:0.78rem;color:#888;">(탐험한 섬)</span></span></div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectOpt2(this,1,'which')">which (관계대명사)</div>
+        <div class="quiz-opt" onclick="selectOpt2(this,1,'where')">where (관계부사)</div>
+      </div>
+      <div class="quiz-feedback" id="efb-1"></div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-q"><span class="q-num">2</span><span>The island _____ the treasure is hidden is far away. <span style="font-size:0.78rem;color:#888;">(숨겨진 섬)</span></span></div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectOpt2(this,2,'which')">which (관계대명사)</div>
+        <div class="quiz-opt" onclick="selectOpt2(this,2,'where')">where (관계부사)</div>
+      </div>
+      <div class="quiz-feedback" id="efb-2"></div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-q"><span class="q-num">3</span><span>The day _____ the explorer arrived was stormy. <span style="font-size:0.78rem;color:#888;">(도착한 날)</span></span></div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectOpt2(this,3,'when')">when (관계부사)</div>
+        <div class="quiz-opt" onclick="selectOpt2(this,3,'which')">which (관계대명사)</div>
+      </div>
+      <div class="quiz-feedback" id="efb-3"></div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-q"><span class="q-num">4</span><span>The explorer _____ grandfather left this map is Ha-on. <span style="font-size:0.78rem;color:#888;">(지도를 남긴 조상)</span></span></div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectOpt2(this,4,'whose')">whose (관계대명사)</div>
+        <div class="quiz-opt" onclick="selectOpt2(this,4,'where')">where (관계부사)</div>
+      </div>
+      <div class="quiz-feedback" id="efb-4"></div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-q"><span class="q-num">5</span><span>Tell me the reason _____ you kept this secret. <span style="font-size:0.78rem;color:#888;">(비밀을 지킨 이유)</span></span></div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectOpt2(this,5,'why')">why (관계부사)</div>
+        <div class="quiz-opt" onclick="selectOpt2(this,5,'which')">which (관계대명사)</div>
+      </div>
+      <div class="quiz-feedback" id="efb-5"></div>
+    </div>
+
+    <button class="check-btn" onclick="checkQuiz2()">✅ 채점하기</button>
+    <button class="reset-btn" id="reset-btn2" onclick="resetQuiz2()">↺ 다시 풀기</button>
+    <div class="score-bar" id="score-bar2"></div>
+  </div>
+
+  <div class="complete-badge" style="margin-top:16px;">
+    <div class="cb-title">🏆 형용사절 완전 정복!</div>
+    <div class="cb-sub">관계대명사(Unit 5) + 관계부사(Unit 6) 모두 완료! Unit 7 실전독해로! ⚔️</div>
+  </div>
+
+  <div class="page-nav-btns">
+    <button class="pnav-btn" onclick="showPage(7)">← 단어정리</button>
+    <button class="pnav-btn disabled">Unit 7 준비중</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+let touchStartX=0,touchStartY=0;
+document.addEventListener('touchstart',e=>{touchStartX=e.changedTouches[0].screenX;touchStartY=e.changedTouches[0].screenY;},{passive:true});
+document.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].screenX-touchStartX,dy=e.changedTouches[0].screenY-touchStartY;
+  if(Math.abs(dx)>=50&&Math.abs(dy)<=100){if(dx<0&&currentPage<8)showPage(currentPage+1);if(dx>0&&currentPage>1)showPage(currentPage-1);}
+},{passive:true});
+
+const PASSWORDS=['월도6','waldo6','unit06','book2'];
+function checkPwd(){
+  const val=document.getElementById('pwd-input').value.trim(),err=document.getElementById('lock-error');
+  if(PASSWORDS.includes(val)){document.getElementById('lock-screen').style.display='none';err.style.display='none';}
+  else{err.style.display='block';document.getElementById('pwd-input').value='';document.getElementById('pwd-input').focus();}
+}
+
+let currentPage=1;
+function showPage(n){
+  document.querySelectorAll('.page-block').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.page-btn').forEach(el=>el.classList.remove('active'));
+  document.getElementById('page-'+n).classList.add('active');
+  document.querySelectorAll('.page-btn')[n-1].classList.add('active');
+  currentPage=n;window.scrollTo({top:0,behavior:'smooth'});
+}
+
+let ttsEnabled=false,voices=[];
+window.speechSynthesis.onvoiceschanged=()=>{voices=window.speechSynthesis.getVoices();};
+function toggleTTS(){ttsEnabled=!ttsEnabled;document.getElementById('tts-label').textContent=ttsEnabled?'TTS 켜짐':'TTS 켜기';}
+function speak(el,text){
+  const t=text||(el?el.dataset.text:'');if(!t)return;
+  window.speechSynthesis.cancel();
+  const utt=new SpeechSynthesisUtterance(t);utt.lang='en-US';utt.rate=0.92;
+  const en=voices.find(v=>v.lang.startsWith('en'));if(en)utt.voice=en;
+  window.speechSynthesis.speak(utt);
+}
+function speakWord(el){
+  const word=el.textContent.replace('🔊 ','').trim();
+  window.speechSynthesis.cancel();
+  const utt=new SpeechSynthesisUtterance(word);
+  utt.lang='en-US';utt.rate=0.85;utt.pitch=1;
+  const enVoice=window.speechSynthesis.getVoices().find(v=>v.lang.startsWith('en'));
+  if(enVoice)utt.voice=enVoice;
+  window.speechSynthesis.speak(utt);
+}
+
+const answers1={1:'where',2:'when',3:'why',4:'완전',5:'불완전',6:'when'};
+const feedback1={
+  1:{c:'맞아요! 장소명사(place) 뒤 → where!',w:'장소명사 뒤에는 where예요.'},
+  2:{c:'맞아요! 시간명사(day) 뒤 → when!',w:'시간명사 뒤에는 when이에요.'},
+  3:{c:'맞아요! reason 뒤 → why!',w:'reason 뒤에는 why예요.'},
+  4:{c:'맞아요! where 뒤 주어+동사 완전 → 관계부사!',w:'관계부사 뒤는 문장이 완전해요.'},
+  5:{c:'맞아요! which 뒤 Ha-on found → found의 목적어가 없음 → 관계대명사!',w:'관계대명사 뒤는 주어/목적어가 빠져 불완전해요.'},
+  6:{c:'맞아요! year = 시간명사 → when!',w:'year = 시간명사이므로 when이에요.'}
+};
+const userAnswers1={};
+function selectOpt(el,qn,val){
+  el.parentElement.querySelectorAll('.quiz-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');userAnswers1[qn]=val;
+}
+function checkQuiz(){
+  let score=0;
+  for(let i=1;i<=6;i++){
+    const ans=userAnswers1[i],fb=document.getElementById('fb-'+i);
+    const opts=document.querySelectorAll('.quiz-item')[i-1].querySelectorAll('.quiz-opt');
+    if(!ans){fb.textContent='⚠️ 선택해주세요!';fb.className='quiz-feedback show wrong-fb';continue;}
+    if(ans===answers1[i]){
+      score++;fb.textContent='✅ '+feedback1[i].c;fb.className='quiz-feedback show correct-fb';
+      opts.forEach(o=>{if(o.classList.contains('selected'))o.classList.add('correct');});
+    }else{
+      fb.textContent='❌ '+feedback1[i].w;fb.className='quiz-feedback show wrong-fb';
+      opts.forEach(o=>{if(o.classList.contains('selected'))o.classList.add('wrong');});
+    }
+  }
+  const sb=document.getElementById('score-bar');
+  const emoji=score===6?'🏆 완벽!':score>=4?'👍 훌륭해요!':'💪 조금 더 연습해요!';
+  sb.textContent=`${emoji} ${score} / 6 정답`;sb.style.background=score>=4?'#E8F5E9':'#FFF3E0';sb.style.color=score>=4?'#2E7D32':'#E65100';sb.className='score-bar show';
+  document.getElementById('reset-btn').className='reset-btn show';
+}
+function resetQuiz(){
+  for(let i=1;i<=6;i++){
+    document.querySelectorAll('.quiz-item')[i-1].querySelectorAll('.quiz-opt').forEach(o=>{o.className='quiz-opt';});
+    const fb=document.getElementById('fb-'+i);fb.className='quiz-feedback';fb.textContent='';
+  }
+  Object.keys(userAnswers1).forEach(k=>delete userAnswers1[k]);
+  document.getElementById('score-bar').className='score-bar';document.getElementById('reset-btn').className='reset-btn';
+}
+
+const answers2={1:'which',2:'where',3:'when',4:'whose',5:'why'};
+const feedback2={
+  1:{c:'맞아요! 탐험한(found의 목적어) → 관계대명사 which!',w:'뒤 문장 불완전(목적어 없음) → 관계대명사예요.'},
+  2:{c:'맞아요! 숨겨진 장소 → 뒤 문장 완전 → 관계부사 where!',w:'장소명사 + 완전 문장 → where예요.'},
+  3:{c:'맞아요! 시간명사(day) + 완전 문장 → when!',w:'시간명사 뒤 + 완전 문장 → when이에요.'},
+  4:{c:'맞아요! grandfather = 소유격 → whose!',w:'소유격(~의) → whose예요.'},
+  5:{c:'맞아요! reason 뒤 → why!',w:'reason 뒤에는 why예요.'}
+};
+const userAnswers2={};
+function selectOpt2(el,qn,val){
+  const items=document.getElementById('page-8').querySelectorAll('.quiz-item');
+  items[qn-1].querySelectorAll('.quiz-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');userAnswers2[qn]=val;
+}
+function checkQuiz2(){
+  let score=0;
+  const items=document.getElementById('page-8').querySelectorAll('.quiz-item');
+  for(let i=1;i<=5;i++){
+    const ans=userAnswers2[i],fb=document.getElementById('efb-'+i);
+    const opts=items[i-1].querySelectorAll('.quiz-opt');
+    if(!ans){fb.textContent='⚠️ 선택해주세요!';fb.className='quiz-feedback show wrong-fb';continue;}
+    if(ans===answers2[i]){
+      score++;fb.textContent='✅ '+feedback2[i].c;fb.className='quiz-feedback show correct-fb';
+      opts.forEach(o=>{if(o.classList.contains('selected'))o.classList.add('correct');});
+    }else{
+      fb.textContent='❌ '+feedback2[i].w;fb.className='quiz-feedback show wrong-fb';
+      opts.forEach(o=>{if(o.classList.contains('selected'))o.classList.add('wrong');});
+    }
+  }
+  const sb=document.getElementById('score-bar2');
+  const emoji=score===5?'🏆 완벽!':score>=3?'👍 훌륭해요!':'💪 조금 더 연습해요!';
+  sb.textContent=`${emoji} ${score} / 5 정답`;sb.style.background=score>=3?'#E8F5E9':'#FFF3E0';sb.style.color=score>=3?'#2E7D32':'#E65100';sb.className='score-bar show';
+  document.getElementById('reset-btn2').className='reset-btn show';
+}
+function resetQuiz2(){
+  const items=document.getElementById('page-8').querySelectorAll('.quiz-item');
+  for(let i=1;i<=5;i++){
+    items[i-1].querySelectorAll('.quiz-opt').forEach(o=>{o.className='quiz-opt';});
+    const fb=document.getElementById('efb-'+i);fb.className='quiz-feedback';fb.textContent='';
+  }
+  Object.keys(userAnswers2).forEach(k=>delete userAnswers2[k]);
+  document.getElementById('score-bar2').className='score-bar';document.getElementById('reset-btn2').className='reset-btn';
+}
+
+const vmWords=[
+  {en:'settle',ko:'정착하다'},{en:'cliff',ko:'절벽'},
+  {en:'tradition',ko:'전통'},{en:'moment',ko:'순간'},
+  {en:'protect',ko:'보호하다'},{en:'temple',ko:'신전'},
+  {en:'discover',ko:'발견하다'},{en:'sunset',ko:'일몰'},
+  {en:'journal',ko:'일지'},{en:'carve',ko:'새기다'}
+];
+let vmSelEn=null,vmSelKo=null,vmMatched=0;
+function vSwitch(n){
+  document.getElementById('vstage1').style.display=n===1?'block':'none';
+  document.getElementById('vstage2').style.display=n===2?'block':'none';
+  document.getElementById('vtab1').className='vstab'+(n===1?' vstab-on':'');
+  document.getElementById('vtab2').className='vstab'+(n===2?' vstab-on':'');
+  if(n===2)initMatch();
+}
+function initMatch(){
+  vmSelEn=null;vmSelKo=null;vmMatched=0;
+  document.getElementById('vm-msg').textContent='';
+  const shuffled=[...vmWords].sort(()=>Math.random()-0.5).slice(0,5);
+  const koShuffled=[...shuffled].sort(()=>Math.random()-0.5);
+  const enCol=document.getElementById('vm-en-col'),koCol=document.getElementById('vm-ko-col');
+  enCol.innerHTML='';koCol.innerHTML='';
+  shuffled.forEach(w=>{const d=document.createElement('div');d.className='vm-en';d.dataset.w=w.en;d.textContent=w.en;d.onclick=()=>tapVmEn(d);enCol.appendChild(d);});
+  koShuffled.forEach(w=>{const d=document.createElement('div');d.className='vm-ko';d.dataset.w=w.en;d.textContent=w.ko;d.onclick=()=>tapVmKo(d);koCol.appendChild(d);});
+  document.getElementById('vm-progress').textContent='0 / 5 매칭';
+}
+function tapVmEn(el){
+  if(el.classList.contains('vm-ok'))return;
+  document.querySelectorAll('.vm-en').forEach(e=>e.classList.remove('vm-sel'));
+  el.classList.add('vm-sel');vmSelEn=el;if(vmSelKo)tryVmMatch();
+}
+function tapVmKo(el){
+  if(el.classList.contains('vm-gone'))return;
+  document.querySelectorAll('.vm-ko').forEach(e=>e.classList.remove('vm-sel'));
+  el.classList.add('vm-sel');vmSelKo=el;if(vmSelEn)tryVmMatch();
+}
+function tryVmMatch(){
+  const msg=document.getElementById('vm-msg');
+  if(vmSelEn.dataset.w===vmSelKo.dataset.w){
+    vmSelEn.classList.add('vm-ok');vmSelEn.classList.remove('vm-sel');
+    vmSelKo.classList.add('vm-gone');vmSelKo.classList.remove('vm-sel');
+    vmMatched++;document.getElementById('vm-progress').textContent=`${vmMatched} / 5 매칭`;
+    if(vmMatched===5){msg.textContent='🏆 완벽! 모든 단어 매칭 성공!';msg.style.color='var(--gold)';}
+    else{msg.textContent='✅ 정답!';msg.style.color='#2E7D32';setTimeout(()=>{msg.textContent='';},900);}
+  }else{
+    vmSelEn.classList.add('vm-err');vmSelKo.classList.add('vm-err');
+    msg.textContent='❌ 다시 해봐요!';msg.style.color='#C62828';
+    setTimeout(()=>{vmSelEn.classList.remove('vm-err','vm-sel');vmSelKo.classList.remove('vm-err','vm-sel');msg.textContent='';},400);
+  }
+  vmSelEn=null;vmSelKo=null;
+}
+</script>
+</body>
+</html>

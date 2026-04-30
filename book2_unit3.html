@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>초등 구조독해 Book 2 — Unit 3</title>
+<style>
+:root {
+  --purple:#5C3D8A; --navy:#1A2744; --gold:#C8A84B; --gold-light:#F5E9C8;
+  --s-color:#F7D97A; --v-color:#A8D8EA; --o-color:#F4B8B8;
+  --mod-green:#C8E6C9; --mod-green2:#BBDEFB; --mod-purple:#E1D5F0;
+  --adv-color:#FFF9C4; --adv-border:#F9A825;
+  --noun-color:#EDE7F6; --noun-border:#7B1FA2;
+  --rel-color:#E8F5E9; --rel-border:#2E7D32;
+  --bg:#F8F6F0; --white:#FFFFFF; --text:#1A2744; --text-light:#5C5C7A;
+  --although:#6A1B9A; --while:#1565C0;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.7;}
+
+#lock-screen{position:fixed;inset:0;background:linear-gradient(135deg,var(--navy) 0%,var(--purple) 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:18px;}
+#lock-screen .lock-logo{font-size:2.2rem;font-weight:900;color:var(--gold);letter-spacing:2px;text-align:center;}
+#lock-screen .lock-sub{color:#ccc;font-size:0.95rem;text-align:center;}
+#lock-screen input{padding:12px 24px;border-radius:30px;border:2px solid var(--gold);font-size:1.1rem;background:rgba(255,255,255,0.1);color:white;text-align:center;outline:none;width:240px;}
+#lock-screen input::placeholder{color:rgba(255,255,255,0.5);}
+#lock-screen button{padding:12px 36px;background:var(--gold);color:var(--navy);font-weight:700;font-size:1rem;border:none;border-radius:30px;cursor:pointer;}
+#lock-screen .lock-hint{color:rgba(255,255,255,0.5);font-size:0.82rem;text-align:center;}
+#lock-error{color:#ff8a8a;font-size:0.9rem;display:none;}
+
+#main-header{background:linear-gradient(90deg,var(--navy) 0%,var(--purple) 100%);color:white;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.3);}
+.header-left{display:flex;flex-direction:column;}
+.header-series{font-size:0.72rem;color:var(--gold);letter-spacing:2px;text-transform:uppercase;}
+.header-title{font-size:1.05rem;font-weight:700;}
+.header-right{display:flex;gap:10px;align-items:center;}
+.tts-btn,.print-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:6px 12px;border-radius:20px;cursor:pointer;font-size:0.82rem;}
+
+#unit-nav{background:var(--navy);padding:8px 16px;display:flex;gap:6px;overflow-x:auto;justify-content:center;border-bottom:2px solid var(--gold);}
+.nav-btn{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:5px 14px;font-size:0.82rem;cursor:pointer;white-space:nowrap;transition:all 0.2s;}
+.nav-btn.active{background:var(--gold);color:var(--navy);font-weight:700;border-color:var(--gold);}
+#page-nav{background:var(--purple);padding:6px 16px;display:flex;gap:4px;overflow-x:auto;justify-content:center;}
+.page-btn{background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);border:1px solid rgba(255,255,255,0.25);border-radius:15px;padding:4px 12px;font-size:0.78rem;cursor:pointer;transition:all 0.2s;}
+.page-btn.active{background:white;color:var(--purple);font-weight:700;}
+
+#content{max-width:780px;margin:0 auto;padding:0 0 60px;}
+.page-block{display:none;padding:24px 20px;animation:fadeIn 0.3s ease;}
+.page-block.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.page-header{background:linear-gradient(135deg,var(--purple) 0%,var(--navy) 100%);color:white;border-radius:14px;padding:18px 22px;margin-bottom:22px;display:flex;justify-content:space-between;align-items:center;}
+.page-header-left .unit-badge{font-size:0.72rem;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
+.page-header-left .page-title{font-size:1.3rem;font-weight:700;}
+.page-header-left .page-sub{font-size:0.85rem;color:rgba(255,255,255,0.75);margin-top:3px;}
+.page-num{font-size:2.2rem;font-weight:900;color:rgba(255,255,255,0.15);font-family:serif;}
+
+.learning-nav-box{background:var(--navy);border-radius:14px;padding:16px 20px;margin-bottom:20px;color:white;}
+.learning-nav-title{font-size:0.78rem;color:var(--gold);letter-spacing:1px;margin-bottom:10px;font-weight:700;}
+.learning-nav-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.lnav-item{border-radius:10px;padding:10px 12px;text-align:center;font-size:0.82rem;}
+.lnav-item .lnav-tag{display:inline-block;border-radius:20px;padding:2px 10px;font-size:0.72rem;font-weight:700;margin-bottom:5px;}
+.lnav-item .lnav-units{font-size:0.72rem;color:rgba(255,255,255,0.65);}
+.lnav-adv{background:rgba(249,168,37,0.15);border:1px solid rgba(249,168,37,0.4);}
+.lnav-adv .lnav-tag{background:var(--adv-border);color:#1A2744;}
+.lnav-noun{background:rgba(123,31,162,0.2);border:1px solid rgba(123,31,162,0.4);}
+.lnav-noun .lnav-tag{background:#7B1FA2;color:white;}
+.lnav-rel{background:rgba(46,125,50,0.15);border:1px solid rgba(46,125,50,0.4);}
+.lnav-rel .lnav-tag{background:#2E7D32;color:white;}
+.lnav-current{border:2px solid var(--gold)!important;position:relative;}
+.lnav-current::after{content:'← 지금!';position:absolute;top:-10px;right:6px;background:var(--gold);color:var(--navy);font-size:0.65rem;padding:1px 6px;border-radius:10px;font-weight:700;}
+
+.episode-box{background:white;border-radius:14px;padding:18px 20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.07);border-left:4px solid var(--purple);}
+.episode-title{font-size:1rem;font-weight:700;color:var(--purple);margin-bottom:12px;}
+.episode-text{font-size:0.92rem;line-height:1.85;color:#333;}
+.episode-text strong{color:var(--purple);}
+
+.chat-box{margin:14px 0;display:flex;flex-direction:column;gap:10px;}
+.chat-item{display:flex;gap:10px;align-items:flex-start;}
+.chat-item.right{flex-direction:row-reverse;}
+.chat-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;flex-shrink:0;flex-direction:column;gap:1px;}
+.avatar-haon{background:var(--s-color);color:var(--navy);}
+.avatar-seojun{background:var(--v-color);color:var(--navy);}
+.avatar-luna{background:var(--o-color);color:var(--navy);}
+.chat-bubble{background:white;border-radius:12px;padding:10px 14px;font-size:0.88rem;line-height:1.65;box-shadow:0 1px 4px rgba(0,0,0,0.08);max-width:78%;border:1px solid #eee;}
+.chat-item.right .chat-bubble{background:#f0eaff;border-color:#d5c8f0;}
+.chat-name{font-size:0.7rem;color:var(--text-light);margin-bottom:3px;font-weight:600;}
+
+.tts-sentence{background:var(--navy);color:white;border-radius:10px;padding:12px 16px;margin:10px 0;font-size:0.95rem;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background 0.2s;}
+.tts-sentence:hover{background:var(--purple);}
+.tts-icon{font-size:1.1rem;flex-shrink:0;}
+.tts-text{flex:1;}
+.tts-text .tts-trans{font-size:0.78rem;color:rgba(255,255,255,0.65);margin-top:3px;}
+.tts-text em{color:var(--gold);font-style:normal;font-weight:700;}
+
+.rule-box{background:white;border-radius:14px;padding:18px 20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.07);}
+.rule-title{font-size:0.82rem;color:var(--purple);font-weight:700;letter-spacing:1px;margin-bottom:12px;text-transform:uppercase;border-bottom:2px solid var(--purple);padding-bottom:6px;}
+
+/* 접속사 카드 */
+.conj-grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0;}
+.conj-card2{border-radius:14px;padding:16px 14px;}
+.conj-card2.although{background:#F3E5F5;border:1.5px solid #CE93D8;}
+.conj-card2.while{background:#E3F2FD;border:1.5px solid #90CAF9;}
+.cj2-word{font-size:1.2rem;font-weight:900;margin-bottom:6px;}
+.conj-card2.although .cj2-word{color:var(--although);}
+.conj-card2.while .cj2-word{color:var(--while);}
+.cj2-mean{font-size:0.82rem;font-weight:700;color:#444;margin-bottom:4px;}
+.cj2-type{font-size:0.72rem;color:#888;}
+.cj2-ex{font-size:0.78rem;color:#555;margin-top:8px;padding-top:8px;border-top:1px dashed #ddd;line-height:1.5;}
+
+/* while 2가지 의미 */
+.while-meanings{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0;}
+.wm-card{border-radius:10px;padding:10px 12px;text-align:center;}
+.wm-card.time{background:#E3F2FD;border:1px solid #90CAF9;}
+.wm-card.contrast{background:#FFF3E0;border:1px solid #FFB74D;}
+.wm-card .wm-title{font-size:0.78rem;font-weight:700;margin-bottom:4px;}
+.wm-card.time .wm-title{color:#1565C0;}
+.wm-card.contrast .wm-title{color:#E65100;}
+.wm-card .wm-mean{font-size:0.72rem;color:#555;}
+
+/* 헥사곤 */
+.diagram-wrap{background:white;border-radius:14px;padding:20px;margin:14px 0;box-shadow:0 2px 8px rgba(0,0,0,0.06);overflow-x:auto;}
+.diagram-label{font-size:0.78rem;color:var(--text-light);margin-bottom:10px;font-weight:600;}
+.hex-row{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;min-width:max-content;margin-bottom:8px;}
+.hex-wrap{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.hex-svg{width:112px;height:72px;}
+.hex-text-main{font-weight:700;fill:#1A2744;dominant-baseline:middle;text-anchor:middle;}
+.hex-text-sub{fill:#5C5C7A;dominant-baseline:middle;text-anchor:middle;}
+.adv-tag{background:var(--adv-color);border:1.5px solid var(--adv-border);border-radius:10px;padding:4px 10px;font-size:0.72rem;color:#7B4F00;font-weight:600;display:flex;align-items:center;gap:5px;}
+.adv-tag-back{background:#EDE7F6;border:1.5px solid #CE93D8;border-radius:10px;padding:4px 10px;font-size:0.72rem;color:#4A148C;font-weight:600;}
+.adv-tag-while{background:#E3F2FD;border:1.5px solid #90CAF9;border-radius:10px;padding:4px 10px;font-size:0.72rem;color:#0D47A1;font-weight:600;}
+.mod-tag{border-radius:12px;padding:2px 9px;font-size:0.67rem;font-weight:600;white-space:nowrap;}
+.mod-green{background:var(--mod-green);color:#2E7D32;border:1px solid #A5D6A7;}
+.diagram-note{font-size:0.72rem;color:var(--text-light);margin-top:8px;padding:5px 10px;background:#f8f8f8;border-radius:8px;border-left:3px solid var(--purple);}
+
+/* 지문 */
+.reading-box{background:white;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.07);margin-bottom:16px;}
+.reading-title{font-size:0.9rem;font-weight:700;color:var(--navy);margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--gold-light);}
+.rs-num{display:inline-block;background:var(--purple);color:white;border-radius:50%;width:22px;height:22px;font-size:0.72rem;font-weight:700;text-align:center;line-height:22px;margin-right:6px;flex-shrink:0;}
+.rs-en{font-size:0.95rem;color:var(--navy);margin-bottom:4px;font-weight:500;}
+.although-mark{color:var(--although);font-weight:700;}
+.while-mark{color:var(--while);font-weight:700;}
+
+/* 퀴즈 */
+.quiz-box{background:white;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.07);margin-bottom:16px;}
+.quiz-title{font-size:0.95rem;font-weight:700;color:var(--navy);margin-bottom:16px;}
+.quiz-item{margin-bottom:18px;}
+.quiz-q{font-size:0.9rem;margin-bottom:8px;display:flex;align-items:flex-start;gap:8px;}
+.q-num{background:var(--purple);color:white;border-radius:50%;width:24px;height:24px;font-size:0.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.quiz-options{display:flex;gap:6px;flex-wrap:wrap;margin-left:32px;}
+.quiz-opt{background:#f5f5f5;border:2px solid #e0e0e0;border-radius:16px;padding:4px 12px;font-size:0.76rem;cursor:pointer;transition:all 0.2s;}
+.quiz-opt:hover{border-color:var(--purple);color:var(--purple);background:#f0eaff;}
+.quiz-opt.selected{border-color:var(--purple);background:#f0eaff;color:var(--purple);font-weight:700;}
+.quiz-opt.correct{border-color:#2E7D32;background:#E8F5E9;color:#2E7D32;font-weight:700;}
+.quiz-opt.wrong{border-color:#C62828;background:#FFEBEE;color:#C62828;}
+.quiz-feedback{margin-left:32px;margin-top:6px;font-size:0.82rem;padding:5px 10px;border-radius:8px;display:none;}
+.quiz-feedback.show{display:block;}
+.quiz-feedback.correct-fb{background:#E8F5E9;color:#2E7D32;}
+.quiz-feedback.wrong-fb{background:#FFEBEE;color:#C62828;}
+.score-bar{background:#f5f5f5;border-radius:10px;padding:12px 16px;text-align:center;font-weight:700;font-size:1rem;margin-top:14px;display:none;}
+.score-bar.show{display:block;}
+.check-btn{background:var(--purple);color:white;border:none;padding:11px 28px;border-radius:25px;font-size:0.9rem;font-weight:700;cursor:pointer;margin-top:10px;display:block;}
+.reset-btn{background:#eee;color:#555;border:none;padding:8px 20px;border-radius:20px;font-size:0.82rem;cursor:pointer;margin-top:8px;display:none;}
+.reset-btn.show{display:inline-block;}
+
+/* 단어장 */
+.vstab{padding:8px 18px;border-radius:20px;border:1.5px solid var(--purple);background:white;color:var(--purple);font-size:0.8rem;font-weight:700;cursor:pointer;transition:all 0.2s;}
+.vstab-on{background:var(--purple);color:white;}
+.fc-grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.fc2{background:white;border:1.5px solid #e0d8f0;border-radius:12px;padding:14px 12px;cursor:pointer;transition:all 0.22s;display:flex;flex-direction:column;align-items:center;text-align:center;}
+.fc2:hover{border-color:var(--purple);}
+.fc2-en{font-size:0.9rem;font-weight:700;color:var(--navy);}
+.fc2-ko{font-size:0.85rem;color:var(--purple);font-weight:700;margin-top:6px;display:none;}
+.fc2-ex{font-size:0.7rem;color:#666;margin-top:5px;display:none;line-height:1.55;}
+.fc2-ko-ex{color:var(--gold);font-weight:600;}
+.fc2-hint{font-size:0.65rem;color:#bbb;margin-top:5px;}
+.fc2.flipped2{background:#f5f0ff;border-color:var(--purple);}
+.fc2.flipped2 .fc2-ko,.fc2.flipped2 .fc2-ex{display:block;}
+.fc2.flipped2 .fc2-hint{display:none;}
+.vbtn{padding:7px 20px;border-radius:20px;border:1.5px solid var(--purple);color:var(--purple);background:white;font-size:0.78rem;font-weight:700;cursor:pointer;margin-top:6px;}
+.vm-en{background:#FFF9E6;border:1.5px solid var(--gold);border-radius:10px;padding:9px 12px;text-align:center;font-weight:700;font-size:0.82rem;color:var(--navy);cursor:pointer;transition:all 0.18s;min-height:40px;display:flex;align-items:center;justify-content:center;}
+.vm-en.vm-sel{background:var(--gold);color:var(--navy);transform:scale(1.04);}
+.vm-en.vm-ok{background:#E8F5E9;border-color:#2E7D32;color:#2E7D32;pointer-events:none;}
+.vm-en.vm-ok::after{content:' ✓';}
+.vm-en.vm-err{animation:vshake 0.3s;border-color:#C62828;background:#FFEBEE;}
+.vm-ko{background:#f0eaff;border:1.5px solid #B39DDB;border-radius:10px;padding:9px 12px;text-align:center;font-weight:600;font-size:0.82rem;color:#4A148C;cursor:pointer;transition:all 0.18s;min-height:40px;display:flex;align-items:center;justify-content:center;}
+.vm-ko.vm-sel{background:var(--purple);color:white;transform:scale(1.04);}
+.vm-ko.vm-gone{opacity:0;pointer-events:none;}
+@keyframes vshake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* 기타 */
+.tip-box{background:#FFF8E1;border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:10px 14px;font-size:0.85rem;margin:10px 0;}
+.tip-box strong{color:#7B4F00;}
+.goal-box{background:white;border-radius:12px;padding:14px 16px;box-shadow:0 1px 6px rgba(0,0,0,0.07);margin:12px 0;}
+.goal-title{font-size:0.8rem;color:var(--purple);font-weight:700;margin-bottom:8px;}
+.goal-list{list-style:none;}
+.goal-list li{font-size:0.88rem;padding:4px 0;display:flex;align-items:flex-start;gap:8px;}
+.goal-list li::before{content:'✦';color:var(--gold);flex-shrink:0;}
+.section-title{font-size:1rem;font-weight:700;color:var(--purple);margin:18px 0 10px;display:flex;align-items:center;gap:8px;}
+.section-title::before{content:'';width:4px;height:18px;background:var(--gold);border-radius:2px;}
+.preview-box{background:linear-gradient(135deg,var(--navy) 0%,var(--purple) 100%);color:white;border-radius:14px;padding:20px;margin-bottom:16px;text-align:center;}
+.preview-box .prev-label{font-size:0.75rem;color:var(--gold);letter-spacing:1px;margin-bottom:8px;}
+.preview-box .prev-title{font-size:1.15rem;font-weight:700;margin-bottom:8px;}
+.preview-box .prev-sub{font-size:0.85rem;color:rgba(255,255,255,0.75);}
+.preview-box .prev-sentence{background:rgba(255,255,255,0.1);border-radius:10px;padding:10px 14px;margin-top:12px;font-size:0.88rem;border-left:3px solid var(--gold);text-align:left;}
+.complete-badge{background:linear-gradient(135deg,var(--gold) 0%,#E6A817 100%);color:var(--navy);border-radius:14px;padding:16px;text-align:center;margin-top:16px;}
+.complete-badge .cb-title{font-size:1.1rem;font-weight:700;margin-bottom:4px;}
+.complete-badge .cb-sub{font-size:0.82rem;}
+.page-nav-btns{display:flex;justify-content:space-between;margin-top:24px;gap:10px;}
+.pnav-btn{background:var(--purple);color:white;border:none;padding:10px 20px;border-radius:25px;font-size:0.85rem;font-weight:700;cursor:pointer;transition:background 0.2s;}
+.pnav-btn:hover{background:var(--navy);}
+.pnav-btn.disabled{background:#ccc;cursor:not-allowed;}
+
+/* 변환 연습 */
+.transform-box{background:#F8F6F0;border-radius:12px;padding:14px 16px;margin:12px 0;border:1px solid #e8e0f0;}
+.transform-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:10px;font-size:0.85rem;}
+.transform-row:last-child{margin-bottom:0;}
+.tr-badge{border-radius:20px;padding:2px 10px;font-size:0.72rem;font-weight:700;white-space:nowrap;flex-shrink:0;margin-top:2px;}
+.tr-although{background:#F3E5F5;color:var(--although);border:1px solid #CE93D8;}
+.tr-while{background:#E3F2FD;color:var(--while);border:1px solid #90CAF9;}
+.tr-text{color:#333;line-height:1.6;}
+
+/* 반전 강조 박스 */
+.reversal-box{background:linear-gradient(135deg,#F3E5F5,#EDE7F6);border-radius:12px;padding:14px 16px;margin:12px 0;border-left:4px solid var(--although);}
+.reversal-title{font-size:0.82rem;font-weight:700;color:var(--although);margin-bottom:8px;}
+
+@media print{#lock-screen,#unit-nav,#page-nav,.page-nav-btns{display:none!important;}.page-block{display:block!important;page-break-after:always;}body{background:white;}}
+@media(max-width:480px){.conj-grid2{grid-template-columns:1fr}.while-meanings{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- 비밀번호 -->
+<div id="lock-screen">
+  <div class="lock-logo">초등 구조독해<br><span style="font-size:1.2rem;color:white;font-weight:400;">Book 2</span></div>
+  <div class="lock-sub">Unit 3 · 동굴 입구의 수수께끼 🦇<br>학습 자료에 접근하려면 비밀번호를 입력하세요.</div>
+  <input type="password" id="pwd-input" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter')checkPwd()">
+  <div id="lock-error">❌ 비밀번호가 틀렸습니다.</div>
+  <button onclick="checkPwd()">입장하기 →</button>
+  <div class="lock-hint">힌트: 월도3 · waldo3 · unit03</div>
+</div>
+
+<!-- 헤더 -->
+<div id="main-header">
+  <div class="header-left">
+    <div class="header-series">초등 구조독해 · Structural Reading</div>
+    <div class="header-title">Book 2 · Unit 3 — 동굴 입구의 수수께끼 🦇</div>
+  </div>
+  <div class="header-right">
+    <button class="tts-btn" onclick="toggleTTS()">🔊 <span id="tts-label">TTS 켜기</span></button>
+    <button class="print-btn" onclick="window.print()">🖨️ 인쇄</button>
+  </div>
+</div>
+
+<!-- 유닛 네비 -->
+<div id="unit-nav">
+  <button class="nav-btn" onclick="location.href='book2_unit1.html'">U1</button>
+  <button class="nav-btn" onclick="location.href='book2_unit2.html'">U2</button>
+  <button class="nav-btn active">U3</button>
+  <button class="nav-btn" style="color:rgba(255,255,255,0.35);cursor:default;">U4</button>
+  <button class="nav-btn" style="color:rgba(255,255,255,0.35);cursor:default;">U5</button>
+  <button class="nav-btn" style="color:rgba(255,255,255,0.35);cursor:default;">U6</button>
+  <button class="nav-btn" style="color:rgba(255,255,255,0.35);cursor:default;">U7</button>
+  <button class="nav-btn" style="color:rgba(255,255,255,0.35);cursor:default;">U8</button>
+</div>
+
+<!-- 페이지 네비 -->
+<div id="page-nav">
+  <button class="page-btn active" onclick="showPage(1)">p.1 도입</button>
+  <button class="page-btn" onclick="showPage(2)">p.2 핵심규칙</button>
+  <button class="page-btn" onclick="showPage(3)">p.3 예문 A</button>
+  <button class="page-btn" onclick="showPage(4)">p.4 예문 B</button>
+  <button class="page-btn" onclick="showPage(5)">p.5 지문독해</button>
+  <button class="page-btn" onclick="showPage(6)">p.6 연습문제</button>
+  <button class="page-btn" onclick="showPage(7)">p.7 단어정리</button>
+  <button class="page-btn" onclick="showPage(8)">p.8 추가문제</button>
+</div>
+
+<div id="content">
+
+<!-- ================================================ p.1 도입 -->
+<div class="page-block active" id="page-1">
+  <div class="page-header">
+    <div class="page-header-left">
+      <div class="unit-badge">Unit 3 of 8 · Book 2 · [부사절 ②]</div>
+      <div class="page-title">동굴 입구의 수수께끼 🦇</div>
+      <div class="page-sub">although / while — 반전과 동시를 표현해요!</div>
+    </div>
+    <div class="page-num">1</div>
+  </div>
+
+  <div class="learning-nav-box">
+    <div class="learning-nav-title">📍 BOOK 2 학습 지도 — 종속절 3종</div>
+    <div class="learning-nav-grid">
+      <div class="lnav-item lnav-adv lnav-current">
+        <div class="lnav-tag">🟡 부사절</div>
+        <div style="font-size:0.82rem;color:rgba(255,255,255,0.9);margin-bottom:3px;">상황을 더해줘요</div>
+        <div class="lnav-units">Unit 2 ✅ / Unit 3 ←</div>
+      </div>
+      <div class="lnav-item lnav-noun">
+        <div class="lnav-tag">🟣 명사절</div>
+        <div style="font-size:0.82rem;color:rgba(255,255,255,0.9);margin-bottom:3px;">주어·목적어 역할</div>
+        <div class="lnav-units">Unit 4</div>
+      </div>
+      <div class="lnav-item lnav-rel">
+        <div class="lnav-tag">🟢 형용사절</div>
+        <div style="font-size:0.82rem;color:rgba(255,255,255,0.9);margin-bottom:3px;">명사를 뒤에서 꾸며요</div>
+        <div class="lnav-units">Unit 5 · Unit 6</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;font-size:0.78rem;color:rgba(255,255,255,0.55);text-align:center;">
+      ✅ Unit 2(when·because·if) 완료! 이번엔 although·while!</div>
+  </div>
+
+  <div class="episode-box">
+    <div class="episode-title">📖 에피소드 3 — 동굴 입구의 경고문 🦇</div>
+    <div class="episode-text">
+      폭풍을 뚫고 <strong>월도 섬</strong>에 도착한 탐정단. 할아버지 지도가 가리키는 곳은 섬 북쪽의 <strong>어두운 동굴</strong>이었다. 입구에는 낡은 경고 팻말이 세워져 있었다.
+    </div>
+  </div>
+
+  <div class="tts-sentence" onclick="speak(this,'Although the cave is dark and dangerous, brave explorers will find the truth inside.')">
+    <div class="tts-icon">🔊</div>
+    <div class="tts-text">
+      "<em>[Although the cave is dark and dangerous]</em>, brave explorers will find the truth inside."
+      <div class="tts-trans">동굴이 어둡고 위험하지만, 용감한 탐험가는 안에서 진실을 찾을 것이다.</div>
+    </div>
+  </div>
+
+  <div class="chat-box">
+    <div class="chat-item">
+      <div class="chat-avatar avatar-luna">루나<br>🩷</div>
+      <div class="chat-bubble">
+        <div class="chat-name">루나 · 엉뚱천재</div>
+        <strong>Although</strong>? 이건 뭔 뜻이야? 어둡고 위험한데 들어가라고?! 무서워 😱
+      </div>
+    </div>
+    <div class="chat-item right">
+      <div class="chat-avatar avatar-seojun">서준<br>🔵</div>
+      <div class="chat-bubble">
+        <div class="chat-name">서준 · 논리박사</div>
+        although는 <strong>"비록 ~하지만"</strong>이야. 어둡고 위험하지만, 그래도 진실을 찾을 수 있다는 거야. 예상을 <strong>뒤집는 반전 접속사</strong>!
+      </div>
+    </div>
+    <div class="chat-item">
+      <div class="chat-avatar avatar-haon">하온<br>🟡</div>
+      <div class="chat-bubble">
+        <div class="chat-name">하온 · 궁금쟁이</div>
+        그럼 while은요? 팻말 아래쪽에 "While Seo-jun held the light, Ha-on read the warning"이라고도 써 있던데 🔦
+      </div>
+    </div>
+    <div class="chat-item right">
+      <div class="chat-avatar avatar-seojun">서준<br>🔵</div>
+      <div class="chat-bubble">
+        <div class="chat-name">서준 · 논리박사</div>
+        while은 <strong>"~하는 동안"(시간)</strong> 또는 <strong>"~인 반면에"(대조)</strong>! 두 가지 뜻이 있어서 오늘 제대로 배워야 해!
+      </div>
+    </div>
+  </div>
+
+  <div class="goal-box">
+    <div class="goal-title">🎯 Unit 3에서 배울 것</div>
+    <ul class="goal-list">
+      <li>although — "비록 ~하지만" (예상 반전)</li>
+      <li>while ① — "~하는 동안" (동시 시간)</li>
+      <li>while ② — "~인 반면에" (대조)</li>
+      <li>Unit 2와의 차이 — when·because·if vs although·while</li>
+    </ul>
+  </div>
+
+  <div class="page-nav-btns">
+    <button class="pnav-btn disabled">← 이전</button>
+    <button class="pnav-btn" onclick="showPage(2)">핵심규칙 →</button>
+  </div>
+</div>
+
+<!-- ================================================ p.2 핵심규칙 -->
+<div class="page-block" id="page-2">
+  <div class="page-header">
+    <div class="page-header-left">
+      <div class="unit-badge">Unit 3 · p.2 · [부사절 ②]</div>
+      <div class="page-title">핵심 규칙 📌</div>
+      <div class="page-sub">although의 반전 + while의 두 가지 의미</div>
+    </div>
+    <div class="page-num">2</div>
+  </div>
+
+  <!-- although -->
+  <div class="rule-box">
+    <div class="rule-title" style="color:var(--although);border-color:var(--although);">📌 although — 비록 ~하지만 (예상 반전!)</div>
+    <div class="conj-grid2">
+      <div class="conj-card2 although">
+        <div class="cj2-word">although</div>
+        <div class="cj2-mean">비록 ~하지만</div>
+        <div class="cj2-type">= even though / though</div>
+        <div class="cj2-ex">예상과 반대되는 결과가 나올 때 사용!</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;justify-content:center;">
+        <div class="reversal-box">
+          <div class="reversal-title">🔄 반전 포인트</div>
+          <div style="font-size:0.82rem;color:#333;line-height:1.7;">
+            어두우면 → 못 들어갈 것 같다<br>
+            <strong>하지만!</strong> → 용감하게 들어간다<br>
+            <span style="color:var(--although);font-weight:700;">⚡ 예상 뒤집기!</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tip-box">
+      <strong>💡 although 공식:</strong> [Although + 예상되는 상황], <strong>반대 결과</strong>.<br>
+      <span style="font-size:0.8rem;"><em>Although it was cold, she went out. (추울 텐데 → 나갔다!)</em></span>
+    </div>
+
+    <!-- although 다이어그램 -->
+    <div class="diagram-wrap">
+      <div style="margin-bottom:8px;">
+        <span class="adv-tag" style="background:#F3E5F5;border-color:#CE93D8;color:#4A148C;">🟡 Although the cave was dark</span>
+      </div>
+      <div class="hex-row">
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#F7D97A" stroke="#E6B800" stroke-width="2"/>
+            <text class="hex-text-main" font-size="22" x="79" y="55">Luna</text>
+          </svg>
+        </div>
+        <div style="font-size:1.2rem;color:#ccc;margin:0 4px;">→</div>
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#A8D8EA" stroke="#5BB8D4" stroke-width="2"/>
+            <text class="hex-text-sub" font-size="14" x="79" y="28">kept</text>
+            <text class="hex-text-main" font-size="20" x="79" y="64">walking</text>
+          </svg>
+        </div>
+        <div style="font-size:1.2rem;color:#ccc;margin:0 4px;">→</div>
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#F4B8B8" stroke="#E07070" stroke-width="2"/>
+            <text class="hex-text-main" font-size="18" x="79" y="55">forward</text>
+          </svg>
+        </div>
+      </div>
+      <div class="diagram-note">🟡 although절 — 앞마당 배치, 쉼표(,) 필수 / 예상 반전!</div>
+    </div>
+  </div>
+
+  <!-- while -->
+  <div class="rule-box">
+    <div class="rule-title" style="color:var(--while);border-color:var(--while);">📌 while — 두 가지 뜻!</div>
+    <div class="while-meanings">
+      <div class="wm-card time">
+        <div class="wm-title">① ~하는 동안 (시간)</div>
+        <div class="wm-mean">두 동작이 <strong>동시에</strong> 일어남</div>
+        <div style="font-size:0.72rem;color:#555;margin-top:6px;"><em>While he studied, she played.<br>그가 공부하는 동안 그녀는 놀았다.</em></div>
+      </div>
+      <div class="wm-card contrast">
+        <div class="wm-title">② ~인 반면에 (대조)</div>
+        <div class="wm-mean">두 상황을 <strong>비교·대조</strong></div>
+        <div style="font-size:0.72rem;color:#555;margin-top:6px;"><em>While Seo-jun is quiet, Ha-on is talkative.<br>서준은 조용한 반면 하온은 말이 많다.</em></div>
+      </div>
+    </div>
+    <div class="tip-box">
+      <strong>💡 구분법:</strong> 두 동작이 <strong>동시에</strong> 일어나면 "동안", 두 성격·상황이 <strong>반대</strong>면 "반면에"!
+    </div>
+
+    <!-- while 다이어그램 -->
+    <div class="diagram-wrap">
+      <div class="diagram-label">① while — 동안 (앞마당)</div>
+      <div style="margin-bottom:8px;">
+        <span class="adv-tag-while">🟡 While Ha-on read the warning</span>
+      </div>
+      <div class="hex-row">
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#F7D97A" stroke="#E6B800" stroke-width="2"/>
+            <text class="hex-text-main" font-size="18" x="79" y="55">Seo-jun</text>
+          </svg>
+        </div>
+        <div style="font-size:1.2rem;color:#ccc;margin:0 4px;">→</div>
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#A8D8EA" stroke="#5BB8D4" stroke-width="2"/>
+            <text class="hex-text-main" font-size="22" x="79" y="55">held</text>
+          </svg>
+        </div>
+        <div style="font-size:1.2rem;color:#ccc;margin:0 4px;">→</div>
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#F4B8B8" stroke="#E07070" stroke-width="2"/>
+            <text class="hex-text-sub" font-size="14" x="79" y="28">the</text>
+            <text class="hex-text-main" font-size="18" x="79" y="64">flashlight</text>
+          </svg>
+        </div>
+      </div>
+      <div class="diagram-note">🟡 while(동안) — 앞마당 배치, 쉼표(,) 필수!</div>
+    </div>
+  </div>
+
+  <div class="page-nav-btns">
+    <button class="pnav-btn" onclick="showPage(1)">← 도입</button>
+    <button class="pnav-btn" onclick="showPage(3)">예문 A →</button>
+  </div>
+</div>
+
+<!-- ================================================ p.3 예문 A -->
+<div class="page-block" id="page-3">
+  <div class="page-header">
+    <div class="page-header-left">
+      <div class="unit-badge">Unit 3 · p.3 · [부사절 ②]</div>
+      <div class="page-title">예문 분석 A 🔍</div>
+      <div class="page-sub">although — 앞마당·뒤마당 다이어그램</div>
+    </div>
+    <div class="page-num">3</div>
+  </div>
+
+  <!-- although 앞마당 -->
+  <div class="rule-box" style="margin-bottom:14px;">
+    <div class="rule-title" style="color:var(--although);border-color:var(--although);">although — 앞마당 (예상 반전)</div>
+    <div class="tts-sentence" onclick="speak(this,'Although the cave was dark, Luna kept walking forward.')">
+      <div class="tts-icon">🔊</div>
+      <div class="tts-text">
+        <em>[Although the cave was dark]</em>, Luna kept walking forward.
+        <div class="tts-trans">동굴이 어두웠지만, 루나는 계속 앞으로 걸어갔다.</div>
+      </div>
+    </div>
+    <div class="diagram-wrap">
+      <div style="margin-bottom:8px;">
+        <span class="adv-tag" style="background:#F3E5F5;border-color:#CE93D8;color:#4A148C;">🟡 Although the cave was dark</span>
+      </div>
+      <div class="hex-row">
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#F7D97A" stroke="#E6B800" stroke-width="2"/>
+            <text class="hex-text-main" font-size="22" x="79" y="55">Luna</text>
+          </svg>
+        </div>
+        <div style="font-size:1.2rem;color:#ccc;margin:0 4px;">→</div>
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#A8D8EA" stroke="#5BB8D4" stroke-width="2"/>
+            <text class="hex-text-sub" font-size="14" x="79" y="28">kept</text>
+            <text class="hex-text-main" font-size="20" x="79" y="64">walking</text>
+          </svg>
+        </div>
+        <div style="font-size:1.2rem;color:#ccc;margin:0 4px;">→</div>
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#F4B8B8" stroke="#E07070" stroke-width="2"/>
+            <text class="hex-text-main" font-size="18" x="79" y="55">forward</text>
+          </svg>
+        </div>
+      </div>
+      <div class="diagram-note">💡 어두우면 멈출 것 같지만 → 계속 걸었다! ⚡ 반전!</div>
+    </div>
+  </div>
+
+  <!-- although 뒤마당 -->
+  <div class="rule-box" style="margin-bottom:14px;">
+    <div class="rule-title" style="color:var(--although);border-color:var(--although);">although — 뒤마당</div>
+    <div class="tts-sentence" onclick="speak(this,'Seo-jun solved the puzzle although it looked very difficult.')">
+      <div class="tts-icon">🔊</div>
+      <div class="tts-text">
+        Seo-jun solved the puzzle <em>[although it looked very difficult]</em>.
+        <div class="tts-trans">서준은 매우 어려워 보였지만 그 수수께끼를 풀었다.</div>
+      </div>
+    </div>
+    <div class="diagram-wrap">
+      <div class="hex-row">
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#F7D97A" stroke="#E6B800" stroke-width="2"/>
+            <text class="hex-text-main" font-size="18" x="79" y="55">Seo-jun</text>
+          </svg>
+        </div>
+        <div style="font-size:1.2rem;color:#ccc;margin:0 4px;">→</div>
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#A8D8EA" stroke="#5BB8D4" stroke-width="2"/>
+            <text class="hex-text-main" font-size="22" x="79" y="55">solved</text>
+          </svg>
+        </div>
+        <div style="font-size:1.2rem;color:#ccc;margin:0 4px;">→</div>
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#F4B8B8" stroke="#E07070" stroke-width="2"/>
+            <text class="hex-text-sub" font-size="14" x="79" y="32">the</text>
+            <text class="hex-text-main" font-size="22" x="79" y="64">puzzle</text>
+          </svg>
+        </div>
+      </div>
+      <div style="margin-top:6px;">
+        <span class="adv-tag-back">🟡 although it looked very difficult</span>
+      </div>
+      <div class="diagram-note">🌇 뒤마당 → 아래칸 배치, 쉼표 없음!</div>
+    </div>
+  </div>
+
+  <!-- while 시간 -->
+  <div class="rule-box">
+    <div class="rule-title" style="color:var(--while);border-color:var(--while);">while ① — 동안 (동시 동작, 앞마당)</div>
+    <div class="tts-sentence" onclick="speak(this,'While Ha-on was reading the letter, Seo-jun drew a map.')">
+      <div class="tts-icon">🔊</div>
+      <div class="tts-text">
+        <em>[While Ha-on was reading the letter]</em>, Seo-jun drew a map.
+        <div class="tts-trans">하온이 편지를 읽는 동안, 서준은 지도를 그렸다.</div>
+      </div>
+    </div>
+    <div class="diagram-wrap">
+      <div style="margin-bottom:8px;">
+        <span class="adv-tag-while">🟡 While Ha-on was reading the letter</span>
+      </div>
+      <div class="hex-row">
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#F7D97A" stroke="#E6B800" stroke-width="2"/>
+            <text class="hex-text-main" font-size="18" x="79" y="55">Seo-jun</text>
+          </svg>
+        </div>
+        <div style="font-size:1.2rem;color:#ccc;margin:0 4px;">→</div>
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#A8D8EA" stroke="#5BB8D4" stroke-width="2"/>
+            <text class="hex-text-main" font-size="22" x="79" y="55">drew</text>
+          </svg>
+        </div>
+        <div style="font-size:1.2rem;color:#ccc;margin:0 4px;">→</div>
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#F4B8B8" stroke="#E07070" stroke-width="2"/>
+            <text class="hex-text-sub" font-size="14" x="79" y="32">a</text>
+            <text class="hex-text-main" font-size="22" x="79" y="64">map</text>
+          </svg>
+        </div>
+      </div>
+      <div class="diagram-note">💡 두 동작이 동시에! — 하온: 편지 읽기 / 서준: 지도 그리기</div>
+    </div>
+  </div>
+
+  <div class="page-nav-btns">
+    <button class="pnav-btn" onclick="showPage(2)">← 핵심규칙</button>
+    <button class="pnav-btn" onclick="showPage(4)">예문 B →</button>
+  </div>
+</div>
+
+<!-- ================================================ p.4 예문 B -->
+<div class="page-block" id="page-4">
+  <div class="page-header">
+    <div class="page-header-left">
+      <div class="unit-badge">Unit 3 · p.4 · [부사절 ②]</div>
+      <div class="page-title">예문 분석 B 🔍</div>
+      <div class="page-sub">while ② 대조 + 접속사 비교 훈련</div>
+    </div>
+    <div class="page-num">4</div>
+  </div>
+
+  <!-- while 대조 -->
+  <div class="rule-box" style="margin-bottom:14px;">
+    <div class="rule-title" style="color:var(--while);border-color:var(--while);">while ② — 반면에 (대조, 앞마당)</div>
+    <div class="tts-sentence" onclick="speak(this,'While Seo-jun is quiet, Ha-on is very talkative.')">
+      <div class="tts-icon">🔊</div>
+      <div class="tts-text">
+        <em>[While Seo-jun is quiet]</em>, Ha-on is very talkative.
+        <div class="tts-trans">서준은 조용한 반면에, 하온은 매우 말이 많다.</div>
+      </div>
+    </div>
+    <div class="diagram-wrap">
+      <div style="margin-bottom:8px;">
+        <span class="adv-tag-while">🟡 While Seo-jun is quiet</span>
+        <span style="font-size:0.75rem;color:#888;margin-left:8px;">← "반면에" 의미</span>
+      </div>
+      <div class="hex-row">
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#F7D97A" stroke="#E6B800" stroke-width="2"/>
+            <text class="hex-text-main" font-size="18" x="79" y="55">Ha-on</text>
+          </svg>
+        </div>
+        <div style="font-size:1.2rem;color:#ccc;margin:0 4px;">→</div>
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#A8D8EA" stroke="#5BB8D4" stroke-width="2"/>
+            <text class="hex-text-main" font-size="22" x="79" y="55">is</text>
+          </svg>
+        </div>
+        <div style="font-size:1.2rem;color:#ccc;margin:0 4px;">→</div>
+        <div class="hex-wrap">
+          <svg class="hex-svg" viewBox="0 0 158 100">
+            <polygon points="79,0 158,25 158,75 79,100 0,75 0,25" fill="#F4B8B8" stroke="#E07070" stroke-width="2"/>
+            <text class="hex-text-sub" font-size="14" x="79" y="28">very</text>
+            <text class="hex-text-main" font-size="16" x="79" y="64">talkative</text>
+          </svg>
+        </div>
+      </div>
+      <div class="diagram-note">💡 서준: 조용함 ↔ 하온: 말 많음 → 대조!</div>
+    </div>
+  </div>
+
+  <!-- 접속사 비교 -->
+  <div class="rule-box">
+    <div class="rule-title">✨ 접속사 비교 — although vs while(대조)</div>
+    <div style="font-size:0.82rem;color:#555;margin-bottom:12px;">둘 다 "반전·대조"지만 뉘앙스가 달라요!</div>
+    <div class="transform-box">
+      <div class="transform-row">
+        <span class="tr-badge tr-although">although</span>
+        <span class="tr-text"><strong>Although</strong> it was raining, they went outside.<br><span style="color:#888;font-size:0.8rem;">(비가 오는데 <em>그럼에도 불구하고</em> 나갔다 — 강한 반전)</span></span>
+      </div>
+      <div class="transform-row">
+        <span class="tr-badge tr-while">while</span>
+        <span class="tr-text"><strong>While</strong> Luna was scared, Seo-jun was calm.<br><span style="color:#888;font-size:0.8rem;">(루나는 무서운 <em>반면에</em> 서준은 차분했다 — 대조·비교)</span></span>
+      </div>
+    </div>
+    <div class="tip-box">
+      <strong>💡 핵심 차이:</strong> although는 <strong>"그럼에도 불구하고"</strong>의 강한 반전, while(대조)은 <strong>"A는 이렇지만 B는 저렇다"</strong>의 나란한 비교!
+    </div>
+
+    <div style="margin-top:14px;">
+      <div style="font-size:0.82rem;font-weight:700;color:var(--purple);margin-bottom:10px;">✏️ although? while? — 맞는 것을 골라봐요!</div>
+      <div style="background:#F8F6F0;border-radius:10px;padding:12px 14px;font-size:0.88rem;">
+        <div style="margin-bottom:10px;">1. ______ she was tired, she kept reading the map. <span style="color:#888;font-size:0.78rem;">(피곤했지만 계속 읽었다)</span></div>
+        <div style="margin-bottom:10px;">2. ______ Ha-on loves adventure, Luna prefers staying inside. <span style="color:#888;font-size:0.78rem;">(하온은 모험 좋아 / 루나는 안에 있기 선호)</span></div>
+        <div>3. ______ it was raining heavily, the explorer found the cave. <span style="color:#888;font-size:0.78rem;">(비가 많이 왔지만 발견)</span></div>
+      </div>
+      <div style="background:#E8F5E9;border-radius:8px;padding:8px 12px;margin-top:8px;font-size:0.8rem;color:#2E7D32;font-weight:700;">
+        ✅ 정답: 1. Although &nbsp; 2. While &nbsp; 3. Although
+      </div>
+    </div>
+  </div>
+
+  <div class="page-nav-btns">
+    <button class="pnav-btn" onclick="showPage(3)">← 예문 A</button>
+    <button class="pnav-btn" onclick="showPage(5)">지문독해 →</button>
+  </div>
+</div>
+
+<!-- ================================================ p.5 지문독해 -->
+<div class="page-block" id="page-5">
+  <div class="page-header">
+    <div class="page-header-left">
+      <div class="unit-badge">Unit 3 · p.5 · [부사절 ②]</div>
+      <div class="page-title">지문 독해 📖</div>
+      <div class="page-sub">동굴 경고문 — although·while을 찾아라!</div>
+    </div>
+    <div class="page-num">5</div>
+  </div>
+
+  <div class="tip-box" style="margin-bottom:14px;">
+    📌 보라 꺾쇠 <span style="color:var(--although);font-weight:700;">{  }</span> = although절 / 파란 꺾쇠 <span style="color:var(--while);font-weight:700;">{  }</span> = while절
+  </div>
+
+  <div class="reading-box">
+    <div class="reading-title">🦇 동굴 경고문 & 탐험 일지 — Cave Warning & Explorer's Note</div>
+
+    <!-- 영어 지문 -->
+    <div style="margin-bottom:18px;">
+      <div style="font-size:0.72rem;color:var(--purple);font-weight:700;letter-spacing:1px;margin-bottom:10px;padding-bottom:5px;border-bottom:1px dashed #d0c0e8;">📄 영어 지문</div>
+
+      <div style="margin-bottom:11px;">
+        <div class="rs-en"><span class="rs-num">①</span>
+          <span class="although-mark">{Although the entrance looks small}</span>, the cave inside is very large.
+        </div>
+        <div style="font-size:0.72rem;color:#888;margin-left:28px;margin-top:2px;">🟡 although절 — 앞마당, 쉼표 필수, 예상 반전</div>
+      </div>
+
+      <div style="margin-bottom:11px;">
+        <div class="rs-en"><span class="rs-num">②</span>
+          <span class="while-mark">{While Seo-jun held the flashlight}</span>, Ha-on carefully read each symbol.
+        </div>
+        <div style="font-size:0.72rem;color:#888;margin-left:28px;margin-top:2px;">🟡 while절(동안) — 앞마당, 쉼표 필수, 동시 동작</div>
+      </div>
+
+      <div style="margin-bottom:11px;">
+        <div class="rs-en"><span class="rs-num">③</span>
+          Luna was not afraid <span class="although-mark">{although the bats flew overhead}</span>.
+        </div>
+        <div style="font-size:0.72rem;color:#888;margin-left:28px;margin-top:2px;">🟡 although절 — 뒤마당, 쉼표 없음, 예상 반전</div>
+      </div>
+
+      <div style="margin-bottom:11px;">
+        <div class="rs-en"><span class="rs-num">④</span>
+          <span class="while-mark">{While the left path was narrow and dark}</span>, the right path was wide and bright.
+        </div>
+        <div style="font-size:0.72rem;color:#888;margin-left:28px;margin-top:2px;">🟡 while절(반면에) — 앞마당, 대조</div>
+      </div>
+
+      <div style="margin-bottom:11px;">
+        <div class="rs-en"><span class="rs-num">⑤</span>
+          Seo-jun kept moving forward <span class="although-mark">{although his legs were tired}</span>.
+        </div>
+        <div style="font-size:0.72rem;color:#888;margin-left:28px;margin-top:2px;">🟡 although절 — 뒤마당, 쉼표 없음, 반전</div>
+      </div>
+
+      <div>
+        <div class="rs-en"><span class="rs-num">⑥</span>
+          <span class="although-mark">{Although they were scared}</span>, the three friends entered the cave together.
+        </div>
+        <div style="font-size:0.72rem;color:#888;margin-left:28px;margin-top:2px;">🟡 although절 — 앞마당, 쉼표 필수</div>
+      </div>
+    </div>
+
+    <!-- 한글 해석 -->
+    <div style="background:#F8F6FB;border-radius:10px;padding:14px 16px;border-top:2px solid var(--gold-light);">
+      <div style="font-size:0.72rem;color:var(--gold);font-weight:700;letter-spacing:1px;margin-bottom:10px;">📖 한글 해석</div>
+      <div style="display:flex;flex-direction:column;gap:7px;">
+        <div style="font-size:0.83rem;color:#555;display:flex;gap:8px;"><span style="color:var(--purple);font-weight:700;flex-shrink:0;">①</span><span>입구가 작아 보이지만, 동굴 안은 매우 넓다.</span></div>
+        <div style="font-size:0.83rem;color:#555;display:flex;gap:8px;"><span style="color:var(--purple);font-weight:700;flex-shrink:0;">②</span><span>서준이 손전등을 들고 있는 동안, 하온은 각 기호를 조심스럽게 읽었다.</span></div>
+        <div style="font-size:0.83rem;color:#555;display:flex;gap:8px;"><span style="color:var(--purple);font-weight:700;flex-shrink:0;">③</span><span>박쥐들이 머리 위를 날았지만 루나는 무섭지 않았다.</span></div>
+        <div style="font-size:0.83rem;color:#555;display:flex;gap:8px;"><span style="color:var(--purple);font-weight:700;flex-shrink:0;">④</span><span>왼쪽 길은 좁고 어두운 반면에, 오른쪽 길은 넓고 밝았다.</span></div>
+        <div style="font-size:0.83rem;color:#555;display:flex;gap:8px;"><span style="color:var(--purple);font-weight:700;flex-shrink:0;">⑤</span><span>다리가 피곤했지만 서준은 계속 앞으로 나아갔다.</span></div>
+        <div style="font-size:0.83rem;color:#555;display:flex;gap:8px;"><span style="color:var(--purple);font-weight:700;flex-shrink:0;">⑥</span><span>무서웠지만, 세 친구는 함께 동굴로 들어갔다.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-nav-btns">
+    <button class="pnav-btn" onclick="showPage(4)">← 예문 B</button>
+    <button class="pnav-btn" onclick="showPage(6)">연습문제 →</button>
+  </div>
+</div>
+
+<!-- ================================================ p.6 연습문제 -->
+<div class="page-block" id="page-6">
+  <div class="page-header">
+    <div class="page-header-left">
+      <div class="unit-badge">Unit 3 · p.6 · [부사절 ②]</div>
+      <div class="page-title">연습 문제 ✏️</div>
+      <div class="page-sub">although / while — 구분하고 위치도 확인!</div>
+    </div>
+    <div class="page-num">6</div>
+  </div>
+
+  <div class="quiz-box">
+    <div class="quiz-title">🏆 Part 1 — although? while?</div>
+
+    <div class="quiz-item">
+      <div class="quiz-q"><span class="q-num">1</span><span><strong>{Although it was cold}</strong>, she went outside.</span></div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectOpt(this,1,'although')">although</div>
+        <div class="quiz-opt" onclick="selectOpt(this,1,'while')">while</div>
+      </div>
+      <div class="quiz-feedback" id="fb-1"></div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-q"><span class="q-num">2</span><span><strong>{While Ha-on read the map}</strong>, Luna drew pictures.</span></div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectOpt(this,2,'although')">although</div>
+        <div class="quiz-opt" onclick="selectOpt(this,2,'while')">while</div>
+      </div>
+      <div class="quiz-feedback" id="fb-2"></div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-q"><span class="q-num">3</span><span>Seo-jun solved it <strong>{although it looked hard}</strong>.</span></div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectOpt(this,3,'although')">although</div>
+        <div class="quiz-opt" onclick="selectOpt(this,3,'while')">while</div>
+      </div>
+      <div class="quiz-feedback" id="fb-3"></div>
+    </div>
+
+    <div class="quiz-title" style="margin-top:16px;">🏆 Part 2 — while의 뜻은? (동안 vs 반면에)</div>
+
+    <div class="quiz-item">
+      <div class="quiz-q"><span class="q-num">4</span><span><strong>While</strong> Luna is adventurous, Seo-jun is cautious.</span></div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectOpt(this,4,'동안')">~하는 동안</div>
+        <div class="quiz-opt" onclick="selectOpt(this,4,'반면에')">~인 반면에</div>
+      </div>
+      <div class="quiz-feedback" id="fb-4"></div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-q"><span class="q-num">5</span><span><strong>While</strong> Ha-on held the map, Seo-jun searched the room.</span></div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectOpt(this,5,'동안')">~하는 동안</div>
+        <div class="quiz-opt" onclick="selectOpt(this,5,'반면에')">~인 반면에</div>
+      </div>
+      <div class="quiz-feedback" id="fb-5"></div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-q"><span class="q-num">6</span><span>부사절 위치: <strong>{Although the path was steep}</strong>, they climbed up.</span></div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectOpt(this,6,'앞마당')">앞마당</div>
+        <div class="quiz-opt" onclick="selectOpt(this,6,'뒤마당')">뒤마당</div>
+      </div>
+      <div class="quiz-feedback" id="fb-6"></div>
+    </div>
+
+    <button class="check-btn" onclick="checkQuiz()">✅ 채점하기</button>
+    <button class="reset-btn" id="reset-btn" onclick="resetQuiz()">↺ 다시 풀기</button>
+    <div class="score-bar" id="score-bar"></div>
+  </div>
+
+  <div class="page-nav-btns">
+    <button class="pnav-btn" onclick="showPage(5)">← 지문독해</button>
+    <button class="pnav-btn" onclick="showPage(7)">단어정리 →</button>
+  </div>
+</div>
+
+<!-- ================================================ p.7 단어정리 -->
+<div class="page-block" id="page-7">
+  <div class="page-header">
+    <div class="page-header-left">
+      <div class="unit-badge">Unit 3 · p.7 · [부사절 ②]</div>
+      <div class="page-title">단어 정리 📝</div>
+      <div class="page-sub">Unit 3 핵심 단어 + Unit 4 예고</div>
+    </div>
+    <div class="page-num">7</div>
+  </div>
+
+  <div class="section-title">⭐ Unit 3 핵심 정리</div>
+  <div class="rule-box" style="margin-bottom:16px;">
+    <div class="conj-grid2">
+      <div class="conj-card2 although">
+        <div class="cj2-word">although</div>
+        <div class="cj2-mean">비록 ~하지만</div>
+        <div class="cj2-type">예상 반전 ⚡</div>
+      </div>
+      <div class="conj-card2 while">
+        <div class="cj2-word">while</div>
+        <div class="cj2-mean">①동안 ②반면에</div>
+        <div class="cj2-type">시간 🕐 / 대조 ↔</div>
+      </div>
+    </div>
+    <div class="tip-box" style="margin-top:12px;">
+      <strong>📌 부사절 총정리 (Unit 2+3):</strong><br>
+      when(시간) · because(이유) · if(조건) · although(반전) · while(동안/반면에)
+    </div>
+  </div>
+
+  <div class="section-title">📝 핵심 단어장</div>
+  <div style="display:flex;gap:8px;margin-bottom:14px;">
+    <button class="vstab vstab-on" id="vtab1" onclick="vSwitch(1)">① 플래시카드</button>
+    <button class="vstab" id="vtab2" onclick="vSwitch(2)">② 매칭 게임</button>
+  </div>
+
+  <div id="vstage1">
+    <div style="font-size:0.75rem;color:#888;margin-bottom:10px;">👆 카드를 탭하면 뜻 + 예문이 펼쳐져요!</div>
+    <div class="fc-grid2">
+      <div class="fc2" onclick="this.classList.toggle('flipped2')">
+        <div class="fc2-en" onclick="event.stopPropagation();speakWord(this)">🔊 cave</div>
+        <div class="fc2-ko">동굴</div>
+        <div class="fc2-ex">Although the cave was dark, they went in.<br><span class="fc2-ko-ex">동굴이 어두웠지만, 그들은 들어갔다.</span></div>
+        <div class="fc2-hint">탭하여 확인 ▼</div>
+      </div>
+      <div class="fc2" onclick="this.classList.toggle('flipped2')">
+        <div class="fc2-en" onclick="event.stopPropagation();speakWord(this)">🔊 entrance</div>
+        <div class="fc2-ko">입구</div>
+        <div class="fc2-ex">The entrance looks small but the cave is huge.<br><span class="fc2-ko-ex">입구는 작아 보이지만 동굴은 거대하다.</span></div>
+        <div class="fc2-hint">탭하여 확인 ▼</div>
+      </div>
+      <div class="fc2" onclick="this.classList.toggle('flipped2')">
+        <div class="fc2-en" onclick="event.stopPropagation();speakWord(this)">🔊 narrow</div>
+        <div class="fc2-ko">좁은</div>
+        <div class="fc2-ex">While the left path was narrow, the right was wide.<br><span class="fc2-ko-ex">왼쪽은 좁은 반면 오른쪽은 넓었다.</span></div>
+        <div class="fc2-hint">탭하여 확인 ▼</div>
+      </div>
+      <div class="fc2" onclick="this.classList.toggle('flipped2')">
+        <div class="fc2-en" onclick="event.stopPropagation();speakWord(this)">🔊 symbol</div>
+        <div class="fc2-ko">기호, 상징</div>
+        <div class="fc2-ex">Ha-on read each symbol on the wall carefully.<br><span class="fc2-ko-ex">하온은 벽의 각 기호를 조심스럽게 읽었다.</span></div>
+        <div class="fc2-hint">탭하여 확인 ▼</div>
+      </div>
+      <div class="fc2" onclick="this.classList.toggle('flipped2')">
+        <div class="fc2-en" onclick="event.stopPropagation();speakWord(this)">🔊 flashlight</div>
+        <div class="fc2-ko">손전등</div>
+        <div class="fc2-ex">While Seo-jun held the flashlight, Ha-on read the map.<br><span class="fc2-ko-ex">서준이 손전등을 들고 있는 동안 하온이 지도를 읽었다.</span></div>
+        <div class="fc2-hint">탭하여 확인 ▼</div>
+      </div>
+      <div class="fc2" onclick="this.classList.toggle('flipped2')">
+        <div class="fc2-en" onclick="event.stopPropagation();speakWord(this)">🔊 cautious</div>
+        <div class="fc2-ko">신중한</div>
+        <div class="fc2-ex">While Luna is bold, Seo-jun is very cautious.<br><span class="fc2-ko-ex">루나는 대담한 반면, 서준은 매우 신중하다.</span></div>
+        <div class="fc2-hint">탭하여 확인 ▼</div>
+      </div>
+      <div class="fc2" onclick="this.classList.toggle('flipped2')">
+        <div class="fc2-en" onclick="event.stopPropagation();speakWord(this)">🔊 steep</div>
+        <div class="fc2-ko">가파른</div>
+        <div class="fc2-ex">Although the path was steep, they kept climbing.<br><span class="fc2-ko-ex">길이 가팔랐지만, 그들은 계속 올랐다.</span></div>
+        <div class="fc2-hint">탭하여 확인 ▼</div>
+      </div>
+      <div class="fc2" onclick="this.classList.toggle('flipped2')">
+        <div class="fc2-en" onclick="event.stopPropagation();speakWord(this)">🔊 dangerous</div>
+        <div class="fc2-ko">위험한</div>
+        <div class="fc2-ex">Although it was dangerous, the explorer went in.<br><span class="fc2-ko-ex">위험했지만, 탐험가는 들어갔다.</span></div>
+        <div class="fc2-hint">탭하여 확인 ▼</div>
+      </div>
+      <div class="fc2" onclick="this.classList.toggle('flipped2')">
+        <div class="fc2-en" onclick="event.stopPropagation();speakWord(this)">🔊 forward</div>
+        <div class="fc2-ko">앞으로</div>
+        <div class="fc2-ex">Luna kept walking forward although it was dark.<br><span class="fc2-ko-ex">어두웠지만 루나는 계속 앞으로 걸어갔다.</span></div>
+        <div class="fc2-hint">탭하여 확인 ▼</div>
+      </div>
+      <div class="fc2" onclick="this.classList.toggle('flipped2')">
+        <div class="fc2-en" onclick="event.stopPropagation();speakWord(this)">🔊 overhead</div>
+        <div class="fc2-ko">머리 위에</div>
+        <div class="fc2-ex">Bats flew overhead although Luna was not afraid.<br><span class="fc2-ko-ex">박쥐들이 머리 위를 날았지만 루나는 무섭지 않았다.</span></div>
+        <div class="fc2-hint">탭하여 확인 ▼</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:10px;">
+      <button class="vbtn" onclick="document.querySelectorAll('.fc2').forEach(c=>c.classList.remove('flipped2'))">↺ 모두 접기</button>
+    </div>
+  </div>
+
+  <div id="vstage2" style="display:none;">
+    <div style="font-size:0.75rem;color:#888;margin-bottom:10px;">👆 영어를 먼저 탭 → 한글 뜻을 탭하여 매칭!</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div>
+        <div style="font-size:0.7rem;font-weight:700;color:#888;text-align:center;margin-bottom:7px;letter-spacing:1px;">ENGLISH</div>
+        <div id="vm-en-col" style="display:flex;flex-direction:column;gap:7px;"></div>
+      </div>
+      <div>
+        <div style="font-size:0.7rem;font-weight:700;color:#888;text-align:center;margin-bottom:7px;letter-spacing:1px;">한글 뜻</div>
+        <div id="vm-ko-col" style="display:flex;flex-direction:column;gap:7px;"></div>
+      </div>
+    </div>
+    <div id="vm-msg" style="text-align:center;margin-top:10px;font-size:0.85rem;font-weight:700;min-height:22px;"></div>
+    <div id="vm-progress" style="text-align:center;font-size:0.75rem;color:#888;margin-top:4px;"></div>
+    <div style="text-align:center;margin-top:8px;">
+      <button class="vbtn" onclick="initMatch()">↺ 다시 하기</button>
+    </div>
+  </div>
+
+  <div class="preview-box" style="margin-top:16px;">
+    <div class="prev-label">🔮 다음 에피소드 예고</div>
+    <div class="prev-title">Unit 4 — [명사절] 비밀 방의 암호 🔐<br><small>that / if / whether</small></div>
+    <div class="prev-sub">동굴 깊은 곳 비밀 방! 벽에 새겨진 암호를 해독해야 해.<br>"나는 이 암호가 무엇인지 알고 싶다!"</div>
+    <div class="prev-sentence">
+      "I know that the key is hidden somewhere in this room.<br>
+      Ha-on wondered whether the code was a number or a word."
+    </div>
+  </div>
+
+  <div class="complete-badge">
+    <div class="cb-title">🎉 Unit 3 완료!</div>
+    <div class="cb-sub">although·while 부사절 마스터! 동굴 안으로 전진! 🦇</div>
+  </div>
+
+  <div class="page-nav-btns">
+    <button class="pnav-btn" onclick="showPage(6)">← 연습문제</button>
+    <button class="pnav-btn" onclick="showPage(8)">추가문제 →</button>
+  </div>
+</div>
+
+<!-- ================================================ p.8 추가문제 -->
+<div class="page-block" id="page-8">
+  <div class="page-header">
+    <div class="page-header-left">
+      <div class="unit-badge">Unit 3 · p.8 · [부사절 ②]</div>
+      <div class="page-title">추가 문제 ➕</div>
+      <div class="page-sub">Unit 2+3 부사절 총정리!</div>
+    </div>
+    <div class="page-num">8</div>
+  </div>
+
+  <div class="quiz-box">
+    <div class="quiz-title">🔗 when·because·if·although·while 중 알맞은 것을 고르세요!</div>
+    <div class="tip-box" style="margin-bottom:14px;">
+      Unit 2와 Unit 3를 합쳐서 복습해요. 접속사의 의미를 잘 생각해봐요!
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-q"><span class="q-num">1</span><span>______ the cave was scary, they went inside bravely.<br><span style="font-size:0.8rem;color:#888;">(무서웠지만 용감하게 들어갔다)</span></span></div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectOpt2(this,1,'when')">when</div>
+        <div class="quiz-opt" onclick="selectOpt2(this,1,'although')">although</div>
+        <div class="quiz-opt" onclick="selectOpt2(this,1,'because')">because</div>
+      </div>
+      <div class="quiz-feedback" id="efb-1"></div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-q"><span class="q-num">2</span><span>Ha-on was excited ______ she found the ancient key.<br><span style="font-size:0.8rem;color:#888;">(열쇠를 찾았기 때문에 흥분했다)</span></span></div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectOpt2(this,2,'while')">while</div>
+        <div class="quiz-opt" onclick="selectOpt2(this,2,'although')">although</div>
+        <div class="quiz-opt" onclick="selectOpt2(this,2,'because')">because</div>
+      </div>
+      <div class="quiz-feedback" id="efb-2"></div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-q"><span class="q-num">3</span><span>______ Luna searched the left wall, Seo-jun checked the floor.<br><span style="font-size:0.8rem;color:#888;">(루나가 왼쪽 벽을 찾는 동안 서준은 바닥을 확인했다)</span></span></div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectOpt2(this,3,'while')">while</div>
+        <div class="quiz-opt" onclick="selectOpt2(this,3,'although')">although</div>
+        <div class="quiz-opt" onclick="selectOpt2(this,3,'if')">if</div>
+      </div>
+      <div class="quiz-feedback" id="efb-3"></div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-q"><span class="q-num">4</span><span>______ you solve the puzzle, the secret door will open.<br><span style="font-size:0.8rem;color:#888;">(퍼즐을 풀면 비밀 문이 열릴 것이다)</span></span></div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectOpt2(this,4,'if')">if</div>
+        <div class="quiz-opt" onclick="selectOpt2(this,4,'although')">although</div>
+        <div class="quiz-opt" onclick="selectOpt2(this,4,'while')">while</div>
+      </div>
+      <div class="quiz-feedback" id="efb-4"></div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-q"><span class="q-num">5</span><span>______ Ha-on is creative, Seo-jun is logical.<br><span style="font-size:0.8rem;color:#888;">(하온은 창의적인 반면, 서준은 논리적이다)</span></span></div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectOpt2(this,5,'when')">when</div>
+        <div class="quiz-opt" onclick="selectOpt2(this,5,'while')">while</div>
+        <div class="quiz-opt" onclick="selectOpt2(this,5,'because')">because</div>
+      </div>
+      <div class="quiz-feedback" id="efb-5"></div>
+    </div>
+
+    <button class="check-btn" onclick="checkQuiz2()">✅ 채점하기</button>
+    <button class="reset-btn" id="reset-btn2" onclick="resetQuiz2()">↺ 다시 풀기</button>
+    <div class="score-bar" id="score-bar2"></div>
+  </div>
+
+  <div class="complete-badge" style="margin-top:16px;">
+    <div class="cb-title">🏆 부사절 완전 정복!</div>
+    <div class="cb-sub">when·because·if·although·while 5총사 완료! Unit 4 명사절로! 🔐</div>
+  </div>
+
+  <div class="page-nav-btns">
+    <button class="pnav-btn" onclick="showPage(7)">← 단어정리</button>
+    <button class="pnav-btn disabled">Unit 4 준비중</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+let touchStartX=0,touchStartY=0;
+document.addEventListener('touchstart',e=>{touchStartX=e.changedTouches[0].screenX;touchStartY=e.changedTouches[0].screenY;},{passive:true});
+document.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].screenX-touchStartX,dy=e.changedTouches[0].screenY-touchStartY;
+  if(Math.abs(dx)>=50&&Math.abs(dy)<=100){if(dx<0&&currentPage<8)showPage(currentPage+1);if(dx>0&&currentPage>1)showPage(currentPage-1);}
+},{passive:true});
+
+const PASSWORDS=['월도3','waldo3','unit03','book2'];
+function checkPwd(){
+  const val=document.getElementById('pwd-input').value.trim(),err=document.getElementById('lock-error');
+  if(PASSWORDS.includes(val)){document.getElementById('lock-screen').style.display='none';err.style.display='none';}
+  else{err.style.display='block';document.getElementById('pwd-input').value='';document.getElementById('pwd-input').focus();}
+}
+
+let currentPage=1;
+function showPage(n){
+  document.querySelectorAll('.page-block').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.page-btn').forEach(el=>el.classList.remove('active'));
+  document.getElementById('page-'+n).classList.add('active');
+  document.querySelectorAll('.page-btn')[n-1].classList.add('active');
+  currentPage=n;window.scrollTo({top:0,behavior:'smooth'});
+}
+
+let ttsEnabled=false,voices=[];
+window.speechSynthesis.onvoiceschanged=()=>{voices=window.speechSynthesis.getVoices();};
+function toggleTTS(){ttsEnabled=!ttsEnabled;document.getElementById('tts-label').textContent=ttsEnabled?'TTS 켜짐':'TTS 켜기';}
+function speak(el,text){
+  const t=text||(el?el.dataset.text:'');if(!t)return;
+  window.speechSynthesis.cancel();
+  const utt=new SpeechSynthesisUtterance(t);utt.lang='en-US';utt.rate=0.92;
+  const en=voices.find(v=>v.lang.startsWith('en'));if(en)utt.voice=en;
+  window.speechSynthesis.speak(utt);
+}
+
+const answers1={1:'although',2:'while',3:'although',4:'반면에',5:'동안',6:'앞마당'};
+const feedback1={
+  1:{c:'맞아요! 추웠지만 나갔다 → 예상 반전 → although!',w:'예상 반전(~하지만)일 때는 although예요.'},
+  2:{c:'맞아요! 동시에 일어난 두 동작 → while!',w:'두 동작이 동시에 일어날 때는 while이에요.'},
+  3:{c:'맞아요! 어려워 보였지만 풀었다 → although!',w:'예상 반전 → although예요.'},
+  4:{c:'맞아요! 루나↔서준 대조 → "반면에"!',w:'두 성격을 비교하면 "반면에" 의미예요.'},
+  5:{c:'맞아요! 두 동작 동시 → "~하는 동안"!',w:'두 동작이 동시에 일어나면 "동안" 의미예요.'},
+  6:{c:'맞아요! 부사절이 앞 → 앞마당, 쉼표 필수!',w:'부사절이 문장 앞에 오면 앞마당이에요.'}
+};
+const userAnswers1={};
+function selectOpt(el,qn,val){
+  el.parentElement.querySelectorAll('.quiz-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');userAnswers1[qn]=val;
+}
+function checkQuiz(){
+  let score=0;
+  for(let i=1;i<=6;i++){
+    const ans=userAnswers1[i],fb=document.getElementById('fb-'+i);
+    const opts=document.querySelectorAll('.quiz-item')[i-1].querySelectorAll('.quiz-opt');
+    if(!ans){fb.textContent='⚠️ 선택해주세요!';fb.className='quiz-feedback show wrong-fb';continue;}
+    if(ans===answers1[i]){
+      score++;fb.textContent='✅ '+feedback1[i].c;fb.className='quiz-feedback show correct-fb';
+      opts.forEach(o=>{if(o.classList.contains('selected'))o.classList.add('correct');});
+    }else{
+      fb.textContent='❌ '+feedback1[i].w;fb.className='quiz-feedback show wrong-fb';
+      opts.forEach(o=>{if(o.classList.contains('selected'))o.classList.add('wrong');});
+    }
+  }
+  const sb=document.getElementById('score-bar');
+  const emoji=score===6?'🏆 완벽!':score>=4?'👍 훌륭해요!':'💪 조금 더 연습해요!';
+  sb.textContent=`${emoji} ${score} / 6 정답`;sb.style.background=score>=4?'#E8F5E9':'#FFF3E0';sb.style.color=score>=4?'#2E7D32':'#E65100';sb.className='score-bar show';
+  document.getElementById('reset-btn').className='reset-btn show';
+}
+function resetQuiz(){
+  for(let i=1;i<=6;i++){
+    document.querySelectorAll('.quiz-item')[i-1].querySelectorAll('.quiz-opt').forEach(o=>{o.className='quiz-opt';});
+    const fb=document.getElementById('fb-'+i);fb.className='quiz-feedback';fb.textContent='';
+  }
+  Object.keys(userAnswers1).forEach(k=>delete userAnswers1[k]);
+  document.getElementById('score-bar').className='score-bar';document.getElementById('reset-btn').className='reset-btn';
+}
+
+const answers2={1:'although',2:'because',3:'while',4:'if',5:'while'};
+const feedback2={
+  1:{c:'맞아요! 무서웠지만 들어갔다 → although!',w:'예상 반전 → although예요.'},
+  2:{c:'맞아요! 이유(열쇠를 찾아서) → because!',w:'이유를 나타낼 때는 because예요.'},
+  3:{c:'맞아요! 동시에 일어난 두 동작 → while!',w:'동시 동작을 나타낼 때는 while이에요.'},
+  4:{c:'맞아요! 조건(풀면) → if! 앞마당이라 쉼표도!',w:'조건(만약~라면)을 나타낼 때는 if예요.'},
+  5:{c:'맞아요! 하온↔서준 대조 → while(반면에)!',w:'대조할 때는 while(반면에)이에요.'}
+};
+const userAnswers2={};
+function selectOpt2(el,qn,val){
+  const items=document.getElementById('page-8').querySelectorAll('.quiz-item');
+  items[qn-1].querySelectorAll('.quiz-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');userAnswers2[qn]=val;
+}
+function checkQuiz2(){
+  let score=0;
+  const items=document.getElementById('page-8').querySelectorAll('.quiz-item');
+  for(let i=1;i<=5;i++){
+    const ans=userAnswers2[i],fb=document.getElementById('efb-'+i);
+    const opts=items[i-1].querySelectorAll('.quiz-opt');
+    if(!ans){fb.textContent='⚠️ 선택해주세요!';fb.className='quiz-feedback show wrong-fb';continue;}
+    if(ans===answers2[i]){
+      score++;fb.textContent='✅ '+feedback2[i].c;fb.className='quiz-feedback show correct-fb';
+      opts.forEach(o=>{if(o.classList.contains('selected'))o.classList.add('correct');});
+    }else{
+      fb.textContent='❌ '+feedback2[i].w;fb.className='quiz-feedback show wrong-fb';
+      opts.forEach(o=>{if(o.classList.contains('selected'))o.classList.add('wrong');});
+    }
+  }
+  const sb=document.getElementById('score-bar2');
+  const emoji=score===5?'🏆 완벽!':score>=3?'👍 훌륭해요!':'💪 조금 더 연습해요!';
+  sb.textContent=`${emoji} ${score} / 5 정답`;sb.style.background=score>=3?'#E8F5E9':'#FFF3E0';sb.style.color=score>=3?'#2E7D32':'#E65100';sb.className='score-bar show';
+  document.getElementById('reset-btn2').className='reset-btn show';
+}
+function resetQuiz2(){
+  const items=document.getElementById('page-8').querySelectorAll('.quiz-item');
+  for(let i=1;i<=5;i++){
+    items[i-1].querySelectorAll('.quiz-opt').forEach(o=>{o.className='quiz-opt';});
+    const fb=document.getElementById('efb-'+i);fb.className='quiz-feedback';fb.textContent='';
+  }
+  Object.keys(userAnswers2).forEach(k=>delete userAnswers2[k]);
+  document.getElementById('score-bar2').className='score-bar';document.getElementById('reset-btn2').className='reset-btn';
+}
+
+const vmWords=[
+  {en:'cave',ko:'동굴'},{en:'entrance',ko:'입구'},
+  {en:'narrow',ko:'좁은'},{en:'symbol',ko:'기호'},
+  {en:'flashlight',ko:'손전등'},{en:'cautious',ko:'신중한'},
+  {en:'steep',ko:'가파른'},{en:'dangerous',ko:'위험한'},
+  {en:'forward',ko:'앞으로'},{en:'overhead',ko:'머리 위에'}
+];
+let vmSelEn=null,vmSelKo=null,vmMatched=0;
+function vSwitch(n){
+  document.getElementById('vstage1').style.display=n===1?'block':'none';
+  document.getElementById('vstage2').style.display=n===2?'block':'none';
+  document.getElementById('vtab1').className='vstab'+(n===1?' vstab-on':'');
+  document.getElementById('vtab2').className='vstab'+(n===2?' vstab-on':'');
+  if(n===2)initMatch();
+}
+function initMatch(){
+  vmSelEn=null;vmSelKo=null;vmMatched=0;
+  document.getElementById('vm-msg').textContent='';
+  const shuffled=[...vmWords].sort(()=>Math.random()-0.5).slice(0,5);
+  const koShuffled=[...shuffled].sort(()=>Math.random()-0.5);
+  const enCol=document.getElementById('vm-en-col'),koCol=document.getElementById('vm-ko-col');
+  enCol.innerHTML='';koCol.innerHTML='';
+  shuffled.forEach(w=>{const d=document.createElement('div');d.className='vm-en';d.dataset.w=w.en;d.textContent=w.en;d.onclick=()=>tapVmEn(d);enCol.appendChild(d);});
+  koShuffled.forEach(w=>{const d=document.createElement('div');d.className='vm-ko';d.dataset.w=w.en;d.textContent=w.ko;d.onclick=()=>tapVmKo(d);koCol.appendChild(d);});
+  document.getElementById('vm-progress').textContent='0 / 5 매칭';
+}
+function tapVmEn(el){
+  if(el.classList.contains('vm-ok'))return;
+  document.querySelectorAll('.vm-en').forEach(e=>e.classList.remove('vm-sel'));
+  el.classList.add('vm-sel');vmSelEn=el;if(vmSelKo)tryVmMatch();
+}
+function tapVmKo(el){
+  if(el.classList.contains('vm-gone'))return;
+  document.querySelectorAll('.vm-ko').forEach(e=>e.classList.remove('vm-sel'));
+  el.classList.add('vm-sel');vmSelKo=el;if(vmSelEn)tryVmMatch();
+}
+function tryVmMatch(){
+  const msg=document.getElementById('vm-msg');
+  if(vmSelEn.dataset.w===vmSelKo.dataset.w){
+    vmSelEn.classList.add('vm-ok');vmSelEn.classList.remove('vm-sel');
+    vmSelKo.classList.add('vm-gone');vmSelKo.classList.remove('vm-sel');
+    vmMatched++;document.getElementById('vm-progress').textContent=`${vmMatched} / 5 매칭`;
+    if(vmMatched===5){msg.textContent='🏆 완벽! 모든 단어 매칭 성공!';msg.style.color='var(--gold)';}
+    else{msg.textContent='✅ 정답!';msg.style.color='#2E7D32';setTimeout(()=>{msg.textContent='';},900);}
+  }else{
+    vmSelEn.classList.add('vm-err');vmSelKo.classList.add('vm-err');
+    msg.textContent='❌ 다시 해봐요!';msg.style.color='#C62828';
+    setTimeout(()=>{vmSelEn.classList.remove('vm-err','vm-sel');vmSelKo.classList.remove('vm-err','vm-sel');msg.textContent='';},400);
+  }
+  vmSelEn=null;vmSelKo=null;
+}
+
+function speakWord(el) {
+  const word = el.textContent.replace('🔊 ','').trim();
+  window.speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(word);
+  utt.lang = 'en-US'; utt.rate = 0.85; utt.pitch = 1;
+  const enVoice = window.speechSynthesis.getVoices().find(v => v.lang.startsWith('en'));
+  if (enVoice) utt.voice = enVoice;
+  window.speechSynthesis.speak(utt);
+}
+</script>
+</body>
+</html>
