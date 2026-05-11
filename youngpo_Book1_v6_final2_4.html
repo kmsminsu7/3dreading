@@ -1124,6 +1124,244 @@ body {
 .wspinner{display:inline-block;width:16px;height:16px;border:2px solid #ddd;border-top-color:#5C3D8A;border-radius:50%;animation:wspin .7s linear infinite;vertical-align:middle;margin-right:5px;}
 @keyframes wspin{to{transform:rotate(360deg);}}
 
+
+/* ===== 진도 저장 UI ===== */
+#progress-toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: linear-gradient(135deg, #1A2744 0%, #5C3D8A 100%);
+  color: white; border-radius: 16px; padding: 16px 20px;
+  z-index: 9998; box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+  font-size: 0.9rem; line-height: 1.6; min-width: 280px; max-width: 340px;
+  animation: toastIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes toastIn {
+  from { opacity:0; transform: translateX(-50%) translateY(40px); }
+  to   { opacity:1; transform: translateX(-50%) translateY(0); }
+}
+#progress-toast.hide {
+  animation: toastOut 0.3s ease forwards;
+}
+@keyframes toastOut {
+  to { opacity:0; transform: translateX(-50%) translateY(30px); }
+}
+.toast-title { font-size:0.95rem; font-weight:700; margin-bottom:10px; }
+.toast-title span { color: #F5E9C8; }
+.toast-btns { display:flex; gap:8px; }
+.toast-btn-resume {
+  flex:1; padding:8px 0; background:#C8A84B; color:#1A2744;
+  font-weight:700; border:none; border-radius:8px; cursor:pointer; font-size:0.85rem;
+}
+.toast-btn-resume:hover { background:#F5E9C8; }
+.toast-btn-dismiss {
+  padding:8px 14px; background:rgba(255,255,255,0.12); color:white;
+  border:1px solid rgba(255,255,255,0.25); border-radius:8px; cursor:pointer; font-size:0.85rem;
+}
+.toast-btn-dismiss:hover { background:rgba(255,255,255,0.2); }
+
+/* 유닛 탭 진도 뱃지 */
+.nav-btn .unit-prog {
+  display:block; font-size:9px; color:rgba(255,255,255,0.55);
+  line-height:1; margin-top:2px; letter-spacing:0;
+}
+.nav-btn.active .unit-prog { color:rgba(255,255,255,0.85); }
+
+/* 페이지 버튼 방문 표시 */
+.page-btn.visited:not(.active) {
+  color: #a8d89a;
+  border-bottom: 2px solid #6db35a;
+}
+/* 진도 리셋 버튼 */
+#progress-reset-btn {
+  position:fixed; bottom:24px; right:16px;
+  background:rgba(255,255,255,0.12); color:rgba(255,255,255,0.6);
+  border:1px solid rgba(255,255,255,0.2); border-radius:20px;
+  padding:5px 12px; font-size:0.72rem; cursor:pointer; z-index:200;
+  display:none;
+}
+#progress-reset-btn:hover { background:rgba(255,255,255,0.2); color:white; }
+
+/* ===== 진도 저장 UI (심플 카드형) ===== */
+
+/* 유닛 탭 아래 작은 도트 진도 */
+.nav-btn .unit-prog {
+  display: block;
+  font-size: 8px;
+  line-height: 1;
+  margin-top: 2px;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: -1px;
+}
+.nav-btn.active .unit-prog { color: #F5E9C8; }
+
+/* 방문한 페이지 버튼 표시 */
+.page-btn.visited:not(.active) {
+  color: #7DC87A;
+  border-bottom: 2px solid #5aaa57;
+}
+
+/* 이어서 학습 카드 */
+#resume-card {
+  position: fixed;
+  bottom: 20px; left: 50%;
+  transform: translateX(-50%);
+  background: #1A2744;
+  border: 2px solid #C8A84B;
+  border-radius: 20px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  z-index: 9997;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.4);
+  animation: cardUp 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  white-space: nowrap;
+}
+@keyframes cardUp {
+  from { opacity:0; transform: translateX(-50%) translateY(30px); }
+  to   { opacity:1; transform: translateX(-50%) translateY(0); }
+}
+#resume-card.hide {
+  animation: cardDown 0.25s ease forwards;
+}
+@keyframes cardDown {
+  to { opacity:0; transform: translateX(-50%) translateY(20px); }
+}
+.rc-icon { font-size: 1.6rem; }
+.rc-text { color: white; }
+.rc-label { font-size: 0.7rem; color: rgba(255,255,255,0.55); margin-bottom: 2px; }
+.rc-pos { font-size: 0.95rem; font-weight: 700; color: #F5E9C8; }
+.rc-pct { font-size: 0.7rem; color: rgba(255,255,255,0.5); margin-top: 1px; }
+.rc-btn {
+  background: #C8A84B; color: #1A2744;
+  border: none; border-radius: 12px;
+  padding: 8px 14px; font-size: 0.82rem; font-weight: 700;
+  cursor: pointer; white-space: nowrap;
+}
+.rc-btn:hover { background: #F5E9C8; }
+.rc-close {
+  background: none; border: none;
+  color: rgba(255,255,255,0.4); font-size: 1rem;
+  cursor: pointer; padding: 0 2px; margin-left: -6px;
+}
+.rc-close:hover { color: white; }
+
+/* ===== 진도 바 (페이지 상단 고정) ===== */
+#prog-bar-wrap {
+  background: #1A2744;
+  padding: 6px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.7);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+#prog-bar-track {
+  flex: 1;
+  height: 6px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 10px;
+  overflow: hidden;
+}
+#prog-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #C8A84B, #F5E9C8);
+  border-radius: 10px;
+  transition: width 0.5s ease;
+  min-width: 4px;
+}
+#prog-bar-label {
+  white-space: nowrap;
+  color: #F5E9C8;
+  font-weight: 700;
+  font-size: 0.72rem;
+  min-width: 36px;
+  text-align: right;
+}
+
+/* ===== 📊 성적표 모달 ===== */
+#score-modal-bg {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(10,15,40,0.75);
+  z-index: 9996;
+  align-items: center; justify-content: center;
+}
+#score-modal-bg.open { display: flex; }
+#score-modal {
+  background: #fff;
+  border-radius: 20px;
+  padding: 0;
+  width: 92%; max-width: 480px;
+  max-height: 85vh; overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  animation: modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes modalIn {
+  from { opacity:0; transform:scale(0.9); }
+  to   { opacity:1; transform:scale(1); }
+}
+.sm-head {
+  background: linear-gradient(135deg, #1A2744 0%, #5C3D8A 100%);
+  color: white; padding: 18px 20px;
+  border-radius: 20px 20px 0 0;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.sm-head-title { font-size: 1.05rem; font-weight: 700; }
+.sm-head-close {
+  background: rgba(255,255,255,0.15); border: none; color: white;
+  width: 28px; height: 28px; border-radius: 50%;
+  cursor: pointer; font-size: 1rem; line-height: 28px; text-align: center;
+}
+.sm-summary {
+  background: #F3F0FF; padding: 12px 20px;
+  display: flex; gap: 20px; align-items: center;
+  border-bottom: 1px solid #E0DBFF;
+}
+.sm-sum-item { text-align: center; }
+.sm-sum-num { font-size: 1.5rem; font-weight: 900; color: #5C3D8A; }
+.sm-sum-label { font-size: 0.7rem; color: #888; margin-top: 2px; }
+.sm-total-bar-wrap { flex: 1; }
+.sm-total-bar-track {
+  height: 8px; background: #ddd; border-radius: 10px; overflow: hidden; margin-top: 4px;
+}
+.sm-total-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #C8A84B, #5C3D8A);
+  border-radius: 10px; transition: width 0.6s ease;
+}
+.sm-total-pct { font-size: 0.75rem; color: #5C3D8A; font-weight: 700; margin-bottom: 2px; }
+.sm-body { padding: 12px 16px; }
+.sm-row {
+  display: grid; grid-template-columns: 60px 1fr 1fr;
+  gap: 8px; padding: 10px 4px;
+  border-bottom: 1px solid #f0eef8; align-items: center;
+}
+.sm-row:last-child { border-bottom: none; }
+.sm-unit-badge {
+  background: #5C3D8A; color: white;
+  border-radius: 8px; padding: 4px 8px;
+  font-size: 0.72rem; font-weight: 700; text-align: center;
+}
+.sm-score-cell { text-align: center; }
+.sm-score-num { font-size: 0.9rem; font-weight: 700; }
+.sm-stars { font-size: 0.65rem; letter-spacing: -1px; margin-top: 2px; }
+.sm-none { font-size: 0.72rem; color: #bbb; }
+.sm-col-head {
+  display: grid; grid-template-columns: 60px 1fr 1fr;
+  gap: 8px; padding: 6px 4px;
+  font-size: 0.68rem; font-weight: 700; color: #888;
+  border-bottom: 2px solid #E0DBFF; margin-bottom: 2px;
+  text-align: center;
+}
+/* 진도 바의 성적 버튼 */
+#score-open-btn {
+  background: rgba(200,168,75,0.2); color: #F5E9C8;
+  border: 1px solid rgba(200,168,75,0.4);
+  border-radius: 12px; padding: 2px 10px;
+  font-size: 0.72rem; cursor: pointer; white-space: nowrap;
+}
+#score-open-btn:hover { background: rgba(200,168,75,0.35); }
 </style>
 </head>
 <body>
@@ -1145,6 +1383,12 @@ body {
       <button class="nav-btn active" id="unit-tab-1" onclick="showUnit(1)">U1</button><button class="nav-btn" id="unit-tab-2" onclick="showUnit(2)">U2</button><button class="nav-btn" id="unit-tab-3" onclick="showUnit(3)">U3</button><button class="nav-btn" id="unit-tab-4" onclick="showUnit(4)">U4</button><button class="nav-btn" id="unit-tab-5" onclick="showUnit(5)">U5</button><button class="nav-btn" id="unit-tab-6" onclick="showUnit(6)">U6</button><button class="nav-btn" id="unit-tab-7" onclick="showUnit(7)">U7</button><button class="nav-btn" id="unit-tab-8" onclick="showUnit(8)">U8</button>
     </div>
   </div>
+</div>
+<div id="prog-bar-wrap">
+  <span id="prog-bar-pos" style="white-space:nowrap;">📖 Unit 1 · p.1</span>
+  <div id="prog-bar-track"><div id="prog-bar-fill" style="width:2%"></div></div>
+  <span id="prog-bar-label">2%</span>
+  <button id="score-open-btn" onclick="openScoreModal()">📊 성적</button>
 </div>
 <div id="unit-container-1" class="unit-container active">
 <div id="page-nav-u1" class="page-nav-bar">
@@ -1943,14 +2187,43 @@ body {
   <div class="page-header-left">
     <div class="unit-badge">Unit 1 · P.8</div>
     <div class="page-title">추가 문제 ➕</div>
-    <div class="page-sub">명사블럭이 뭐야? 🧱 · 추가 문제 (준비 중)</div>
+    <div class="page-sub">명사블럭이 뭐야? 🧱 · 추가 문제</div>
   </div>
   <div class="page-num">8</div>
 </div>
-<div class="b1-placeholder">
-  <div class="b1-ph-icon">🚧</div>
-  <div class="b1-ph-title">추가 문제</div>
-  <div class="b1-ph-sub">Unit 1 추가 문제 준비 중이에요.<br>곧 업데이트될 예정입니다!</div>
+<div class="b1-content">
+<div style="font-size:1rem;font-weight:700;color:#222;margin-bottom:4px;">🧱 대장 명사를 찾아라!</div>
+<div style="font-size:15px;color:#888;margin-bottom:14px;">각 문제를 읽고 알맞은 답을 고르세요.</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q1. 다음 문장에서 대장 명사는 무엇인가요?</div>
+  <div style="font-size:0.88rem;color:#555;margin:4px 0 6px;font-style:italic;line-height:1.6;">"The tall girl with long hair walked to school."</div><div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u1(this,1,'girl')">girl</button><button class="quiz-opt" onclick="selectOpt2_u1(this,1,'tall')">tall</button><button class="quiz-opt" onclick="selectOpt2_u1(this,1,'hair')">hair</button><button class="quiz-opt" onclick="selectOpt2_u1(this,1,'walked')">walked</button></div>
+  <div class="quiz-feedback" id="u1-efb-1"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q2. 다음 문장에서 대장 명사는 무엇인가요?</div>
+  <div style="font-size:0.88rem;color:#555;margin:4px 0 6px;font-style:italic;line-height:1.6;">"A big white dog on the porch barked at us."</div><div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u1(this,2,'dog')">dog</button><button class="quiz-opt" onclick="selectOpt2_u1(this,2,'big')">big</button><button class="quiz-opt" onclick="selectOpt2_u1(this,2,'porch')">porch</button><button class="quiz-opt" onclick="selectOpt2_u1(this,2,'barked')">barked</button></div>
+  <div class="quiz-feedback" id="u1-efb-2"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q3. 다음 문장에서 대장 명사는 무엇인가요?</div>
+  <div style="font-size:0.88rem;color:#555;margin:4px 0 6px;font-style:italic;line-height:1.6;">"The happy children in the playground sang songs together."</div><div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u1(this,3,'children')">children</button><button class="quiz-opt" onclick="selectOpt2_u1(this,3,'happy')">happy</button><button class="quiz-opt" onclick="selectOpt2_u1(this,3,'playground')">playground</button><button class="quiz-opt" onclick="selectOpt2_u1(this,3,'songs')">songs</button></div>
+  <div class="quiz-feedback" id="u1-efb-3"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q4. 빈칸에 들어갈 알맞은 말은?</div>
+  <div style="font-size:0.88rem;color:#555;margin:4px 0 6px;font-style:italic;line-height:1.6;">"명사블럭 = 대장 명사 + 꾸며주는 ( __ )"</div><div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u1(this,4,'친구')">친구</button><button class="quiz-opt" onclick="selectOpt2_u1(this,4,'동사')">동사</button><button class="quiz-opt" onclick="selectOpt2_u1(this,4,'목적어')">목적어</button><button class="quiz-opt" onclick="selectOpt2_u1(this,4,'전치사')">전치사</button></div>
+  <div class="quiz-feedback" id="u1-efb-4"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q5. 다음 문장의 뼈대(S + V + O)는?</div>
+  <div style="font-size:0.88rem;color:#555;margin:4px 0 6px;font-style:italic;line-height:1.6;">"The curious boy in our class reads books every day."</div><div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u1(this,5,'boy reads books')">boy reads books</button><button class="quiz-opt" onclick="selectOpt2_u1(this,5,'curious boy reads')">curious boy reads</button><button class="quiz-opt" onclick="selectOpt2_u1(this,5,'class reads books')">class reads books</button><button class="quiz-opt" onclick="selectOpt2_u1(this,5,'boy books class')">boy books class</button></div>
+  <div class="quiz-feedback" id="u1-efb-5"></div>
+</div>
+<div class="score-bar" id="u1-score-bar2"></div>
+<div style="display:flex;gap:8px;align-items:center;margin-top:10px;">
+  <button onclick="checkQuiz2_u1()" style="padding:9px 22px;font-size:0.9rem;font-weight:700;background:var(--main);color:white;border:none;border-radius:8px;cursor:pointer;">✅ 채점하기</button>
+  <button class="reset-btn" id="u1-reset-btn2" onclick="resetQuiz2_u1()">↺ 다시 풀기</button>
+</div>
 </div>
 <div class="page-nav-btns">
   <button class="pnav-btn" onclick="showPage_u1(7)">← 이전</button>
@@ -2764,14 +3037,43 @@ body {
   <div class="page-header-left">
     <div class="unit-badge">Unit 2 · P.8</div>
     <div class="page-title">추가 문제 ➕</div>
-    <div class="page-sub">전치사구 🟠 · 추가 문제 (준비 중)</div>
+    <div class="page-sub">전치사구 🟠 · 추가 문제</div>
   </div>
   <div class="page-num">8</div>
 </div>
-<div class="b1-placeholder">
-  <div class="b1-ph-icon">🚧</div>
-  <div class="b1-ph-title">추가 문제</div>
-  <div class="b1-ph-sub">Unit 2 추가 문제 준비 중이에요.<br>곧 업데이트될 예정입니다!</div>
+<div class="b1-content">
+<div style="font-size:1rem;font-weight:700;color:#222;margin-bottom:4px;">🟠 전치사구를 찾아라!</div>
+<div style="font-size:15px;color:#888;margin-bottom:14px;">각 문제를 읽고 알맞은 답을 고르세요.</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q1. "a cat ___ the chair" (의자 아래의 고양이) — 빈칸에 알맞은 전치사는?</div>
+  <div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u2(this,1,'under')">under</button><button class="quiz-opt" onclick="selectOpt2_u2(this,1,'above')">above</button><button class="quiz-opt" onclick="selectOpt2_u2(this,1,'near')">near</button><button class="quiz-opt" onclick="selectOpt2_u2(this,1,'behind')">behind</button></div>
+  <div class="quiz-feedback" id="u2-efb-1"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q2. "a letter ___ my friend" (내 친구로부터의 편지) — 빈칸에 알맞은 전치사는?</div>
+  <div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u2(this,2,'from')">from</button><button class="quiz-opt" onclick="selectOpt2_u2(this,2,'to')">to</button><button class="quiz-opt" onclick="selectOpt2_u2(this,2,'on')">on</button><button class="quiz-opt" onclick="selectOpt2_u2(this,2,'in')">in</button></div>
+  <div class="quiz-feedback" id="u2-efb-2"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q3. "a clock ___ the door" (문 위쪽의 시계) — 빈칸에 알맞은 전치사는?</div>
+  <div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u2(this,3,'above')">above</button><button class="quiz-opt" onclick="selectOpt2_u2(this,3,'under')">under</button><button class="quiz-opt" onclick="selectOpt2_u2(this,3,'behind')">behind</button><button class="quiz-opt" onclick="selectOpt2_u2(this,3,'near')">near</button></div>
+  <div class="quiz-feedback" id="u2-efb-3"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q4. 다음 중 전치사구(전)는 어느 것인가요?</div>
+  <div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u2(this,4,'in the box')">in the box</button><button class="quiz-opt" onclick="selectOpt2_u2(this,4,'to read')">to read</button><button class="quiz-opt" onclick="selectOpt2_u2(this,4,'running fast')">running fast</button><button class="quiz-opt" onclick="selectOpt2_u2(this,4,'who sings')">who sings</button></div>
+  <div class="quiz-feedback" id="u2-efb-4"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q5. 아래 문장에서 명사를 꾸며주는 전치사구 친구는 몇 개인가요?</div>
+  <div style="font-size:0.88rem;color:#555;margin:4px 0 6px;font-style:italic;line-height:1.6;">"The note in the locker had a strange message on it."</div><div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u2(this,5,'2개')">2개</button><button class="quiz-opt" onclick="selectOpt2_u2(this,5,'1개')">1개</button><button class="quiz-opt" onclick="selectOpt2_u2(this,5,'3개')">3개</button><button class="quiz-opt" onclick="selectOpt2_u2(this,5,'4개')">4개</button></div>
+  <div class="quiz-feedback" id="u2-efb-5"></div>
+</div>
+<div class="score-bar" id="u2-score-bar2"></div>
+<div style="display:flex;gap:8px;align-items:center;margin-top:10px;">
+  <button onclick="checkQuiz2_u2()" style="padding:9px 22px;font-size:0.9rem;font-weight:700;background:var(--main);color:white;border:none;border-radius:8px;cursor:pointer;">✅ 채점하기</button>
+  <button class="reset-btn" id="u2-reset-btn2" onclick="resetQuiz2_u2()">↺ 다시 풀기</button>
+</div>
 </div>
 <div class="page-nav-btns">
   <button class="pnav-btn" onclick="showPage_u2(7)">← 이전</button>
@@ -3581,14 +3883,43 @@ body {
   <div class="page-header-left">
     <div class="unit-badge">Unit 3 · P.8</div>
     <div class="page-title">추가 문제 ➕</div>
-    <div class="page-sub">to부정사구 🔴 · 추가 문제 (준비 중)</div>
+    <div class="page-sub">to부정사구 🔴 · 추가 문제</div>
   </div>
   <div class="page-num">8</div>
 </div>
-<div class="b1-placeholder">
-  <div class="b1-ph-icon">🚧</div>
-  <div class="b1-ph-title">추가 문제</div>
-  <div class="b1-ph-sub">Unit 3 추가 문제 준비 중이에요.<br>곧 업데이트될 예정입니다!</div>
+<div class="b1-content">
+<div style="font-size:1rem;font-weight:700;color:#222;margin-bottom:4px;">🔴 to부정사구를 찾아라!</div>
+<div style="font-size:15px;color:#888;margin-bottom:14px;">각 문제를 읽고 알맞은 답을 고르세요.</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q1. "She had a plan ___ the island." (섬을 찾을) — 빈칸에 알맞은 것은?</div>
+  <div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u3(this,1,'to find')">to find</button><button class="quiz-opt" onclick="selectOpt2_u3(this,1,'finding')">finding</button><button class="quiz-opt" onclick="selectOpt2_u3(this,1,'found')">found</button><button class="quiz-opt" onclick="selectOpt2_u3(this,1,'for find')">for find</button></div>
+  <div class="quiz-feedback" id="u3-efb-1"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q2. "He needed a key ___ the door." (문을 열기 위한) — 빈칸에 알맞은 것은?</div>
+  <div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u3(this,2,'to unlock')">to unlock</button><button class="quiz-opt" onclick="selectOpt2_u3(this,2,'unlocking')">unlocking</button><button class="quiz-opt" onclick="selectOpt2_u3(this,2,'unlock')">unlock</button><button class="quiz-opt" onclick="selectOpt2_u3(this,2,'for unlock')">for unlock</button></div>
+  <div class="quiz-feedback" id="u3-efb-2"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q3. "a book on the desk" — 이 친구의 종류는?</div>
+  <div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u3(this,3,'전치사구(전)')">전치사구(전)</button><button class="quiz-opt" onclick="selectOpt2_u3(this,3,'to부정사구(투)')">to부정사구(투)</button><button class="quiz-opt" onclick="selectOpt2_u3(this,3,'분사구(분)')">분사구(분)</button><button class="quiz-opt" onclick="selectOpt2_u3(this,3,'관계사절(관)')">관계사절(관)</button></div>
+  <div class="quiz-feedback" id="u3-efb-3"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q4. "a book to read" — 이 친구의 종류는?</div>
+  <div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u3(this,4,'to부정사구(투)')">to부정사구(투)</button><button class="quiz-opt" onclick="selectOpt2_u3(this,4,'전치사구(전)')">전치사구(전)</button><button class="quiz-opt" onclick="selectOpt2_u3(this,4,'분사구(분)')">분사구(분)</button><button class="quiz-opt" onclick="selectOpt2_u3(this,4,'관계사절(관)')">관계사절(관)</button></div>
+  <div class="quiz-feedback" id="u3-efb-4"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q5. "They needed a boat ___ the island." (섬에 도달할) — 빈칸에 알맞은 것은?</div>
+  <div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u3(this,5,'to reach')">to reach</button><button class="quiz-opt" onclick="selectOpt2_u3(this,5,'reaching')">reaching</button><button class="quiz-opt" onclick="selectOpt2_u3(this,5,'reached')">reached</button><button class="quiz-opt" onclick="selectOpt2_u3(this,5,'for reach')">for reach</button></div>
+  <div class="quiz-feedback" id="u3-efb-5"></div>
+</div>
+<div class="score-bar" id="u3-score-bar2"></div>
+<div style="display:flex;gap:8px;align-items:center;margin-top:10px;">
+  <button onclick="checkQuiz2_u3()" style="padding:9px 22px;font-size:0.9rem;font-weight:700;background:var(--main);color:white;border:none;border-radius:8px;cursor:pointer;">✅ 채점하기</button>
+  <button class="reset-btn" id="u3-reset-btn2" onclick="resetQuiz2_u3()">↺ 다시 풀기</button>
+</div>
 </div>
 <div class="page-nav-btns">
   <button class="pnav-btn" onclick="showPage_u3(7)">← 이전</button>
@@ -4402,14 +4733,43 @@ body {
   <div class="page-header-left">
     <div class="unit-badge">Unit 4 · P.8</div>
     <div class="page-title">추가 문제 ➕</div>
-    <div class="page-sub">분사구 🟢 · 추가 문제 (준비 중)</div>
+    <div class="page-sub">분사구 🟢 · 추가 문제</div>
   </div>
   <div class="page-num">8</div>
 </div>
-<div class="b1-placeholder">
-  <div class="b1-ph-icon">🚧</div>
-  <div class="b1-ph-title">추가 문제</div>
-  <div class="b1-ph-sub">Unit 4 추가 문제 준비 중이에요.<br>곧 업데이트될 예정입니다!</div>
+<div class="b1-content">
+<div style="font-size:1rem;font-weight:700;color:#222;margin-bottom:4px;">🟢 분사구를 찾아라!</div>
+<div style="font-size:15px;color:#888;margin-bottom:14px;">각 문제를 읽고 알맞은 답을 고르세요.</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q1. "the boy ___ near the window" (서 있는) — 빈칸에 알맞은 분사는?</div>
+  <div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u4(this,1,'standing')">standing</button><button class="quiz-opt" onclick="selectOpt2_u4(this,1,'stood')">stood</button><button class="quiz-opt" onclick="selectOpt2_u4(this,1,'to stand')">to stand</button><button class="quiz-opt" onclick="selectOpt2_u4(this,1,'stands')">stands</button></div>
+  <div class="quiz-feedback" id="u4-efb-1"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q2. "the painting ___ by water" (손상된) — 빈칸에 알맞은 분사는?</div>
+  <div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u4(this,2,'damaged')">damaged</button><button class="quiz-opt" onclick="selectOpt2_u4(this,2,'damaging')">damaging</button><button class="quiz-opt" onclick="selectOpt2_u4(this,2,'to damage')">to damage</button><button class="quiz-opt" onclick="selectOpt2_u4(this,2,'damage')">damage</button></div>
+  <div class="quiz-feedback" id="u4-efb-2"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q3. "the girl ___ a torch" (횃불을 들고 있는) — 빈칸에 알맞은 분사는?</div>
+  <div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u4(this,3,'holding')">holding</button><button class="quiz-opt" onclick="selectOpt2_u4(this,3,'held')">held</button><button class="quiz-opt" onclick="selectOpt2_u4(this,3,'to hold')">to hold</button><button class="quiz-opt" onclick="selectOpt2_u4(this,3,'hold')">hold</button></div>
+  <div class="quiz-feedback" id="u4-efb-3"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q4. "the path marked with arrows" — marked의 종류는?</div>
+  <div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u4(this,4,'과거분사(-ed)')">과거분사(-ed)</button><button class="quiz-opt" onclick="selectOpt2_u4(this,4,'현재분사(-ing)')">현재분사(-ing)</button><button class="quiz-opt" onclick="selectOpt2_u4(this,4,'to부정사')">to부정사</button><button class="quiz-opt" onclick="selectOpt2_u4(this,4,'전치사')">전치사</button></div>
+  <div class="quiz-feedback" id="u4-efb-4"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q5. "the boy running fast" — running의 종류는?</div>
+  <div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u4(this,5,'분사구(분)')">분사구(분)</button><button class="quiz-opt" onclick="selectOpt2_u4(this,5,'전치사구(전)')">전치사구(전)</button><button class="quiz-opt" onclick="selectOpt2_u4(this,5,'to부정사(투)')">to부정사(투)</button><button class="quiz-opt" onclick="selectOpt2_u4(this,5,'관계사절(관)')">관계사절(관)</button></div>
+  <div class="quiz-feedback" id="u4-efb-5"></div>
+</div>
+<div class="score-bar" id="u4-score-bar2"></div>
+<div style="display:flex;gap:8px;align-items:center;margin-top:10px;">
+  <button onclick="checkQuiz2_u4()" style="padding:9px 22px;font-size:0.9rem;font-weight:700;background:var(--main);color:white;border:none;border-radius:8px;cursor:pointer;">✅ 채점하기</button>
+  <button class="reset-btn" id="u4-reset-btn2" onclick="resetQuiz2_u4()">↺ 다시 풀기</button>
+</div>
 </div>
 <div class="page-nav-btns">
   <button class="pnav-btn" onclick="showPage_u4(7)">← 이전</button>
@@ -5261,14 +5621,43 @@ body {
   <div class="page-header-left">
     <div class="unit-badge">Unit 5 · P.8</div>
     <div class="page-title">추가 문제 ➕</div>
-    <div class="page-sub">관계사절 🔵 · 추가 문제 (준비 중)</div>
+    <div class="page-sub">관계사절 🔵 · 추가 문제</div>
   </div>
   <div class="page-num">8</div>
 </div>
-<div class="b1-placeholder">
-  <div class="b1-ph-icon">🚧</div>
-  <div class="b1-ph-title">추가 문제</div>
-  <div class="b1-ph-sub">Unit 5 추가 문제 준비 중이에요.<br>곧 업데이트될 예정입니다!</div>
+<div class="b1-content">
+<div style="font-size:1rem;font-weight:700;color:#222;margin-bottom:4px;">🔵 관계사절을 찾아라!</div>
+<div style="font-size:15px;color:#888;margin-bottom:14px;">각 문제를 읽고 알맞은 답을 고르세요.</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q1. "the boy ___ runs fast" (사람 꾸미기) — 알맞은 관계사는?</div>
+  <div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u5(this,1,'who')">who</button><button class="quiz-opt" onclick="selectOpt2_u5(this,1,'which')">which</button><button class="quiz-opt" onclick="selectOpt2_u5(this,1,'when')">when</button><button class="quiz-opt" onclick="selectOpt2_u5(this,1,'where')">where</button></div>
+  <div class="quiz-feedback" id="u5-efb-1"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q2. "the bag ___ she carried" (사물 꾸미기) — 알맞은 관계사는?</div>
+  <div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u5(this,2,'which')">which</button><button class="quiz-opt" onclick="selectOpt2_u5(this,2,'who')">who</button><button class="quiz-opt" onclick="selectOpt2_u5(this,2,'whom')">whom</button><button class="quiz-opt" onclick="selectOpt2_u5(this,2,'what')">what</button></div>
+  <div class="quiz-feedback" id="u5-efb-2"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q3. "something ___ we don't know" (사람/사물 모두 OK) — 알맞은 관계사는?</div>
+  <div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u5(this,3,'that')">that</button><button class="quiz-opt" onclick="selectOpt2_u5(this,3,'who')">who</button><button class="quiz-opt" onclick="selectOpt2_u5(this,3,'when')">when</button><button class="quiz-opt" onclick="selectOpt2_u5(this,3,'where')">where</button></div>
+  <div class="quiz-feedback" id="u5-efb-3"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q4. "the boy who reads books" — 이 친구의 종류는?</div>
+  <div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u5(this,4,'관계사절(관)')">관계사절(관)</button><button class="quiz-opt" onclick="selectOpt2_u5(this,4,'전치사구(전)')">전치사구(전)</button><button class="quiz-opt" onclick="selectOpt2_u5(this,4,'to부정사(투)')">to부정사(투)</button><button class="quiz-opt" onclick="selectOpt2_u5(this,4,'분사구(분)')">분사구(분)</button></div>
+  <div class="quiz-feedback" id="u5-efb-4"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q5. 전·투·분·관 중 가장 긴 친구는 무엇인가요?</div>
+  <div style="font-size:0.88rem;color:#555;margin:4px 0 6px;font-style:italic;line-height:1.6;">"관계사 + 주어 + 동사"로 이루어진 친구!</div><div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u5(this,5,'관계사절(관)')">관계사절(관)</button><button class="quiz-opt" onclick="selectOpt2_u5(this,5,'전치사구(전)')">전치사구(전)</button><button class="quiz-opt" onclick="selectOpt2_u5(this,5,'to부정사(투)')">to부정사(투)</button><button class="quiz-opt" onclick="selectOpt2_u5(this,5,'분사구(분)')">분사구(분)</button></div>
+  <div class="quiz-feedback" id="u5-efb-5"></div>
+</div>
+<div class="score-bar" id="u5-score-bar2"></div>
+<div style="display:flex;gap:8px;align-items:center;margin-top:10px;">
+  <button onclick="checkQuiz2_u5()" style="padding:9px 22px;font-size:0.9rem;font-weight:700;background:var(--main);color:white;border:none;border-radius:8px;cursor:pointer;">✅ 채점하기</button>
+  <button class="reset-btn" id="u5-reset-btn2" onclick="resetQuiz2_u5()">↺ 다시 풀기</button>
+</div>
 </div>
 <div class="page-nav-btns">
   <button class="pnav-btn" onclick="showPage_u5(7)">← 이전</button>
@@ -6065,14 +6454,43 @@ body {
   <div class="page-header-left">
     <div class="unit-badge">Unit 6 · P.8</div>
     <div class="page-title">추가 문제 ➕</div>
-    <div class="page-sub">대장 명사 찾기 🚪 · 추가 문제 (준비 중)</div>
+    <div class="page-sub">대장 명사 찾기 🚪 · 추가 문제</div>
   </div>
   <div class="page-num">8</div>
 </div>
-<div class="b1-placeholder">
-  <div class="b1-ph-icon">🚧</div>
-  <div class="b1-ph-title">추가 문제</div>
-  <div class="b1-ph-sub">Unit 6 추가 문제 준비 중이에요.<br>곧 업데이트될 예정입니다!</div>
+<div class="b1-content">
+<div style="font-size:1rem;font-weight:700;color:#222;margin-bottom:4px;">🚪 3단계 전략 — 대장 명사 찾기!</div>
+<div style="font-size:15px;color:#888;margin-bottom:14px;">각 문제를 읽고 알맞은 답을 고르세요.</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q1. 다음 문장에서 대장 명사(주어의 핵심 명사)는?</div>
+  <div style="font-size:0.88rem;color:#555;margin:4px 0 6px;font-style:italic;line-height:1.6;">"The rusty door with a broken handle leads to a secret place."</div><div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u6(this,1,'door')">door</button><button class="quiz-opt" onclick="selectOpt2_u6(this,1,'rusty')">rusty</button><button class="quiz-opt" onclick="selectOpt2_u6(this,1,'handle')">handle</button><button class="quiz-opt" onclick="selectOpt2_u6(this,1,'broken')">broken</button></div>
+  <div class="quiz-feedback" id="u6-efb-1"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q2. 다음 문장에서 대장 명사(주어의 핵심 명사)는?</div>
+  <div style="font-size:0.88rem;color:#555;margin:4px 0 6px;font-style:italic;line-height:1.6;">"The brave explorer with a torch to light the way stepped inside."</div><div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u6(this,2,'explorer')">explorer</button><button class="quiz-opt" onclick="selectOpt2_u6(this,2,'brave')">brave</button><button class="quiz-opt" onclick="selectOpt2_u6(this,2,'torch')">torch</button><button class="quiz-opt" onclick="selectOpt2_u6(this,2,'way')">way</button></div>
+  <div class="quiz-feedback" id="u6-efb-2"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q3. 다음 문장에서 친구(수식어)는 몇 개인가요?</div>
+  <div style="font-size:0.88rem;color:#555;margin:4px 0 6px;font-style:italic;line-height:1.6;">"The heavy iron door with three locks at the end of the hall was closed."</div><div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u6(this,3,'2개')">2개</button><button class="quiz-opt" onclick="selectOpt2_u6(this,3,'1개')">1개</button><button class="quiz-opt" onclick="selectOpt2_u6(this,3,'3개')">3개</button><button class="quiz-opt" onclick="selectOpt2_u6(this,3,'4개')">4개</button></div>
+  <div class="quiz-feedback" id="u6-efb-3"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q4. 3단계 전략에서 STEP 1은 무엇인가요?</div>
+  <div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u6(this,4,'관사·형용사 건너뛰기')">관사·형용사 건너뛰기</button><button class="quiz-opt" onclick="selectOpt2_u6(this,4,'첫 명사 = 대장!')">첫 명사 = 대장!</button><button class="quiz-opt" onclick="selectOpt2_u6(this,4,'친구 걷어내기')">친구 걷어내기</button><button class="quiz-opt" onclick="selectOpt2_u6(this,4,'동사 먼저 찾기')">동사 먼저 찾기</button></div>
+  <div class="quiz-feedback" id="u6-efb-4"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q5. 다음 문장의 주어 대장 명사(S)는?</div>
+  <div style="font-size:0.88rem;color:#555;margin:4px 0 6px;font-style:italic;line-height:1.6;">"The strange smell coming from the room below made them stop."</div><div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u6(this,5,'smell')">smell</button><button class="quiz-opt" onclick="selectOpt2_u6(this,5,'strange')">strange</button><button class="quiz-opt" onclick="selectOpt2_u6(this,5,'room')">room</button><button class="quiz-opt" onclick="selectOpt2_u6(this,5,'them')">them</button></div>
+  <div class="quiz-feedback" id="u6-efb-5"></div>
+</div>
+<div class="score-bar" id="u6-score-bar2"></div>
+<div style="display:flex;gap:8px;align-items:center;margin-top:10px;">
+  <button onclick="checkQuiz2_u6()" style="padding:9px 22px;font-size:0.9rem;font-weight:700;background:var(--main);color:white;border:none;border-radius:8px;cursor:pointer;">✅ 채점하기</button>
+  <button class="reset-btn" id="u6-reset-btn2" onclick="resetQuiz2_u6()">↺ 다시 풀기</button>
+</div>
 </div>
 <div class="page-nav-btns">
   <button class="pnav-btn" onclick="showPage_u6(7)">← 이전</button>
@@ -6850,14 +7268,43 @@ body {
   <div class="page-header-left">
     <div class="unit-badge">Unit 7 · P.8</div>
     <div class="page-title">추가 문제 ➕</div>
-    <div class="page-sub">동굴 속 거대 비문 🔦 · 추가 문제 (준비 중)</div>
+    <div class="page-sub">S·V·O 모두 명사블럭 🗺️ · 추가 문제</div>
   </div>
   <div class="page-num">8</div>
 </div>
-<div class="b1-placeholder">
-  <div class="b1-ph-icon">🚧</div>
-  <div class="b1-ph-title">추가 문제</div>
-  <div class="b1-ph-sub">Unit 7 추가 문제 준비 중이에요.<br>곧 업데이트될 예정입니다!</div>
+<div class="b1-content">
+<div style="font-size:1rem;font-weight:700;color:#222;margin-bottom:4px;">🗺️ 주어와 목적어의 대장 명사를 찾아라!</div>
+<div style="font-size:15px;color:#888;margin-bottom:14px;">각 문제를 읽고 알맞은 답을 고르세요.</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q1. 다음 문장에서 주어(S)의 대장 명사는?</div>
+  <div style="font-size:0.88rem;color:#555;margin:4px 0 6px;font-style:italic;line-height:1.6;">"The girl with red glasses found the old map in the chest."</div><div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u7(this,1,'girl')">girl</button><button class="quiz-opt" onclick="selectOpt2_u7(this,1,'glasses')">glasses</button><button class="quiz-opt" onclick="selectOpt2_u7(this,1,'red')">red</button><button class="quiz-opt" onclick="selectOpt2_u7(this,1,'chest')">chest</button></div>
+  <div class="quiz-feedback" id="u7-efb-1"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q2. 위 문장에서 목적어(O)의 대장 명사는?</div>
+  <div style="font-size:0.88rem;color:#888;margin:4px 0 6px;line-height:1.6;">👆 Q1의 문장을 다시 읽어보세요!</div><div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u7(this,2,'map')">map</button><button class="quiz-opt" onclick="selectOpt2_u7(this,2,'old')">old</button><button class="quiz-opt" onclick="selectOpt2_u7(this,2,'chest')">chest</button><button class="quiz-opt" onclick="selectOpt2_u7(this,2,'found')">found</button></div>
+  <div class="quiz-feedback" id="u7-efb-2"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q3. "with red glasses" — 이것은 누구의 친구인가요?</div>
+  <div style="font-size:0.88rem;color:#888;margin:4px 0 6px;line-height:1.6;">👆 Q1의 문장을 다시 읽어보세요!</div><div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u7(this,3,'S(주어)의 친구')">S(주어)의 친구</button><button class="quiz-opt" onclick="selectOpt2_u7(this,3,'O(목적어)의 친구')">O(목적어)의 친구</button><button class="quiz-opt" onclick="selectOpt2_u7(this,3,'V(동사)의 친구')">V(동사)의 친구</button><button class="quiz-opt" onclick="selectOpt2_u7(this,3,'없음')">없음</button></div>
+  <div class="quiz-feedback" id="u7-efb-3"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q4. 다음 문장에서 주어(S)의 대장 명사는?</div>
+  <div style="font-size:0.88rem;color:#555;margin:4px 0 6px;font-style:italic;line-height:1.6;">"The boy near the cliff read the message on the stone."</div><div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u7(this,4,'boy')">boy</button><button class="quiz-opt" onclick="selectOpt2_u7(this,4,'cliff')">cliff</button><button class="quiz-opt" onclick="selectOpt2_u7(this,4,'message')">message</button><button class="quiz-opt" onclick="selectOpt2_u7(this,4,'stone')">stone</button></div>
+  <div class="quiz-feedback" id="u7-efb-4"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q5. 다음 문장에서 목적어(O)의 대장 명사는?</div>
+  <div style="font-size:0.88rem;color:#555;margin:4px 0 6px;font-style:italic;line-height:1.6;">"The explorer with a map found the cave behind the waterfall."</div><div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u7(this,5,'cave')">cave</button><button class="quiz-opt" onclick="selectOpt2_u7(this,5,'waterfall')">waterfall</button><button class="quiz-opt" onclick="selectOpt2_u7(this,5,'explorer')">explorer</button><button class="quiz-opt" onclick="selectOpt2_u7(this,5,'map')">map</button></div>
+  <div class="quiz-feedback" id="u7-efb-5"></div>
+</div>
+<div class="score-bar" id="u7-score-bar2"></div>
+<div style="display:flex;gap:8px;align-items:center;margin-top:10px;">
+  <button onclick="checkQuiz2_u7()" style="padding:9px 22px;font-size:0.9rem;font-weight:700;background:var(--main);color:white;border:none;border-radius:8px;cursor:pointer;">✅ 채점하기</button>
+  <button class="reset-btn" id="u7-reset-btn2" onclick="resetQuiz2_u7()">↺ 다시 풀기</button>
+</div>
 </div>
 <div class="page-nav-btns">
   <button class="pnav-btn" onclick="showPage_u7(7)">← 이전</button>
@@ -7590,14 +8037,43 @@ body {
   <div class="page-header-left">
     <div class="unit-badge">Unit 8 · P.8</div>
     <div class="page-title">추가 문제 ➕</div>
-    <div class="page-sub">할아버지의 연구소 📔 · 추가 문제 (준비 중)</div>
+    <div class="page-sub">전·투·분·관 종합 실전 🏆 · 추가 문제</div>
   </div>
   <div class="page-num">8</div>
 </div>
-<div class="b1-placeholder">
-  <div class="b1-ph-icon">🚧</div>
-  <div class="b1-ph-title">추가 문제</div>
-  <div class="b1-ph-sub">Unit 8 추가 문제 준비 중이에요.<br>곧 업데이트될 예정입니다!</div>
+<div class="b1-content">
+<div style="font-size:1rem;font-weight:700;color:#222;margin-bottom:4px;">🏆 전·투·분·관 종합 도전!</div>
+<div style="font-size:15px;color:#888;margin-bottom:14px;">Book 1 전체 내용 종합 — 실력을 확인해요!</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q1. "the book on the desk" — 친구의 종류는?</div>
+  <div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u8(this,1,'전치사구(전)')">전치사구(전)</button><button class="quiz-opt" onclick="selectOpt2_u8(this,1,'to부정사(투)')">to부정사(투)</button><button class="quiz-opt" onclick="selectOpt2_u8(this,1,'분사구(분)')">분사구(분)</button><button class="quiz-opt" onclick="selectOpt2_u8(this,1,'관계사절(관)')">관계사절(관)</button></div>
+  <div class="quiz-feedback" id="u8-efb-1"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q2. "the boy who reads books" — 친구의 종류는?</div>
+  <div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u8(this,2,'관계사절(관)')">관계사절(관)</button><button class="quiz-opt" onclick="selectOpt2_u8(this,2,'전치사구(전)')">전치사구(전)</button><button class="quiz-opt" onclick="selectOpt2_u8(this,2,'to부정사(투)')">to부정사(투)</button><button class="quiz-opt" onclick="selectOpt2_u8(this,2,'분사구(분)')">분사구(분)</button></div>
+  <div class="quiz-feedback" id="u8-efb-2"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q3. "a book to read" — 친구의 종류는?</div>
+  <div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u8(this,3,'to부정사(투)')">to부정사(투)</button><button class="quiz-opt" onclick="selectOpt2_u8(this,3,'전치사구(전)')">전치사구(전)</button><button class="quiz-opt" onclick="selectOpt2_u8(this,3,'분사구(분)')">분사구(분)</button><button class="quiz-opt" onclick="selectOpt2_u8(this,3,'관계사절(관)')">관계사절(관)</button></div>
+  <div class="quiz-feedback" id="u8-efb-3"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q4. 다음 문장에서 주어(S)의 대장 명사는?</div>
+  <div style="font-size:0.88rem;color:#555;margin:4px 0 6px;font-style:italic;line-height:1.6;">"The old detective who found the book with a golden lock discovered a secret."</div><div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u8(this,4,'detective')">detective</button><button class="quiz-opt" onclick="selectOpt2_u8(this,4,'old')">old</button><button class="quiz-opt" onclick="selectOpt2_u8(this,4,'book')">book</button><button class="quiz-opt" onclick="selectOpt2_u8(this,4,'lock')">lock</button></div>
+  <div class="quiz-feedback" id="u8-efb-4"></div>
+</div>
+<div class="quiz-item">
+  <div class="quiz-q">Q5. "the path marked with arrows" — marked의 종류는?</div>
+  <div class="quiz-options"><button class="quiz-opt" onclick="selectOpt2_u8(this,5,'분사구(분)')">분사구(분)</button><button class="quiz-opt" onclick="selectOpt2_u8(this,5,'전치사구(전)')">전치사구(전)</button><button class="quiz-opt" onclick="selectOpt2_u8(this,5,'to부정사(투)')">to부정사(투)</button><button class="quiz-opt" onclick="selectOpt2_u8(this,5,'관계사절(관)')">관계사절(관)</button></div>
+  <div class="quiz-feedback" id="u8-efb-5"></div>
+</div>
+<div class="score-bar" id="u8-score-bar2"></div>
+<div style="display:flex;gap:8px;align-items:center;margin-top:10px;">
+  <button onclick="checkQuiz2_u8()" style="padding:9px 22px;font-size:0.9rem;font-weight:700;background:var(--main);color:white;border:none;border-radius:8px;cursor:pointer;">✅ 채점하기</button>
+  <button class="reset-btn" id="u8-reset-btn2" onclick="resetQuiz2_u8()">↺ 다시 풀기</button>
+</div>
 </div>
 <div class="page-nav-btns">
   <button class="pnav-btn" onclick="showPage_u8(7)">← 이전</button>
@@ -7618,6 +8094,7 @@ function checkPwd() {
     document.body.style.overflow='';
     err.style.display = 'none';
     showUnit(1);
+    setTimeout(loadProgress, 300);
   } else {
     err.style.display = 'block';
     document.getElementById('pwd-input').value = '';
@@ -7638,6 +8115,8 @@ function showUnit(n) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
   const fn = window['showPage_u' + n];
   if (fn) fn(1);
+  saveProgress();
+  updateProgBar();
 }
 let voices = [];
 window.speechSynthesis.onvoiceschanged = () => { voices = window.speechSynthesis.getVoices(); };
@@ -7868,14 +8347,8 @@ function resetQuiz_u1() {
 }
 
 // ===== 연습문제 2 =====
-const answers2_u1 = { 1:'명사절', 2:'형용사절', 3:'부사절', 4:'명사절', 5:'형용사절' };
-const feedback2_u1 = {
-  1: { c:'맞아요! that절이 동사 believe의 목적어 역할 = 명사절!', w:'that + 주어+동사 → 명사절이에요. 목적어 자리에 왔어요.' },
-  2: { c:'맞아요! where절이 명사 island를 뒤에서 꾸며줌 = 형용사절!', w:'where절이 island를 꾸며주고 있어요 → 형용사절!' },
-  3: { c:'맞아요! because절이 동사를 꾸며주는 이유 = 부사절!', w:'because는 이유 부사절 접속사예요 → 부사절!' },
-  4: { c:'맞아요! whether절이 동사 asked의 목적어 역할 = 명사절!', w:'whether절이 목적어로 쓰였어요 → 명사절!' },
-  5: { c:'맞아요! who절이 명사 explorer를 꾸며줌 = 형용사절!', w:'who절이 explorer를 꾸며주고 있어요 → 형용사절!' }
-};
+const answers2_u1={1:'girl',2:'dog',3:'children',4:'친구',5:'boy reads books'};
+const feedback2_u1={1:{c:'맞아요! tall·hair·walked는 모두 친구예요. 대장은 girl!',w:'"with long hair"는 친구예요. 첫 번째 명사 girl이 대장이에요.'},2:{c:'맞아요! big·white·porch·barked는 모두 친구예요. 대장은 dog!',w:'"on the porch"는 전치사구 친구예요. 대장은 dog이에요.'},3:{c:'맞아요! happy·playground·songs는 모두 친구예요. 대장은 children!',w:'"in the playground"는 친구예요. 대장은 children이에요.'},4:{c:'맞아요! 명사블럭 = 대장 명사 + 꾸며주는 친구!',w:'명사블럭 공식: 대장 명사 + 꾸며주는 친구예요.'},5:{c:'맞아요! "in our class"를 걷어내면 boy reads books가 뼈대!',w:'"in our class"는 친구예요. 걷어내면 boy reads books가 뼈대예요.'}};
 const userAnswers2_u1 = {};
 function selectOpt2_u1(el, qn, val) {
   const opts = el.parentElement.querySelectorAll('.quiz-opt');
@@ -7909,6 +8382,7 @@ function checkQuiz2_u1() {
   sb.style.color = score >= 3 ? '#2E7D32' : '#E65100';
   sb.className = 'score-bar show';
   document.getElementById('u1-reset-btn2').className = 'reset-btn show';
+  saveScore(1,'p8',score,5);
 }
 function resetQuiz2_u1() {
   const items = document.getElementById('u1-page-8').querySelectorAll('.quiz-item');
@@ -7996,14 +8470,8 @@ function resetQuiz_u2(){
 }
 
 // ===== 연습문제 2 =====
-const answers2_u2={1:'because',2:'if',3:'when',4:'if',5:'because'};
-const feedback2_u2={
-  1:{c:'맞아요! 이유 → because!',w:'지도를 찾은 것이 이유 → because예요.'},
-  2:{c:'맞아요! 조건 → if! 앞마당이라 쉼표도 필수!',w:'날씨가 개면 = 조건 → if예요.'},
-  3:{c:'맞아요! 시간 → when!',w:'폭풍이 시작된 그 순간 = 시간 → when이에요.'},
-  4:{c:'맞아요! 조건 → if! 앞마당이라 쉼표 필수!',w:'신호등을 보면 = 조건 → if예요.'},
-  5:{c:'맞아요! 이유 → because!',w:'안개가 짙었기 때문에 = 이유 → because예요.'}
-};
+const answers2_u2={1:'under',2:'from',3:'above',4:'in the box',5:'2개'};
+const feedback2_u2={1:{c:'맞아요! under = ~아래에. a cat under the chair = 의자 아래의 고양이!',w:'under(아래), above(위), near(근처), behind(뒤) 기억해요!'},2:{c:'맞아요! from = ~로부터. a letter from my friend = 친구로부터의 편지!',w:'from은 출처·기원을 나타내는 전치사예요.'},3:{c:'맞아요! above = ~위쪽에. a clock above the door = 문 위쪽의 시계!',w:'above(위쪽)와 on(바로 위)은 달라요. above는 접촉하지 않아도 돼요.'},4:{c:'맞아요! "in the box"는 전치사+명사 = 전치사구!',w:'"to read"=투, "running fast"=분, "who sings"=관 이에요.'},5:{c:'맞아요! "in the locker"(note 친구) + "on it"(message 친구) = 2개!',w:'전치사구가 각각 note와 message를 꾸며주고 있어요.'}};
 const userAnswers2_u2={};
 function selectOpt2_u2(el,qn,val){
   const items=document.getElementById('u2-page-8').querySelectorAll('.quiz-item');
@@ -8034,6 +8502,7 @@ function checkQuiz2_u2(){
   sb.style.color=score>=3?'#2E7D32':'#E65100';
   sb.className='score-bar show';
   document.getElementById('u2-reset-btn2').className='reset-btn show';
+  saveScore(2,'p8',score,5);
 }
 function resetQuiz2_u2(){
   const items=document.getElementById('u2-page-8').querySelectorAll('.quiz-item');
@@ -8171,14 +8640,8 @@ function resetQuiz_u3(){
   document.getElementById('u3-score-bar').className='score-bar';document.getElementById('u3-reset-btn').className='reset-btn';
 }
 
-const answers2_u3={1:'although',2:'because',3:'while',4:'if',5:'while'};
-const feedback2_u3={
-  1:{c:'맞아요! 무서웠지만 들어갔다 → although!',w:'예상 반전 → although예요.'},
-  2:{c:'맞아요! 이유(열쇠를 찾아서) → because!',w:'이유를 나타낼 때는 because예요.'},
-  3:{c:'맞아요! 동시에 일어난 두 동작 → while!',w:'동시 동작을 나타낼 때는 while이에요.'},
-  4:{c:'맞아요! 조건(풀면) → if! 앞마당이라 쉼표도!',w:'조건(만약~라면)을 나타낼 때는 if예요.'},
-  5:{c:'맞아요! 하온↔서준 대조 → while(반면에)!',w:'대조할 때는 while(반면에)이에요.'}
-};
+const answers2_u3={1:'to find',2:'to unlock',3:'전치사구(전)',4:'to부정사구(투)',5:'to reach'};
+const feedback2_u3={1:{c:'맞아요! to + find(동사원형) = to부정사구. "찾을 계획"!',w:'to + 동사원형 = to부정사구예요. "finding"은 분사예요.'},2:{c:'맞아요! to + unlock(동사원형) = to부정사구. "열기 위한 열쇠"!',w:'to + 동사원형이 to부정사예요. "unlocking"은 분사예요.'},3:{c:'맞아요! "on the desk"는 전치사+명사 = 전치사구(전)!',w:'"on"은 전치사예요. 전치사 뒤에 명사가 오면 전치사구(전)!'},4:{c:'맞아요! "to read"는 to+동사원형 = to부정사구(투)!',w:'"to" 뒤에 동사원형(read)이 오면 to부정사구(투)!'},5:{c:'맞아요! to + reach(동사원형) = to부정사구. "도달할 배"!',w:'to + 동사원형을 기억하세요. "reaching"은 분사예요.'}};
 const userAnswers2_u3={};
 function selectOpt2_u3(el,qn,val){
   const items=document.getElementById('u3-page-8').querySelectorAll('.quiz-item');
@@ -8204,6 +8667,7 @@ function checkQuiz2_u3(){
   const emoji=score===5?'🏆 완벽!':score>=3?'👍 훌륭해요!':'💪 조금 더 연습해요!';
   sb.textContent=`${emoji} ${score} / 5 정답`;sb.style.background=score>=3?'#E8F5E9':'#FFF3E0';sb.style.color=score>=3?'#2E7D32':'#E65100';sb.className='score-bar show';
   document.getElementById('u3-reset-btn2').className='reset-btn show';
+  saveScore(3,'p8',score,5);
 }
 function resetQuiz2_u3(){
   const items=document.getElementById('u3-page-8').querySelectorAll('.quiz-item');
@@ -8327,14 +8791,8 @@ function resetQuiz_u4(){
   document.getElementById('u4-score-bar').className='score-bar';document.getElementById('u4-reset-btn').className='reset-btn';
 }
 
-const answers2_u4={1:'that',2:'that',3:'whether',4:'although',5:'if'};
-const feedback2_u4={
-  1:{c:'맞아요! 사실 전달 → that!',w:'~라는 것을 알다 → that이에요.'},
-  2:{c:'맞아요! It is + 형용사 + that → 가주어 패턴!',w:'It is surprising that ~ = 가주어 패턴 → that이에요.'},
-  3:{c:'맞아요! 무거운지 가벼운지 두 가지 선택 → whether!',w:'A인지 B인지 선택 → whether예요.'},
-  4:{c:'맞아요! 오래됐지만 잠겨 있다 → 반전 → although!',w:'예상 반전(~하지만) → although예요.'},
-  5:{c:'맞아요! 이어지는지 모른다 → Yes/No 의문 → if!',w:'~인지 모른다 → if예요.'}
-};
+const answers2_u4={1:'standing',2:'damaged',3:'holding',4:'과거분사(-ed)',5:'분사구(분)'};
+const feedback2_u4={1:{c:'맞아요! standing(-ing) = 현재분사. "서 있는 소년"!',w:'"standing"은 -ing형 현재분사로 능동(스스로 서있는) 의미예요.'},2:{c:'맞아요! damaged(-ed) = 과거분사. "손상된 그림"!',w:'"damaged"는 -ed형 과거분사로 수동(당한) 의미예요.'},3:{c:'맞아요! holding(-ing) = 현재분사. "횃불을 들고 있는 소녀"!',w:'"holding"은 -ing형 현재분사로 능동 의미예요.'},4:{c:'맞아요! marked = mark의 과거분사(-ed). "표시된 길"!',w:'"marked"는 -ed형 과거분사(수동)예요. 길이 화살표로 표시됐어요.'},5:{c:'맞아요! running은 -ing 분사구(분). "빠르게 달리는 소년"!',w:'"running"은 -ing 현재분사로 분사구(분)예요.'}};
 const userAnswers2_u4={};
 function selectOpt2_u4(el,qn,val){
   const items=document.getElementById('u4-page-8').querySelectorAll('.quiz-item');
@@ -8360,6 +8818,7 @@ function checkQuiz2_u4(){
   const emoji=score===5?'🏆 완벽!':score>=3?'👍 훌륭해요!':'💪 조금 더 연습해요!';
   sb.textContent=`${emoji} ${score} / 5 정답`;sb.style.background=score>=3?'#E8F5E9':'#FFF3E0';sb.style.color=score>=3?'#2E7D32':'#E65100';sb.className='score-bar show';
   document.getElementById('u4-reset-btn2').className='reset-btn show';
+  saveScore(4,'p8',score,5);
 }
 function resetQuiz2_u4(){
   const items=document.getElementById('u4-page-8').querySelectorAll('.quiz-item');
@@ -8484,14 +8943,8 @@ function resetQuiz_u5(){
   document.getElementById('u5-score-bar').className='score-bar';document.getElementById('u5-reset-btn').className='reset-btn';
 }
 
-const answers2_u5={1:'who',2:'which',3:'whose',4:'that',5:'who'};
-const feedback2_u5={
-  1:{c:'맞아요! 사람(woman) + 주어 역할 → who!',w:'사람 + 주어 역할 → who예요.'},
-  2:{c:'맞아요! 사물(box) + 주어 역할 → which!',w:'사물 + 주어 역할 → which예요.'},
-  3:{c:'맞아요! his → whose로 바꿔요!',w:'소유격(his/her/its) → whose로 바꿔요.'},
-  4:{c:'맞아요! 사물(key) 목적격 → that!',w:'사물 목적격 → that 또는 which예요.'},
-  5:{c:'맞아요! 사람(students) + 주어 역할 → who!',w:'사람 + 주어 역할 → who예요.'}
-};
+const answers2_u5={1:'who',2:'which',3:'that',4:'관계사절(관)',5:'관계사절(관)'};
+const feedback2_u5={1:{c:'맞아요! who = 사람을 꾸밀 때!',w:'who는 사람 명사 뒤에 쓰는 관계사예요.'},2:{c:'맞아요! which = 사물을 꾸밀 때!',w:'which는 사물 명사 뒤에 쓰는 관계사예요. that도 가능해요!'},3:{c:'맞아요! that = 사람/사물 모두 OK!',w:'that은 사람과 사물 모두에 쓸 수 있는 관계사예요.'},4:{c:'맞아요! who+주어+동사 → 관계사절(관)!',w:'관계사절 = 관계사 + 주어 + 동사 구조예요.'},5:{c:'맞아요! 관계사절이 제일 길어요. "관계사+주어+동사" 구조!',w:'전치사구 < to부정사구 < 분사구 < 관계사절 순으로 길어져요.'}};
 const userAnswers2_u5={};
 function selectOpt2_u5(el,qn,val){
   const items=document.getElementById('u5-page-8').querySelectorAll('.quiz-item');
@@ -8517,6 +8970,7 @@ function checkQuiz2_u5(){
   const emoji=score===5?'🏆 완벽!':score>=3?'👍 훌륭해요!':'💪 조금 더 연습해요!';
   sb.textContent=`${emoji} ${score} / 5 정답`;sb.style.background=score>=3?'#E8F5E9':'#FFF3E0';sb.style.color=score>=3?'#2E7D32':'#E65100';sb.className='score-bar show';
   document.getElementById('u5-reset-btn2').className='reset-btn show';
+  saveScore(5,'p8',score,5);
 }
 function resetQuiz2_u5(){
   const items=document.getElementById('u5-page-8').querySelectorAll('.quiz-item');
@@ -8639,14 +9093,8 @@ function resetQuiz_u6(){
   document.getElementById('u6-score-bar').className='score-bar';document.getElementById('u6-reset-btn').className='reset-btn';
 }
 
-const answers2_u6={1:'which',2:'where',3:'when',4:'whose',5:'why'};
-const feedback2_u6={
-  1:{c:'맞아요! 탐험한(found의 목적어) → 관계대명사 which!',w:'뒤 문장 불완전(목적어 없음) → 관계대명사예요.'},
-  2:{c:'맞아요! 숨겨진 장소 → 뒤 문장 완전 → 관계부사 where!',w:'장소명사 + 완전 문장 → where예요.'},
-  3:{c:'맞아요! 시간명사(day) + 완전 문장 → when!',w:'시간명사 뒤 + 완전 문장 → when이에요.'},
-  4:{c:'맞아요! grandfather = 소유격 → whose!',w:'소유격(~의) → whose예요.'},
-  5:{c:'맞아요! reason 뒤 → why!',w:'reason 뒤에는 why예요.'}
-};
+const answers2_u6={1:'door',2:'explorer',3:'2개',4:'관사·형용사 건너뛰기',5:'smell'};
+const feedback2_u6={1:{c:'맞아요! rusty는 앞 꾸밈말, "with a broken handle"은 친구. 대장은 door!',w:'형용사(rusty)는 건너뛰고 첫 번째 명사(door)가 대장이에요.'},2:{c:'맞아요! brave는 앞 꾸밈말, 친구 2개 있어도 대장은 explorer!',w:'"with a torch"와 "to light the way"는 친구예요. 대장은 explorer!'},3:{c:'맞아요! "with three locks"(친구1) + "at the end of the hall"(친구2) = 2개!',w:'전치사구 친구가 2개 연속으로 붙어있어요.'},4:{c:'맞아요! STEP 1 = 관사·형용사 건너뛰기!',w:'3단계: ① 관사·형용사 건너뛰기 → ② 첫 명사=대장 → ③ 친구 걷어내기'},5:{c:'맞아요! "coming from the room"을 걷어내면 대장은 smell!',w:'"coming from the room below"는 분사구 친구예요. 대장은 smell!'}};
 const userAnswers2_u6={};
 function selectOpt2_u6(el,qn,val){
   const items=document.getElementById('u6-page-8').querySelectorAll('.quiz-item');
@@ -8672,6 +9120,7 @@ function checkQuiz2_u6(){
   const emoji=score===5?'🏆 완벽!':score>=3?'👍 훌륭해요!':'💪 조금 더 연습해요!';
   sb.textContent=`${emoji} ${score} / 5 정답`;sb.style.background=score>=3?'#E8F5E9':'#FFF3E0';sb.style.color=score>=3?'#2E7D32':'#E65100';sb.className='score-bar show';
   document.getElementById('u6-reset-btn2').className='reset-btn show';
+  saveScore(6,'p8',score,5);
 }
 function resetQuiz2_u6(){
   const items=document.getElementById('u6-page-8').querySelectorAll('.quiz-item');
@@ -8770,7 +9219,7 @@ function checkQuiz_u7(){
   let score=0;
   for(let i=1;i<=5;i++){
     const ans=ua1_u7[i],fb=document.getElementById('u7-fb-'+i);
-    const opts=document.querySelectorAll('#page-5 .quiz-item')[i-1].querySelectorAll('.quiz-opt');
+    const opts=document.getElementById('u8-page-8').querySelectorAll('.quiz-item')[i-1].querySelectorAll('.quiz-opt');
     if(!ans){fb.textContent='⚠️ 선택해주세요!';fb.className='quiz-feedback show wrong-fb';continue;}
     if(ans===ans1_u7[i]){score++;fb.textContent='✅ '+fb1_u7[i].c;fb.className='quiz-feedback show correct-fb';opts.forEach(o=>{if(o.classList.contains('selected'))o.classList.add('correct');});}
     else{fb.textContent='❌ '+fb1_u7[i].w;fb.className='quiz-feedback show wrong-fb';opts.forEach(o=>{if(o.classList.contains('selected'))o.classList.add('wrong');});}
@@ -8781,20 +9230,15 @@ function checkQuiz_u7(){
   document.getElementById('u7-reset-btn').className='reset-btn show';
 }
 function resetQuiz_u7(){
-  for(let i=1;i<=5;i++){document.querySelectorAll('#page-5 .quiz-item')[i-1].querySelectorAll('.quiz-opt').forEach(o=>{o.className='quiz-opt';});const fb=document.getElementById('u7-fb-'+i);fb.className='quiz-feedback';fb.textContent='';}
+  for(let i=1;i<=5;i++){document.getElementById('u8-page-8').querySelectorAll('.quiz-item')[i-1].querySelectorAll('.quiz-opt').forEach(o=>{o.className='quiz-opt';});const fb=document.getElementById('u7-fb-'+i);fb.className='quiz-feedback';fb.textContent='';}
   Object.keys(ua1_u7).forEach(k=>delete ua1_u7[k]);document.getElementById('u7-score-bar').className='score-bar';document.getElementById('u7-reset-btn').className='reset-btn';
 }
 
 // 퀴즈 B (p.6)
-const ans2_u7={1:'explorer',2:'명사절',3:'moment',4:'it',5:'명사절'};
-const fb2_u7={
-  1:{c:'맞아요! whose 앞에 있는 explorer가 선행사!',w:'whose 바로 앞 명사가 선행사예요.'},
-  2:{c:'맞아요! that this journey was their destiny = 명사절(believed 목적어)!',w:'because절 안에 that절이 내포 → 명사절이에요.'},
-  3:{c:'맞아요! moment = 시간명사 → when의 선행사!',w:'관계부사 when의 선행사는 시간명사예요.'},
-  4:{c:'맞아요! "It was Ha-on who..." = It 강조 구문!',w:'It was ~ who 구문에서 주어는 it(강조용)이에요.'},
-  5:{c:'맞아요! that wisdom is the greatest treasure = 명사절(know 목적어)!',w:'who절 안의 that절 → 명사절이에요.'}
-};
+
+const ans2_u7={1:'girl',2:'map',3:'S(주어)의 친구',4:'boy',5:'cave'};
 const ua2_u7={};
+const fb2_u7={1:{c:'맞아요! "with red glasses"를 걷어내면 S의 대장은 girl!',w:'"with red glasses"는 girl의 친구예요. 대장은 girl이에요.'},2:{c:'맞아요! "in the chest"를 걷어내면 O의 대장은 map!',w:'"in the chest"는 map의 친구예요. 대장은 map이에요.'},3:{c:'맞아요! "with red glasses"는 girl(S)을 꾸며주는 S의 친구!',w:'친구가 S 바로 뒤에 붙어있으면 S의 친구예요.'},4:{c:'맞아요! "near the cliff"를 걷어내면 S의 대장은 boy!',w:'"near the cliff"는 boy의 친구예요. 대장은 boy!'},5:{c:'맞아요! "behind the waterfall"을 걷어내면 O의 대장은 cave!',w:'"behind the waterfall"은 cave의 친구예요. 대장은 cave!'}};
 function selectOpt2_u7(el,qn,val){
   el.parentElement.querySelectorAll('.quiz-opt').forEach(o=>o.classList.remove('selected'));
   el.classList.add('selected');ua2_u7[qn]=val;
@@ -8803,7 +9247,7 @@ function checkQuiz2_u7(){
   let score=0;
   for(let i=1;i<=5;i++){
     const ans=ua2_u7[i],fb=document.getElementById('u7-efb-'+i);
-    const opts=document.querySelectorAll('#page-6 .quiz-item')[i-1].querySelectorAll('.quiz-opt');
+    const opts=document.getElementById('u7-page-8').querySelectorAll('.quiz-item')[i-1].querySelectorAll('.quiz-opt');
     if(!ans){fb.textContent='⚠️ 선택해주세요!';fb.className='quiz-feedback show wrong-fb';continue;}
     if(ans===ans2_u7[i]){score++;fb.textContent='✅ '+fb2_u7[i].c;fb.className='quiz-feedback show correct-fb';opts.forEach(o=>{if(o.classList.contains('selected'))o.classList.add('correct');});}
     else{fb.textContent='❌ '+fb2_u7[i].w;fb.className='quiz-feedback show wrong-fb';opts.forEach(o=>{if(o.classList.contains('selected'))o.classList.add('wrong');});}
@@ -8812,9 +9256,10 @@ function checkQuiz2_u7(){
   sb.textContent=`${score===5?'🏆 완벽!':score>=3?'👍 훌륭해요!':'💪 다시 도전!'} ${score}/5`;
   sb.style.background=score>=3?'#E8F5E9':'#FFF3E0';sb.style.color=score>=3?'#2E7D32':'#E65100';sb.className='score-bar show';
   document.getElementById('u7-reset-btn2').className='reset-btn show';
+  saveScore(7,'p8',score,5);
 }
 function resetQuiz2_u7(){
-  for(let i=1;i<=5;i++){document.querySelectorAll('#page-6 .quiz-item')[i-1].querySelectorAll('.quiz-opt').forEach(o=>{o.className='quiz-opt';});const fb=document.getElementById('u7-efb-'+i);fb.className='quiz-feedback';fb.textContent='';}
+  for(let i=1;i<=5;i++){document.getElementById('u7-page-8').querySelectorAll('.quiz-item')[i-1].querySelectorAll('.quiz-opt').forEach(o=>{o.className='quiz-opt';});const fb=document.getElementById('u7-efb-'+i);fb.className='quiz-feedback';fb.textContent='';}
   Object.keys(ua2_u7).forEach(k=>delete ua2_u7[k]);document.getElementById('u7-score-bar2').className='score-bar';document.getElementById('u7-reset-btn2').className='reset-btn';
 }
 
@@ -8994,15 +9439,10 @@ function resetQuiz_u8(){
 }
 
 // 퀴즈 B (p.5)
-const ans2_u8={1:'부사절',2:'day',3:'believe',4:'뒷마당',5:'형용사절'};
-const fb2_u8={
-  1:{c:'맞아요! if + 조건 → 부사절! 명사절 if와 구분!',w:'if절이 조건(만약)이면 부사절, 의문(~인지)이면 명사절이에요.'},
-  2:{c:'맞아요! when의 선행사는 시간명사 day!',w:'관계부사 when의 선행사는 시간명사예요.'},
-  3:{c:'맞아요! because절은 부사절이라 주절 동사는 believe!',w:'because절 제외하고 주절 동사를 찾아요.'},
-  4:{c:'맞아요! 주절 뒤에 although절 → 뒷마당, 쉼표 없음!',w:'주절 뒤에 오는 부사절 → 뒷마당이에요.'},
-  5:{c:'맞아요! reason 뒤 why절 → 관계부사 → 형용사절!',w:'why절은 reason 뒤에서 꾸미는 형용사절(관계부사)이에요.'}
-};
+
+const ans2_u8={1:'전치사구(전)',2:'관계사절(관)',3:'to부정사(투)',4:'detective',5:'분사구(분)'};
 const ua2_u8={};
+const fb2_u8={1:{c:'맞아요! "on the desk"는 전치사+명사 = 전치사구(전)!',w:'on = 전치사, the desk = 명사 → 전치사구(전)!'},2:{c:'맞아요! "who reads books"는 관계사+주어+동사 = 관계사절(관)!',w:'who + reads(동사) → 관계사절(관)!'},3:{c:'맞아요! "to read"는 to+동사원형 = to부정사구(투)!',w:'to + read(동사원형) → to부정사구(투)!'},4:{c:'맞아요! 관계사절·전치사구를 걷어내면 대장은 detective!',w:'"who found..."와 "with a golden lock"을 걷어내면 detective가 남아요.'},5:{c:'맞아요! "marked"는 과거분사(-ed) → 분사구(분)!',w:'marked = mark의 과거분사. 수동(-ed/pp) → 분사구(분)!'}};
 function selectOpt2_u8(el,qn,val){
   el.parentElement.querySelectorAll('.quiz-opt').forEach(o=>o.classList.remove('selected'));
   el.classList.add('selected');ua2_u8[qn]=val;
@@ -9011,7 +9451,7 @@ function checkQuiz2_u8(){
   let score=0;
   for(let i=1;i<=5;i++){
     const ans=ua2_u8[i],fb=document.getElementById('u8-efb-'+i);
-    const opts=document.querySelectorAll('#page-5 .quiz-item')[i-1].querySelectorAll('.quiz-opt');
+    const opts=document.getElementById('u8-page-8').querySelectorAll('.quiz-item')[i-1].querySelectorAll('.quiz-opt');
     if(!ans){fb.textContent='⚠️ 선택해주세요!';fb.className='quiz-feedback show wrong-fb';continue;}
     if(ans===ans2_u8[i]){score++;fb.textContent='✅ '+fb2_u8[i].c;fb.className='quiz-feedback show correct-fb';opts.forEach(o=>{if(o.classList.contains('selected'))o.classList.add('correct');});}
     else{fb.textContent='❌ '+fb2_u8[i].w;fb.className='quiz-feedback show wrong-fb';opts.forEach(o=>{if(o.classList.contains('selected'))o.classList.add('wrong');});}
@@ -9020,14 +9460,15 @@ function checkQuiz2_u8(){
   sb.textContent=`${score===5?'🏆 완벽!':score>=3?'👍 훌륭해요!':'💪 다시 도전!'} ${score}/5`;
   sb.style.background=score>=3?'#E8F5E9':'#FFF3E0';sb.style.color=score>=3?'#2E7D32':'#E65100';sb.className='score-bar show';
   document.getElementById('u8-reset-btn2').className='reset-btn show';
+  saveScore(8,'p8',score,5);
 }
 function resetQuiz2_u8(){
-  for(let i=1;i<=5;i++){document.querySelectorAll('#page-5 .quiz-item')[i-1].querySelectorAll('.quiz-opt').forEach(o=>{o.className='quiz-opt';});const fb=document.getElementById('u8-efb-'+i);fb.className='quiz-feedback';fb.textContent='';}
+  for(let i=1;i<=5;i++){document.getElementById('u8-page-8').querySelectorAll('.quiz-item')[i-1].querySelectorAll('.quiz-opt').forEach(o=>{o.className='quiz-opt';});const fb=document.getElementById('u8-efb-'+i);fb.className='quiz-feedback';fb.textContent='';}
   Object.keys(ua2_u8).forEach(k=>delete ua2_u8[k]);document.getElementById('u8-score-bar2').className='score-bar';document.getElementById('u8-reset-btn2').className='reset-btn';
 }
 
 function resetQuiz3_u8(){
-  for(let i=1;i<=8;i++){document.querySelectorAll('#page-6 .quiz-item')[i-1].querySelectorAll('.quiz-opt').forEach(o=>{o.className='quiz-opt';});const fb=document.getElementById('xfb-'+i);fb.className='quiz-feedback';fb.textContent='';}
+  for(let i=1;i<=8;i++){document.getElementById('u7-page-8').querySelectorAll('.quiz-item')[i-1].querySelectorAll('.quiz-opt').forEach(o=>{o.className='quiz-opt';});const fb=document.getElementById('xfb-'+i);fb.className='quiz-feedback';fb.textContent='';}
   Object.keys(ua3_u8).forEach(k=>delete ua3_u8[k]);document.getElementById('u8-score-bar3').className='score-bar';document.getElementById('u8-reset-btn3').className='reset-btn';
 }
 
@@ -9182,6 +9623,8 @@ function showPage_u1(n){
   if(btns[n-1])btns[n-1].classList.add('active');
   currentPage_u1=n;
   window.scrollTo({top:0,behavior:'smooth'});
+  saveProgress();
+  updateProgBar();
 }
 let currentPage_u2=1;
 function showPage_u2(n){
@@ -9193,6 +9636,8 @@ function showPage_u2(n){
   if(btns[n-1])btns[n-1].classList.add('active');
   currentPage_u2=n;
   window.scrollTo({top:0,behavior:'smooth'});
+  saveProgress();
+  updateProgBar();
 }
 let currentPage_u3=1;
 function showPage_u3(n){
@@ -9204,6 +9649,8 @@ function showPage_u3(n){
   if(btns[n-1])btns[n-1].classList.add('active');
   currentPage_u3=n;
   window.scrollTo({top:0,behavior:'smooth'});
+  saveProgress();
+  updateProgBar();
 }
 let currentPage_u4=1;
 function showPage_u4(n){
@@ -9215,6 +9662,8 @@ function showPage_u4(n){
   if(btns[n-1])btns[n-1].classList.add('active');
   currentPage_u4=n;
   window.scrollTo({top:0,behavior:'smooth'});
+  saveProgress();
+  updateProgBar();
 }
 let currentPage_u5=1;
 function showPage_u5(n){
@@ -9226,6 +9675,8 @@ function showPage_u5(n){
   if(btns[n-1])btns[n-1].classList.add('active');
   currentPage_u5=n;
   window.scrollTo({top:0,behavior:'smooth'});
+  saveProgress();
+  updateProgBar();
 }
 let currentPage_u6=1;
 function showPage_u6(n){
@@ -9237,6 +9688,8 @@ function showPage_u6(n){
   if(btns[n-1])btns[n-1].classList.add('active');
   currentPage_u6=n;
   window.scrollTo({top:0,behavior:'smooth'});
+  saveProgress();
+  updateProgBar();
 }
 let currentPage_u7=1;
 function showPage_u7(n){
@@ -9248,6 +9701,8 @@ function showPage_u7(n){
   if(btns[n-1])btns[n-1].classList.add('active');
   currentPage_u7=n;
   window.scrollTo({top:0,behavior:'smooth'});
+  saveProgress();
+  updateProgBar();
 }
 let currentPage_u8=1;
 function showPage_u8(n){
@@ -9259,6 +9714,8 @@ function showPage_u8(n){
   if(btns[n-1])btns[n-1].classList.add('active');
   currentPage_u8=n;
   window.scrollTo({top:0,behavior:'smooth'});
+  saveProgress();
+  updateProgBar();
 }
 
 function b1ToggleFc(el){
@@ -9813,6 +10270,7 @@ function goTOC(){
   const el=document.getElementById('front-toc');
   if(el)el.scrollIntoView({behavior:'smooth'});
   else window.scrollTo({top:0,behavior:'smooth'});
+  saveProgress();
 }
 window.addEventListener('load',()=>{_iN();_lv();});
 
@@ -9839,6 +10297,7 @@ function grade_u1(){
     if(big)big.textContent=ok+' / '+tot;
     if(msg)msg.textContent=p===100?'🏆 완벽해요! 자물쇠가 열렸다!':p>=60?'👍 잘했어요! 조금만 더!':'💪 다시 도전해봐요!';
     sc.style.display='block';
+    saveScore(1,'p6',ok,tot);
   }
 }
 function reset_u1(){
@@ -9870,6 +10329,7 @@ function grade_u2(){
     if(big)big.textContent=ok+' / '+tot;
     if(msg)msg.textContent=p===100?'🏆 완벽해요! 트로피 찾았다!':p>=60?'👍 잘했어요! 조금만 더!':'💪 다시 도전해봐요!';
     sc.style.display='block';
+    saveScore(2,'p6',ok,tot);
   }
 }
 function reset_u2(){
@@ -9901,6 +10361,7 @@ function grade_u3(){
     if(big)big.textContent=ok+' / '+tot;
     if(msg)msg.textContent=p===100?'🏆 완벽해요! 암호가 풀렸다!':p>=60?'👍 잘했어요! 조금만 더!':'💪 다시 도전해봐요!';
     sc.style.display='block';
+    saveScore(3,'p6',ok,tot);
   }
 }
 function reset_u3(){
@@ -9932,6 +10393,7 @@ function grade_u4(){
     if(big)big.textContent=ok+' / '+tot;
     if(msg)msg.textContent=p===100?'🏆 완벽해요! 그림의 비밀이 풀렸다!':p>=60?'👍 잘했어요! 조금만 더!':'💪 다시 도전해봐요!';
     sc.style.display='block';
+    saveScore(4,'p6',ok,tot);
   }
 }
 function reset_u4(){
@@ -9963,6 +10425,7 @@ function grade_u5(){
     if(big)big.textContent=ok+' / '+tot;
     if(msg)msg.textContent=p===100?'🏆 완벽해요! 전투분관 마스터!!':p>=60?'👍 잘했어요! 조금만 더!':'💪 다시 도전해봐요!';
     sc.style.display='block';
+    saveScore(5,'p6',ok,tot);
   }
 }
 function reset_u5(){
@@ -9994,6 +10457,7 @@ function grade_u6(){
     if(big)big.textContent=ok+' / '+tot;
     if(msg)msg.textContent=p===100?'🏆 완벽해요! 문이 열렸다!':p>=60?'👍 잘했어요! 조금만 더!':'💪 다시 도전해봐요!';
     sc.style.display='block';
+    saveScore(6,'p6',ok,tot);
   }
 }
 function reset_u6(){
@@ -10025,6 +10489,7 @@ function grade_u7(){
     if(big)big.textContent=ok+' / '+tot;
     if(msg)msg.textContent=p===100?'🏆 완벽해요! 범인을 잡았다!':p>=60?'👍 잘했어요! 조금만 더!':'💪 다시 도전해봐요!';
     sc.style.display='block';
+    saveScore(7,'p6',ok,tot);
   }
 }
 function reset_u7(){
@@ -10056,6 +10521,7 @@ function grade_u8(){
     if(big)big.textContent=ok+' / '+tot;
     if(msg)msg.textContent=p===100?'🏆 완벽해요! 비밀의 방이 열렸다!! 🗝️':p>=60?'👍 잘했어요! 조금만 더!':'💪 다시 도전해봐요!';
     sc.style.display='block';
+    saveScore(8,'p6',ok,tot);
   }
 }
 function reset_u8(){
@@ -10277,6 +10743,263 @@ function speakText(t,el){speak(null,t);}
   <div class="wpopup-divider"></div>
   <div id="wpopup-meaning"></div>
 </div>
+// ============================================================
+<script>
+// ===== 📚 학습 진도 저장 (localStorage) =====
+const PROG_KEY = 'b1_youngpo_v1';
 
+function saveProgress() {
+  try {
+    const prev = JSON.parse(localStorage.getItem(PROG_KEY) || '{}');
+    const maxPages = prev.maxPages || {};
+    for (let i = 1; i <= 8; i++) {
+      const cp = window['currentPage_u' + i] || 1;
+      maxPages[i] = Math.max(maxPages[i] || 1, cp);
+    }
+    const data = { unit: activeUnit, pages: {}, maxPages, savedAt: Date.now() };
+    for (let i = 1; i <= 8; i++) data.pages[i] = window['currentPage_u' + i] || 1;
+    localStorage.setItem(PROG_KEY, JSON.stringify(data));
+    updateProgDots(maxPages);
+    markVisitedBtns(maxPages);
+    updateProgBar();
+  } catch(e) {}
+}
+
+function loadProgress() {
+  try {
+    const raw = localStorage.getItem(PROG_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    for (let i = 1; i <= 8; i++) {
+      if (data.pages && data.pages[i]) window['currentPage_u' + i] = data.pages[i];
+    }
+    updateProgDots(data.maxPages || {});
+    markVisitedBtns(data.maxPages || {});
+    const u = data.unit || 1, p = (data.pages || {})[u] || 1;
+    if (u === 1 && p === 1) return;
+    showResumeCard(u, p, data.maxPages || {});
+  } catch(e) {}
+}
+
+// 심플 카드 표시
+function showResumeCard(u, p, maxPages) {
+  const old = document.getElementById('resume-card');
+  if (old) old.remove();
+  let total = 0;
+  for (let i = 1; i <= 8; i++) total += (maxPages[i] || 1);
+  const pct = Math.round((total / 64) * 100);
+  const card = document.createElement('div');
+  card.id = 'resume-card';
+  card.innerHTML =
+    '<span class="rc-icon">📖</span>' +
+    '<div class="rc-text">' +
+      '<div class="rc-label">마지막 학습 위치</div>' +
+      '<div class="rc-pos">Unit ' + u + ' · p.' + p + '</div>' +
+      '<div class="rc-pct">전체 ' + pct + '% 완료</div>' +
+    '</div>' +
+    '<button class="rc-btn" onclick="doResume(' + u + ',' + p + ')">▶ 이어서</button>' +
+    '<button class="rc-close" onclick="closeCard()" title="닫기">✕</button>';
+  document.body.appendChild(card);
+  setTimeout(closeCard, 12000);
+}
+
+function doResume(u, p) {
+  closeCard();
+  activeUnit = u;
+  for (let i = 1; i <= 8; i++) {
+    const c = document.getElementById('unit-container-' + i);
+    const t = document.getElementById('unit-tab-' + i);
+    if (c) c.classList.toggle('active', i === u);
+    if (t) t.classList.toggle('active', i === u);
+  }
+  const titleEl = document.getElementById('header-unit-title');
+  if (titleEl && typeof unitTitles !== 'undefined') titleEl.textContent = unitTitles[u] || '';
+  const fn = window['showPage_u' + u];
+  if (fn) fn(p);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function closeCard() {
+  const c = document.getElementById('resume-card');
+  if (!c) return;
+  c.classList.add('hide');
+  setTimeout(() => { if (c.parentNode) c.remove(); }, 260);
+}
+
+// Unit 탭 아래 도트 진도 표시 (●●●○○○○○)
+function updateProgDots(maxPages) {
+  for (let i = 1; i <= 8; i++) {
+    const tab = document.getElementById('unit-tab-' + i);
+    if (!tab) continue;
+    const max = maxPages[i] || 0;
+    let badge = tab.querySelector('.unit-prog');
+    if (!badge) { badge = document.createElement('span'); badge.className = 'unit-prog'; tab.appendChild(badge); }
+    if (max >= 8) badge.textContent = '✓';
+    else if (max > 0) badge.textContent = '●'.repeat(max) + '○'.repeat(8 - max);
+    else badge.textContent = '';
+  }
+}
+
+// 방문한 페이지 버튼 초록 표시
+function markVisitedBtns(maxPages) {
+  for (let i = 1; i <= 8; i++) {
+    const max = maxPages[i] || 0;
+    const btns = document.querySelectorAll('#page-nav-u' + i + ' .page-btn');
+    btns.forEach((btn, idx) => {
+      if (idx + 1 <= max) btn.classList.add('visited');
+      else btn.classList.remove('visited');
+    });
+  }
+}
+
+
+// ── 진도 바 업데이트 ──
+function updateProgBar() {
+  try {
+    const raw = localStorage.getItem(PROG_KEY);
+    const data = raw ? JSON.parse(raw) : {};
+    const maxPages = data.maxPages || {};
+    let total = 0;
+    for (let i = 1; i <= 8; i++) total += (maxPages[i] || 1);
+    const pct = Math.max(2, Math.round((total / 64) * 100));
+    const u = typeof activeUnit !== 'undefined' ? activeUnit : 1;
+    const p = window['currentPage_u' + u] || 1;
+    const fill = document.getElementById('prog-bar-fill');
+    const label = document.getElementById('prog-bar-label');
+    const pos = document.getElementById('prog-bar-pos');
+    if (fill) fill.style.width = pct + '%';
+    if (label) label.textContent = pct + '%';
+    if (pos) pos.textContent = '📖 Unit ' + u + ' · p.' + p;
+  } catch(e) {}
+}
+
+function resetProgress() {
+  if (!confirm('학습 진도를 초기화할까요?')) return;
+  localStorage.removeItem(PROG_KEY);
+  for (let i = 1; i <= 8; i++) {
+    const tab = document.getElementById('unit-tab-' + i);
+    if (tab) { const b = tab.querySelector('.unit-prog'); if (b) b.textContent = ''; }
+    document.querySelectorAll('#page-nav-u' + i + ' .page-btn').forEach(b => b.classList.remove('visited'));
+  }
+  alert('진도가 초기화됐어요! 🌟');
+}
+</script>
+
+<!-- 📊 성적표 모달 -->
+<div id="score-modal-bg" onclick="if(event.target===this)closeScoreModal()">
+  <div id="score-modal">
+    <div class="sm-head">
+      <span class="sm-head-title">📊 내 성적표</span>
+      <button class="sm-head-close" onclick="closeScoreModal()">✕</button>
+    </div>
+    <div class="sm-summary" id="sm-summary">
+      <div class="sm-sum-item">
+        <div class="sm-sum-num" id="sm-tot-score">-</div>
+        <div class="sm-sum-label">총 획득점수</div>
+      </div>
+      <div class="sm-sum-item">
+        <div class="sm-sum-num" id="sm-tot-max">-</div>
+        <div class="sm-sum-label">총 만점</div>
+      </div>
+      <div class="sm-total-bar-wrap">
+        <div class="sm-total-pct" id="sm-pct">0%</div>
+        <div class="sm-total-bar-track">
+          <div class="sm-total-bar-fill" id="sm-bar" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+    <div class="sm-body">
+      <div class="sm-col-head">
+        <div>단원</div><div>연습문제 p.6</div><div>추가문제 p.8</div>
+      </div>
+      <div id="sm-rows"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== 📊 성적 저장/표시 =====
+const SCORE_KEY = 'b1_scores_v1';
+const UNIT_NAMES = {
+  1:'명사블럭', 2:'전치사구', 3:'to부정사', 4:'분사구',
+  5:'관계사절', 6:'대장명사', 7:'S·V·O', 8:'종합실전'
+};
+
+function saveScore(unit, type, score, total) {
+  try {
+    const data = JSON.parse(localStorage.getItem(SCORE_KEY) || '{}');
+    const key = 'u' + unit + '_' + type;
+    // 최고 점수만 저장
+    if (!data[key] || score > data[key].score) {
+      data[key] = { score, total, date: Date.now() };
+    }
+    localStorage.setItem(SCORE_KEY, JSON.stringify(data));
+    // 진도 바 버튼 갱신
+    updateScoreBtn();
+  } catch(e) {}
+}
+
+function updateScoreBtn() {
+  try {
+    const data = JSON.parse(localStorage.getItem(SCORE_KEY) || '{}');
+    let totScore = 0, totMax = 0;
+    for (const k in data) { totScore += data[k].score; totMax += data[k].total; }
+    const btn = document.getElementById('score-open-btn');
+    if (btn && totMax > 0) {
+      const pct = Math.round(totScore / totMax * 100);
+      btn.textContent = '📊 ' + pct + '%';
+    }
+  } catch(e) {}
+}
+
+function openScoreModal() {
+  try {
+    const data = JSON.parse(localStorage.getItem(SCORE_KEY) || '{}');
+    let totScore = 0, totMax = 0;
+    const rowsEl = document.getElementById('sm-rows');
+    rowsEl.innerHTML = '';
+
+    for (let u = 1; u <= 8; u++) {
+      const p6 = data['u' + u + '_p6'];
+      const p8 = data['u' + u + '_p8'];
+      if (p6) { totScore += p6.score; totMax += p6.total; }
+      if (p8) { totScore += p8.score; totMax += p8.total; }
+
+      const makeCell = (d) => {
+        if (!d) return '<div class="sm-score-cell"><span class="sm-none">미완료</span></div>';
+        const pct = Math.round(d.score / d.total * 100);
+        const color = pct === 100 ? '#2E7D32' : pct >= 60 ? '#1565C0' : '#C62828';
+        const stars = '⭐'.repeat(d.score) + '☆'.repeat(d.total - d.score);
+        return `<div class="sm-score-cell">
+          <div class="sm-score-num" style="color:${color}">${d.score} / ${d.total}</div>
+          <div class="sm-stars">${stars}</div>
+        </div>`;
+      };
+
+      rowsEl.innerHTML += `<div class="sm-row">
+        <div class="sm-unit-badge">U${u}<br><span style="font-size:0.6rem;font-weight:400;">${UNIT_NAMES[u]}</span></div>
+        ${makeCell(p6)}
+        ${makeCell(p8)}
+      </div>`;
+    }
+
+    // 총점 업데이트
+    document.getElementById('sm-tot-score').textContent = totScore;
+    document.getElementById('sm-tot-max').textContent = totMax || '-';
+    const pct = totMax > 0 ? Math.round(totScore / totMax * 100) : 0;
+    document.getElementById('sm-pct').textContent = pct + '%';
+    document.getElementById('sm-bar').style.width = pct + '%';
+
+    document.getElementById('score-modal-bg').classList.add('open');
+  } catch(e) { console.log(e); }
+}
+
+function closeScoreModal() {
+  document.getElementById('score-modal-bg').classList.remove('open');
+}
+
+// 페이지 로드 시 버튼 초기화
+document.addEventListener('DOMContentLoaded', updateScoreBtn);
+</script>
 </body>
 </html>
