@@ -927,6 +927,153 @@ body {
   }
 }
 
+
+/* ===== 진도 바 ===== */
+#prog-bar-wrap {
+  background: #1A2744;
+  padding: 6px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.7);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+#prog-bar-track {
+  flex: 1; height: 6px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 10px; overflow: hidden;
+}
+#prog-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #C8A84B, #F5E9C8);
+  border-radius: 10px;
+  transition: width 0.5s ease;
+  min-width: 4px;
+}
+#prog-bar-label {
+  white-space: nowrap; color: #F5E9C8;
+  font-weight: 700; font-size: 0.72rem;
+  min-width: 36px; text-align: right;
+}
+#score-open-btn {
+  background: rgba(200,168,75,0.2); color: #F5E9C8;
+  border: 1px solid rgba(200,168,75,0.4);
+  border-radius: 12px; padding: 2px 10px;
+  font-size: 0.72rem; cursor: pointer; white-space: nowrap;
+}
+#score-open-btn:hover { background: rgba(200,168,75,0.35); }
+
+/* 유닛 탭 진도 도트 */
+.nav-btn .unit-prog {
+  display: block; font-size: 8px; line-height: 1;
+  margin-top: 2px; color: rgba(255,255,255,0.6); letter-spacing: -1px;
+}
+.nav-btn.active .unit-prog { color: #F5E9C8; }
+
+/* 방문 페이지 버튼 표시 */
+.page-btn.visited:not(.active) {
+  color: #7DC87A; border-bottom: 2px solid #5aaa57;
+}
+
+/* 이어서 학습 카드 */
+#resume-card {
+  position: fixed; bottom: 20px; left: 50%;
+  transform: translateX(-50%);
+  background: #1A2744; border: 2px solid #C8A84B;
+  border-radius: 20px; padding: 12px 18px;
+  display: flex; align-items: center; gap: 14px;
+  z-index: 9997; box-shadow: 0 6px 24px rgba(0,0,0,0.4);
+  animation: cardUp 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  white-space: nowrap;
+}
+@keyframes cardUp {
+  from { opacity:0; transform: translateX(-50%) translateY(30px); }
+  to   { opacity:1; transform: translateX(-50%) translateY(0); }
+}
+#resume-card.hide { animation: cardDown 0.25s ease forwards; }
+@keyframes cardDown { to { opacity:0; transform: translateX(-50%) translateY(20px); } }
+.rc-icon { font-size: 1.6rem; }
+.rc-text { color: white; }
+.rc-label { font-size: 0.7rem; color: rgba(255,255,255,0.55); margin-bottom: 2px; }
+.rc-pos { font-size: 0.95rem; font-weight: 700; color: #F5E9C8; }
+.rc-pct { font-size: 0.7rem; color: rgba(255,255,255,0.5); margin-top: 1px; }
+.rc-btn {
+  background: #C8A84B; color: #1A2744;
+  border: none; border-radius: 12px;
+  padding: 8px 14px; font-size: 0.82rem; font-weight: 700; cursor: pointer;
+}
+.rc-btn:hover { background: #F5E9C8; }
+.rc-close {
+  background: none; border: none; color: rgba(255,255,255,0.4);
+  font-size: 1rem; cursor: pointer; padding: 0 2px; margin-left: -6px;
+}
+.rc-close:hover { color: white; }
+
+/* ===== 📊 성적표 모달 ===== */
+#score-modal-bg {
+  display: none; position: fixed; inset: 0;
+  background: rgba(10,15,40,0.75);
+  z-index: 9996; align-items: center; justify-content: center;
+}
+#score-modal-bg.open { display: flex; }
+#score-modal {
+  background: #fff; border-radius: 20px;
+  width: 92%; max-width: 480px;
+  max-height: 85vh; overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  animation: modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes modalIn {
+  from { opacity:0; transform:scale(0.9); }
+  to   { opacity:1; transform:scale(1); }
+}
+.sm-head {
+  background: linear-gradient(135deg, #1A2744 0%, #5C3D8A 100%);
+  color: white; padding: 18px 20px;
+  border-radius: 20px 20px 0 0;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.sm-head-title { font-size: 1.05rem; font-weight: 700; }
+.sm-head-close {
+  background: rgba(255,255,255,0.15); border: none; color: white;
+  width: 28px; height: 28px; border-radius: 50%;
+  cursor: pointer; font-size: 1rem; line-height: 28px; text-align: center;
+}
+.sm-summary {
+  background: #F3F0FF; padding: 12px 20px;
+  display: flex; gap: 20px; align-items: center;
+  border-bottom: 1px solid #E0DBFF;
+}
+.sm-sum-item { text-align: center; }
+.sm-sum-num { font-size: 1.5rem; font-weight: 900; color: #5C3D8A; }
+.sm-sum-label { font-size: 0.7rem; color: #888; margin-top: 2px; }
+.sm-total-bar-wrap { flex: 1; }
+.sm-total-bar-track { height: 8px; background: #ddd; border-radius: 10px; overflow: hidden; margin-top: 4px; }
+.sm-total-bar-fill { height: 100%; background: linear-gradient(90deg, #C8A84B, #5C3D8A); border-radius: 10px; transition: width 0.6s ease; }
+.sm-total-pct { font-size: 0.75rem; color: #5C3D8A; font-weight: 700; margin-bottom: 2px; }
+.sm-body { padding: 12px 16px; }
+.sm-row {
+  display: grid; grid-template-columns: 60px 1fr 1fr;
+  gap: 8px; padding: 10px 4px;
+  border-bottom: 1px solid #f0eef8; align-items: center;
+}
+.sm-row:last-child { border-bottom: none; }
+.sm-unit-badge {
+  background: #5C3D8A; color: white;
+  border-radius: 8px; padding: 4px 8px;
+  font-size: 0.72rem; font-weight: 700; text-align: center;
+}
+.sm-score-cell { text-align: center; }
+.sm-score-num { font-size: 0.9rem; font-weight: 700; }
+.sm-stars { font-size: 0.65rem; letter-spacing: -1px; margin-top: 2px; }
+.sm-none { font-size: 0.72rem; color: #bbb; }
+.sm-col-head {
+  display: grid; grid-template-columns: 60px 1fr 1fr;
+  gap: 8px; padding: 6px 4px;
+  font-size: 0.68rem; font-weight: 700; color: #888;
+  border-bottom: 2px solid #E0DBFF; margin-bottom: 2px; text-align: center;
+}
 </style>
 </head>
 <body>
@@ -957,6 +1104,12 @@ body {
   </div>
 </div>
 
+<div id="prog-bar-wrap">
+  <span id="prog-bar-pos" style="white-space:nowrap;">📖 Unit 1 · p.1</span>
+  <div id="prog-bar-track"><div id="prog-bar-fill" style="width:2%"></div></div>
+  <span id="prog-bar-label">2%</span>
+  <button id="score-open-btn" onclick="openScoreModal()">📊 성적</button>
+</div>
 <!-- UNIT 1 -->
 <div id="unit-container-1" class="unit-container active">
 <div id="page-nav-u1">
@@ -8090,6 +8243,7 @@ function checkPwd() {
     document.getElementById('lock-screen').style.display = 'none';
     err.style.display = 'none';
     showUnit(1);
+    setTimeout(loadProgress, 300);
   } else {
     err.style.display = 'block';
     document.getElementById('pwd-input').value = '';
@@ -8114,7 +8268,9 @@ function showUnit(n) {
     const t = document.getElementById('unit-tab-' + i);
     if (c) c.classList.toggle('active', i === n);
     if (t) t.classList.toggle('active', i === n);
-  }
+  saveProgress();
+  updateProgBar();
+}
   document.getElementById('header-unit-title').textContent = unitTitles[n] || '';
   window.scrollTo({ top: 0, behavior: 'smooth' });
   const fn = window['showPage_u' + n];
@@ -8342,6 +8498,7 @@ function checkQuiz_u1() {
   sb.style.color = score >= 4 ? '#2E7D32' : '#E65100';
   sb.className = 'score-bar show';
   document.getElementById('u1-reset-btn').className = 'reset-btn show';
+  saveScore(1,'p6',score,6);
 }
 function resetQuiz_u1() {
   for (let i = 1; i <= 6; i++) {
@@ -8397,6 +8554,7 @@ function checkQuiz2_u1() {
   sb.style.color = score >= 3 ? '#2E7D32' : '#E65100';
   sb.className = 'score-bar show';
   document.getElementById('u1-reset-btn2').className = 'reset-btn show';
+  saveScore(1,'p8',score,5);
 }
 function resetQuiz2_u1() {
   const items = document.getElementById('u1-page-8').querySelectorAll('.quiz-item');
@@ -8432,6 +8590,8 @@ function showPage_u2(n){
   document.getElementById('unit-container-2').querySelectorAll('.page-btn')[n-1].classList.add('active');
   currentPage_u2=n;
   window.scrollTo({top:0,behavior:'smooth'});
+  saveProgress();
+  updateProgBar();
 }
 
 // ===== TTS =====
@@ -8479,6 +8639,7 @@ function checkQuiz_u2(){
   sb.style.color=score>=4?'#2E7D32':'#E65100';
   sb.className='score-bar show';
   document.getElementById('u2-reset-btn').className='reset-btn show';
+  saveScore(2,'p6',score,6);
 }
 function resetQuiz_u2(){
   for(let i=1;i<=6;i++){
@@ -8529,6 +8690,7 @@ function checkQuiz2_u2(){
   sb.style.color=score>=3?'#2E7D32':'#E65100';
   sb.className='score-bar show';
   document.getElementById('u2-reset-btn2').className='reset-btn show';
+  saveScore(2,'p8',score,5);
 }
 function resetQuiz2_u2(){
   const items=document.getElementById('u2-page-8').querySelectorAll('.quiz-item');
@@ -8624,6 +8786,8 @@ function showPage_u3(n){
   document.getElementById('u3-page-'+n).classList.add('active');
   document.getElementById('unit-container-3').querySelectorAll('.page-btn')[n-1].classList.add('active');
   currentPage_u3=n;window.scrollTo({top:0,behavior:'smooth'});
+  saveProgress();
+  updateProgBar();
 }
 
 let ttsEnabled_u3=false;
@@ -8662,6 +8826,7 @@ function checkQuiz_u3(){
   const emoji=score===6?'🏆 완벽!':score>=4?'👍 훌륭해요!':'💪 조금 더 연습해요!';
   sb.textContent=`${emoji} ${score} / 6 정답`;sb.style.background=score>=4?'#E8F5E9':'#FFF3E0';sb.style.color=score>=4?'#2E7D32':'#E65100';sb.className='score-bar show';
   document.getElementById('u3-reset-btn').className='reset-btn show';
+  saveScore(3,'p6',score,6);
 }
 function resetQuiz_u3(){
   for(let i=1;i<=6;i++){
@@ -8705,6 +8870,7 @@ function checkQuiz2_u3(){
   const emoji=score===5?'🏆 완벽!':score>=3?'👍 훌륭해요!':'💪 조금 더 연습해요!';
   sb.textContent=`${emoji} ${score} / 5 정답`;sb.style.background=score>=3?'#E8F5E9':'#FFF3E0';sb.style.color=score>=3?'#2E7D32':'#E65100';sb.className='score-bar show';
   document.getElementById('u3-reset-btn2').className='reset-btn show';
+  saveScore(3,'p8',score,5);
 }
 function resetQuiz2_u3(){
   const items=document.getElementById('u3-page-8').querySelectorAll('.quiz-item');
@@ -8786,6 +8952,8 @@ function showPage_u4(n){
   document.getElementById('u4-page-'+n).classList.add('active');
   document.getElementById('unit-container-4').querySelectorAll('.page-btn')[n-1].classList.add('active');
   currentPage_u4=n;window.scrollTo({top:0,behavior:'smooth'});
+  saveProgress();
+  updateProgBar();
 }
 
 let ttsEnabled_u4=false;
@@ -8824,6 +8992,7 @@ function checkQuiz_u4(){
   const emoji=score===6?'🏆 완벽!':score>=4?'👍 훌륭해요!':'💪 조금 더 연습해요!';
   sb.textContent=`${emoji} ${score} / 6 정답`;sb.style.background=score>=4?'#E8F5E9':'#FFF3E0';sb.style.color=score>=4?'#2E7D32':'#E65100';sb.className='score-bar show';
   document.getElementById('u4-reset-btn').className='reset-btn show';
+  saveScore(4,'p6',score,6);
 }
 function resetQuiz_u4(){
   for(let i=1;i<=6;i++){
@@ -8867,6 +9036,7 @@ function checkQuiz2_u4(){
   const emoji=score===5?'🏆 완벽!':score>=3?'👍 훌륭해요!':'💪 조금 더 연습해요!';
   sb.textContent=`${emoji} ${score} / 5 정답`;sb.style.background=score>=3?'#E8F5E9':'#FFF3E0';sb.style.color=score>=3?'#2E7D32':'#E65100';sb.className='score-bar show';
   document.getElementById('u4-reset-btn2').className='reset-btn show';
+  saveScore(4,'p8',score,5);
 }
 function resetQuiz2_u4(){
   const items=document.getElementById('u4-page-8').querySelectorAll('.quiz-item');
@@ -8948,6 +9118,8 @@ function showPage_u5(n){
   document.getElementById('u5-page-'+n).classList.add('active');
   document.getElementById('unit-container-5').querySelectorAll('.page-btn')[n-1].classList.add('active');
   currentPage_u5=n;window.scrollTo({top:0,behavior:'smooth'});
+  saveProgress();
+  updateProgBar();
 }
 
 let ttsEnabled_u5=false;
@@ -8987,6 +9159,7 @@ function checkQuiz_u5(){
   const emoji=score===6?'🏆 완벽!':score>=4?'👍 훌륭해요!':'💪 조금 더 연습해요!';
   sb.textContent=`${emoji} ${score} / 6 정답`;sb.style.background=score>=4?'#E8F5E9':'#FFF3E0';sb.style.color=score>=4?'#2E7D32':'#E65100';sb.className='score-bar show';
   document.getElementById('u5-reset-btn').className='reset-btn show';
+  saveScore(5,'p6',score,6);
 }
 function resetQuiz_u5(){
   for(let i=1;i<=6;i++){
@@ -9030,6 +9203,7 @@ function checkQuiz2_u5(){
   const emoji=score===5?'🏆 완벽!':score>=3?'👍 훌륭해요!':'💪 조금 더 연습해요!';
   sb.textContent=`${emoji} ${score} / 5 정답`;sb.style.background=score>=3?'#E8F5E9':'#FFF3E0';sb.style.color=score>=3?'#2E7D32':'#E65100';sb.className='score-bar show';
   document.getElementById('u5-reset-btn2').className='reset-btn show';
+  saveScore(5,'p8',score,5);
 }
 function resetQuiz2_u5(){
   const items=document.getElementById('u5-page-8').querySelectorAll('.quiz-item');
@@ -9109,6 +9283,8 @@ function showPage_u6(n){
   document.getElementById('u6-page-'+n).classList.add('active');
   document.getElementById('unit-container-6').querySelectorAll('.page-btn')[n-1].classList.add('active');
   currentPage_u6=n;window.scrollTo({top:0,behavior:'smooth'});
+  saveProgress();
+  updateProgBar();
 }
 
 let ttsEnabled_u6=false;
@@ -9148,6 +9324,7 @@ function checkQuiz_u6(){
   const emoji=score===6?'🏆 완벽!':score>=4?'👍 훌륭해요!':'💪 조금 더 연습해요!';
   sb.textContent=`${emoji} ${score} / 6 정답`;sb.style.background=score>=4?'#E8F5E9':'#FFF3E0';sb.style.color=score>=4?'#2E7D32':'#E65100';sb.className='score-bar show';
   document.getElementById('u6-reset-btn').className='reset-btn show';
+  saveScore(6,'p6',score,6);
 }
 function resetQuiz_u6(){
   for(let i=1;i<=6;i++){
@@ -9191,6 +9368,7 @@ function checkQuiz2_u6(){
   const emoji=score===5?'🏆 완벽!':score>=3?'👍 훌륭해요!':'💪 조금 더 연습해요!';
   sb.textContent=`${emoji} ${score} / 5 정답`;sb.style.background=score>=3?'#E8F5E9':'#FFF3E0';sb.style.color=score>=3?'#2E7D32':'#E65100';sb.className='score-bar show';
   document.getElementById('u6-reset-btn2').className='reset-btn show';
+  saveScore(6,'p8',score,5);
 }
 function resetQuiz2_u6(){
   const items=document.getElementById('u6-page-8').querySelectorAll('.quiz-item');
@@ -9270,6 +9448,8 @@ function showPage_u7(n){
   document.getElementById('u7-page-'+n).classList.add('active');
   document.getElementById('unit-container-7').querySelectorAll('.page-btn')[n-1].classList.add('active');
   currentPage_u7=n;window.scrollTo({top:0,behavior:'smooth'});
+  saveProgress();
+  updateProgBar();
 }
 
 let ttsEnabled_u7=false;
@@ -9304,6 +9484,7 @@ function checkQuiz_u7(){
   sb.textContent=`${score===5?'🏆 완벽!':score>=3?'👍 훌륭해요!':'💪 다시 도전!'} ${score}/5`;
   sb.style.background=score>=3?'#E8F5E9':'#FFF3E0';sb.style.color=score>=3?'#2E7D32':'#E65100';sb.className='score-bar show';
   document.getElementById('u7-reset-btn').className='reset-btn show';
+  saveScore(7,'p6',score,6);
 }
 function resetQuiz_u7(){
   for(let i=1;i<=5;i++){document.querySelectorAll('#page-5 .quiz-item')[i-1].querySelectorAll('.quiz-opt').forEach(o=>{o.className='quiz-opt';});const fb=document.getElementById('u7-fb-'+i);fb.className='quiz-feedback';fb.textContent='';}
@@ -9337,6 +9518,7 @@ function checkQuiz2_u7(){
   sb.textContent=`${score===5?'🏆 완벽!':score>=3?'👍 훌륭해요!':'💪 다시 도전!'} ${score}/5`;
   sb.style.background=score>=3?'#E8F5E9':'#FFF3E0';sb.style.color=score>=3?'#2E7D32':'#E65100';sb.className='score-bar show';
   document.getElementById('u7-reset-btn2').className='reset-btn show';
+  saveScore(7,'p8',score,5);
 }
 function resetQuiz2_u7(){
   for(let i=1;i<=5;i++){document.querySelectorAll('#page-6 .quiz-item')[i-1].querySelectorAll('.quiz-opt').forEach(o=>{o.className='quiz-opt';});const fb=document.getElementById('u7-efb-'+i);fb.className='quiz-feedback';fb.textContent='';}
@@ -9484,6 +9666,8 @@ function showPage_u8(n){
   document.getElementById('u8-page-'+n).classList.add('active');
   document.getElementById('unit-container-8').querySelectorAll('.page-btn')[n-1].classList.add('active');
   currentPage_u8=n;window.scrollTo({top:0,behavior:'smooth'});
+  saveProgress();
+  updateProgBar();
 }
 
 let ttsEnabled_u8=false;
@@ -9518,6 +9702,7 @@ function checkQuiz_u8(){
   sb.textContent=`${score===5?'🏆 완벽!':score>=3?'👍 훌륭해요!':'💪 다시 도전!'} ${score}/5`;
   sb.style.background=score>=3?'#E8F5E9':'#FFF3E0';sb.style.color=score>=3?'#2E7D32':'#E65100';sb.className='score-bar show';
   document.getElementById('u8-reset-btn').className='reset-btn show';
+  saveScore(8,'p6',score,6);
 }
 function resetQuiz_u8(){
   for(let i=1;i<=5;i++){document.querySelectorAll('#page-4 .quiz-item')[i-1].querySelectorAll('.quiz-opt').forEach(o=>{o.className='quiz-opt';});const fb=document.getElementById('u8-fb-'+i);fb.className='quiz-feedback';fb.textContent='';}
@@ -9551,6 +9736,7 @@ function checkQuiz2_u8(){
   sb.textContent=`${score===5?'🏆 완벽!':score>=3?'👍 훌륭해요!':'💪 다시 도전!'} ${score}/5`;
   sb.style.background=score>=3?'#E8F5E9':'#FFF3E0';sb.style.color=score>=3?'#2E7D32':'#E65100';sb.className='score-bar show';
   document.getElementById('u8-reset-btn2').className='reset-btn show';
+  saveScore(8,'p8',score,5);
 }
 function resetQuiz2_u8(){
   for(let i=1;i<=5;i++){document.querySelectorAll('#page-5 .quiz-item')[i-1].querySelectorAll('.quiz-opt').forEach(o=>{o.className='quiz-opt';});const fb=document.getElementById('u8-efb-'+i);fb.className='quiz-feedback';fb.textContent='';}
@@ -9701,6 +9887,232 @@ function checkBlank_u8(inputId, fbId, answer){
 }
 
 
+</script>
+
+<div id="score-modal-bg" onclick="if(event.target===this)closeScoreModal()">
+  <div id="score-modal">
+    <div class="sm-head">
+      <span class="sm-head-title">📊 내 성적표 — Book 2</span>
+      <button class="sm-head-close" onclick="closeScoreModal()">✕</button>
+    </div>
+    <div class="sm-summary">
+      <div class="sm-sum-item">
+        <div class="sm-sum-num" id="sm-tot-score">-</div>
+        <div class="sm-sum-label">총 획득점수</div>
+      </div>
+      <div class="sm-sum-item">
+        <div class="sm-sum-num" id="sm-tot-max">-</div>
+        <div class="sm-sum-label">총 만점</div>
+      </div>
+      <div class="sm-total-bar-wrap">
+        <div class="sm-total-pct" id="sm-pct">0%</div>
+        <div class="sm-total-bar-track">
+          <div class="sm-total-bar-fill" id="sm-bar" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+    <div class="sm-body">
+      <div class="sm-col-head">
+        <div>단원</div><div>연습문제 p.6</div><div>추가문제 p.8</div>
+      </div>
+      <div id="sm-rows"></div>
+    </div>
+  </div>
+</div>
+<script>
+// ===== 📚 Book 2 학습 진도 저장 =====
+const PROG_KEY  = 'b2_youngpo_v1';   // Book 1과 분리
+const SCORE_KEY = 'b2_scores_v1';
+
+const UNIT_NAMES_B2 = {
+  1:'명사절', 2:'형용사절', 3:'부사절(when/if)',
+  4:'부사절(because)', 5:'부사절(although)', 6:'혼합독해',
+  7:'실전심화', 8:'종합'
+};
+
+// ── 진도 저장 ──
+function saveProgress() {
+  try {
+    const prev = JSON.parse(localStorage.getItem(PROG_KEY) || '{}');
+    const maxPages = prev.maxPages || {};
+    for (let i = 1; i <= 8; i++) {
+      const cp = window['currentPage_u' + i] || 1;
+      maxPages[i] = Math.max(maxPages[i] || 1, cp);
+    }
+    const data = { unit: activeUnit, pages: {}, maxPages, savedAt: Date.now() };
+    for (let i = 1; i <= 8; i++) data.pages[i] = window['currentPage_u' + i] || 1;
+    localStorage.setItem(PROG_KEY, JSON.stringify(data));
+    updateProgDots(maxPages);
+    markVisitedBtns(maxPages);
+    updateProgBar();
+  } catch(e) {}
+}
+
+// ── 진도 불러오기 ──
+function loadProgress() {
+  try {
+    const raw = localStorage.getItem(PROG_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    for (let i = 1; i <= 8; i++) {
+      if (data.pages && data.pages[i]) window['currentPage_u' + i] = data.pages[i];
+    }
+    updateProgDots(data.maxPages || {});
+    markVisitedBtns(data.maxPages || {});
+    updateProgBar();
+    const u = data.unit || 1, p = (data.pages || {})[u] || 1;
+    if (u === 1 && p === 1) return;
+    showResumeCard(u, p, data.maxPages || {});
+  } catch(e) {}
+}
+
+// ── 이어서 학습 카드 ──
+function showResumeCard(u, p, maxPages) {
+  const old = document.getElementById('resume-card');
+  if (old) old.remove();
+  let total = 0;
+  for (let i = 1; i <= 8; i++) total += (maxPages[i] || 1);
+  const pct = Math.round((total / 64) * 100);
+  const card = document.createElement('div');
+  card.id = 'resume-card';
+  card.innerHTML =
+    '<span class="rc-icon">📖</span>' +
+    '<div class="rc-text">' +
+      '<div class="rc-label">마지막 학습 위치</div>' +
+      '<div class="rc-pos">Unit ' + u + ' · p.' + p + '</div>' +
+      '<div class="rc-pct">전체 ' + pct + '% 완료</div>' +
+    '</div>' +
+    '<button class="rc-btn" onclick="doResume(' + u + ',' + p + ')">▶ 이어서</button>' +
+    '<button class="rc-close" onclick="closeCard()" title="닫기">✕</button>';
+  document.body.appendChild(card);
+  setTimeout(closeCard, 12000);
+}
+function doResume(u, p) {
+  closeCard();
+  activeUnit = u;
+  for (let i = 1; i <= 8; i++) {
+    const c = document.getElementById('unit-container-' + i);
+    const t = document.getElementById('unit-tab-' + i);
+    if (c) c.classList.toggle('active', i === u);
+    if (t) t.classList.toggle('active', i === u);
+  }
+  const titleEl = document.getElementById('header-unit-title');
+  if (titleEl && typeof unitTitles !== 'undefined') titleEl.textContent = unitTitles[u] || '';
+  const fn = window['showPage_u' + u];
+  if (fn) fn(p);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function closeCard() {
+  const c = document.getElementById('resume-card');
+  if (!c) return;
+  c.classList.add('hide');
+  setTimeout(() => { if (c.parentNode) c.remove(); }, 260);
+}
+
+// ── 진도 바 업데이트 ──
+function updateProgBar() {
+  try {
+    const raw = localStorage.getItem(PROG_KEY);
+    const data = raw ? JSON.parse(raw) : {};
+    const maxPages = data.maxPages || {};
+    let total = 0;
+    for (let i = 1; i <= 8; i++) total += (maxPages[i] || 1);
+    const pct = Math.max(2, Math.round((total / 64) * 100));
+    const u = typeof activeUnit !== 'undefined' ? activeUnit : 1;
+    const p = window['currentPage_u' + u] || 1;
+    const fill  = document.getElementById('prog-bar-fill');
+    const label = document.getElementById('prog-bar-label');
+    const pos   = document.getElementById('prog-bar-pos');
+    if (fill)  fill.style.width = pct + '%';
+    if (label) label.textContent = pct + '%';
+    if (pos)   pos.textContent = '📖 Unit ' + u + ' · p.' + p;
+  } catch(e) {}
+}
+
+// ── Unit 탭 도트 ──
+function updateProgDots(maxPages) {
+  for (let i = 1; i <= 8; i++) {
+    const tab = document.getElementById('unit-tab-' + i);
+    if (!tab) continue;
+    const max = maxPages[i] || 0;
+    let badge = tab.querySelector('.unit-prog');
+    if (!badge) { badge = document.createElement('span'); badge.className = 'unit-prog'; tab.appendChild(badge); }
+    badge.textContent = max >= 8 ? '✓' : max > 0 ? '●'.repeat(max) + '○'.repeat(8 - max) : '';
+  }
+}
+
+// ── 방문 페이지 버튼 표시 ──
+function markVisitedBtns(maxPages) {
+  for (let i = 1; i <= 8; i++) {
+    const max = maxPages[i] || 0;
+    document.querySelectorAll('#page-nav-u' + i + ' .page-btn').forEach((btn, idx) => {
+      if (idx + 1 <= max) btn.classList.add('visited');
+      else btn.classList.remove('visited');
+    });
+  }
+}
+
+// ===== 📊 성적 저장/표시 (Book 2) =====
+function saveScore(unit, type, score, total) {
+  try {
+    const data = JSON.parse(localStorage.getItem(SCORE_KEY) || '{}');
+    const key = 'u' + unit + '_' + type;
+    if (!data[key] || score > data[key].score) {
+      data[key] = { score, total, date: Date.now() };
+    }
+    localStorage.setItem(SCORE_KEY, JSON.stringify(data));
+    updateScoreBtn();
+  } catch(e) {}
+}
+
+function updateScoreBtn() {
+  try {
+    const data = JSON.parse(localStorage.getItem(SCORE_KEY) || '{}');
+    let totScore = 0, totMax = 0;
+    for (const k in data) { totScore += data[k].score; totMax += data[k].total; }
+    const btn = document.getElementById('score-open-btn');
+    if (btn && totMax > 0) btn.textContent = '📊 ' + Math.round(totScore / totMax * 100) + '%';
+  } catch(e) {}
+}
+
+function openScoreModal() {
+  try {
+    const data = JSON.parse(localStorage.getItem(SCORE_KEY) || '{}');
+    let totScore = 0, totMax = 0;
+    const rowsEl = document.getElementById('sm-rows');
+    rowsEl.innerHTML = '';
+    for (let u = 1; u <= 8; u++) {
+      const p6 = data['u' + u + '_p6'];
+      const p8 = data['u' + u + '_p8'];
+      if (p6) { totScore += p6.score; totMax += p6.total; }
+      if (p8) { totScore += p8.score; totMax += p8.total; }
+      const makeCell = (d) => {
+        if (!d) return '<div class="sm-score-cell"><span class="sm-none">미완료</span></div>';
+        const pct = Math.round(d.score / d.total * 100);
+        const color = pct === 100 ? '#2E7D32' : pct >= 60 ? '#1565C0' : '#C62828';
+        return '<div class="sm-score-cell">' +
+          '<div class="sm-score-num" style="color:' + color + '">' + d.score + ' / ' + d.total + '</div>' +
+          '<div class="sm-stars">' + '⭐'.repeat(d.score) + '☆'.repeat(d.total - d.score) + '</div>' +
+          '</div>';
+      };
+      rowsEl.innerHTML +=
+        '<div class="sm-row">' +
+          '<div class="sm-unit-badge">U' + u + '<br><span style="font-size:0.6rem;font-weight:400;">' + UNIT_NAMES_B2[u] + '</span></div>' +
+          makeCell(p6) + makeCell(p8) +
+        '</div>';
+    }
+    document.getElementById('sm-tot-score').textContent = totScore;
+    document.getElementById('sm-tot-max').textContent = totMax || '-';
+    const pct = totMax > 0 ? Math.round(totScore / totMax * 100) : 0;
+    document.getElementById('sm-pct').textContent = pct + '%';
+    document.getElementById('sm-bar').style.width = pct + '%';
+    document.getElementById('score-modal-bg').classList.add('open');
+  } catch(e) { console.log(e); }
+}
+function closeScoreModal() {
+  document.getElementById('score-modal-bg').classList.remove('open');
+}
+document.addEventListener('DOMContentLoaded', updateScoreBtn);
 </script>
 </body>
 </html>
